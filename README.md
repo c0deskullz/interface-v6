@@ -1,17 +1,6 @@
-# Pangolin Interface
+# Party Interface
 
-An open source interface for Pangolin -- a community-driven decentralized exchange for Avalanche and Ethereum assets with fast settlement, low transaction fees, and a democratic distribution -- powered by Avalanche.
-
-- Website: [pangolin.exchange](https://pangolin.exchange/)
-- Interface: [app.pangolin.exchange](https://app.pangolin.exchange)
-- Telegram: [Pangolin](https://t.me/pangolindex)
-- Discord: [Pangolin](https://discord.com/invite/PARrDYYbfw)
-- Twitter: [@pangolindex](https://twitter.com/pangolindex)
-
-
-## Accessing the Pangolin Interface
-
-Visit [app.pangolin.exchange](https://app.pangolin.exchange).
+An open source interface for Party -- a community-driven decentralized exchange for Avalanche and Ethereum assets with fast settlement, low transaction fees, and a democratic distribution -- powered by Avalanche.
 
 ## Development
 
@@ -33,12 +22,8 @@ To have the interface default to a different network when a wallet is not connec
 
 1. Make a copy of `.env` named `.env.local`
 2. Change `REACT_APP_NETWORK_ID` to `"{YOUR_NETWORK_ID}"`
-3. Change `REACT_APP_NETWORK_URL` to your JSON-RPC provider 
-
-Note that the interface only works on testnets where both 
-[Pangolin](https://github.com/pangolindex/exchange-contracts) and 
-[multicall](https://github.com/makerdao/multicall) are deployed.
-The interface will not work on other networks.
+3. Change `REACT_APP_NETWORK_URL` to your JSON-RPC provider
 
 ## Attribution
+
 This code was adapted from this Uniswap repo: [uniswap-interface](https://github.com/Uniswap/uniswap-interface).

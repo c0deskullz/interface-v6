@@ -127,7 +127,7 @@ export default function RemoveLiquidity({
       { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
-      name: 'Pangolin',
+      name: 'Party',
       version: '1',
       chainId: chainId,
       verifyingContract: pair.liquidityToken.address

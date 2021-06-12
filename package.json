@@ -1,6 +1,6 @@
 {
   "name": "@pangolindex/interface",
-  "description": "Pangolin Interface",
+  "description": "Party Interface",
   "homepage": ".",
   "private": true,
   "devDependencies": {

@@ -151,8 +151,8 @@ export function useSwapCallback(
                     console.debug('Call threw error', call, callError)
                     let errorMessage: string
                     switch (callError.reason) {
-                      case 'PangolinRouter: INSUFFICIENT_OUTPUT_AMOUNT':
-                      case 'PangolinRouter: EXCESSIVE_INPUT_AMOUNT':
+                      case 'PartyRouter: INSUFFICIENT_OUTPUT_AMOUNT':
+                      case 'PartyRouter: EXCESSIVE_INPUT_AMOUNT':
                         errorMessage =
                           'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
                         break

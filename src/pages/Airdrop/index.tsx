@@ -151,7 +151,7 @@ export default function Vote() {
             <span role="img" aria-label="party-hat">
               🎉{' '}
             </span>
-            Welcome to team Pangolin
+            Welcome to team Party
             <span role="img" aria-label="party-hat">
               {' '}
               🎉

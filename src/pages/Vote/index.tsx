@@ -137,11 +137,11 @@ export default function Vote() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Pangolin Governance</TYPE.white>
+                <TYPE.white fontWeight={600}>Party Governance</TYPE.white>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  PNG tokens represent voting shares in Pangolin governance. You can vote on each proposal yourself or
+                  PNG tokens represent voting shares in Party governance. You can vote on each proposal yourself or
                   delegate your votes to a third party.
                 </TYPE.white>
               </RowBetween>

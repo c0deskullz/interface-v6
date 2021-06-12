@@ -88,12 +88,11 @@ export default function Earn({
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Pangolin liquidity mining</TYPE.white>
+                <TYPE.white fontWeight={600}>Party liquidity mining</TYPE.white>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  Deposit your Pangolin Liquidity Provider PGL tokens to receive PNG, the Pangolin protocol governance
-                  token.
+                  Deposit your Party Liquidity Provider PGL tokens to receive PNG, the Party protocol governance token.
                 </TYPE.white>
               </RowBetween>{' '}
               <ExternalLink
@@ -117,11 +116,11 @@ export default function Earn({
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  As a result of Pangolin governance proposal 1, Pangolin is changing staking contracts! After
-                  approximately 08:59 UTC on 4/19, all staking rewards will be distributed to the new staking contracts.
-                  Before the switch, all rewards will still be distributed to the old contracts. To avoid interruptions
-                  to yield farming rewards, you need to unstake your liquidity from the old contracts and restake in the
-                  new contracts. You do not need to remove liquidity from your pools or alter your positions.
+                  As a result of Party governance proposal 1, Party is changing staking contracts! After approximately
+                  08:59 UTC on 4/19, all staking rewards will be distributed to the new staking contracts. Before the
+                  switch, all rewards will still be distributed to the old contracts. To avoid interruptions to yield
+                  farming rewards, you need to unstake your liquidity from the old contracts and restake in the new
+                  contracts. You do not need to remove liquidity from your pools or alter your positions.
                 </TYPE.white>
               </RowBetween>
               <RowBetween>
