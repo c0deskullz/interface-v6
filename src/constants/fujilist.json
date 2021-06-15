@@ -1,0 +1,37 @@
+{
+  "name": "Fuji Token List",
+  "logoURI": "https://i.imgur.com/tt0vG2N.png",
+  "version": {
+    "major": 0,
+    "minor": 1,
+    "patch": 1
+  },
+  "keywords": [],
+  "timestamp": "2021-05-21T00:00:00+00:00",
+  "tokens": [
+    {
+      "address": "0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22",
+      "chainId": 43113,
+      "name": "The Fuji stablecoin",
+      "symbol": "FUJISTABLE",
+      "decimals": 6,
+      "logoURI": "https://i.imgur.com/LPZDXoT.png"
+    },
+    {
+      "address": "0x97132C109c6816525F7f338DCb7435E1412A7668",
+      "chainId": 43113,
+      "name": "To the Moon",
+      "symbol": "FUJIMOON",
+      "decimals": 9,
+      "logoURI": "https://i.imgur.com/jNTqyQA.png"
+    },
+    {
+      "address": "0xf1F94960f2EE20FCB123dd5B38a9ce277cAA9855",
+      "chainId": 43113,
+      "name": "YAY Token",
+      "symbol": "YAY",
+      "decimals": 10,
+      "logoURI": "https://uc1de846e4105269e4c4c0f54117.previews.dropboxusercontent.com/p/thumb/ABNv8J0k1fnQURMAfC5r2KX8u8eZOloOpi6BhIMR-Qgskn41pYG4HE3P-wQSIR6LKyzeyHzQKsrjzEloW7Zz6e9iO0MtW163NdTd46QPvcP1bOvqu0UNcVwkiZTb8ib3ZC1FnX-hRWZWMmdR6YS-8KpGRzxjGmKUgdsk7hDbvbsQN3ENd8F5VTW4mxSkqQOA0TY2KanKfaUmGo7ZLGUGMq0MHRlIctb9dLgApeOj_ldzFC1FXHUt1HapTACWeiCDlSbEzRwse8iCrLczKhKq4KIauTjk401-I_GUKpAYLbcU8aPd_JmyVfmfjayhk9QsQLxWziCG-xjtJ3-0y52_SVBgjJDxjOtsEKFD9RsjI8wMBA/p.png?fv_content=true&size_mode=5"
+    }
+  ]
+}
