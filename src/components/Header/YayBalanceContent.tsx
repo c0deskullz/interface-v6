@@ -3,12 +3,12 @@ import React, { useMemo } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
 import tokenLogo from '../../assets/images/token-logo.png'
-import { PNG } from '../../constants'
+import { YAY } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
-import { useTotalPngEarned } from '../../state/stake/hooks'
-import { useAggregatePngBalance, useTokenBalance } from '../../state/wallet/hooks'
+import { useTotalYayEarned } from '../../state/stake/hooks'
+import { useAggregateYayBalance, useTokenBalance } from '../../state/wallet/hooks'
 import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
 import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
@@ -39,17 +39,17 @@ const StyledClose = styled(X)`
 /**
  * Content for balance stats modal
  */
-export default function PngBalanceContent({ setShowPngBalanceModal }: { setShowPngBalanceModal: any }) {
+export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowPngBalanceModal: any }) {
   const { account, chainId } = useActiveWeb3React()
-  const png = chainId ? PNG[chainId] : undefined
+  const png = chainId ? YAY[chainId] : undefined
 
-  const total = useAggregatePngBalance()
+  const total = useAggregateYayBalance()
   const pngBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, png)
-  const pngToClaim: TokenAmount | undefined = useTotalPngEarned()
+  const pngToClaim: TokenAmount | undefined = useTotalYayEarned()
 
   const totalSupply: TokenAmount | undefined = useTotalSupply(png)
 
-  // Determine PNG price in AVAX
+  // Determine YAY price in AVAX
   const wavax = WAVAX[chainId ? chainId : 43114]
   const [, avaxPngTokenPair] = usePair(wavax, png)
   const oneToken = JSBI.BigInt(1000000000000000000)
@@ -76,7 +76,7 @@ export default function PngBalanceContent({ setShowPngBalanceModal }: { setShowP
         <CardNoise />
         <CardSection gap="md">
           <RowBetween>
-            <TYPE.white color="white">Your PNG Breakdown</TYPE.white>
+            <TYPE.white color="white">Your YAY Breakdown</TYPE.white>
             <StyledClose stroke="white" onClick={() => setShowPngBalanceModal(false)} />
           </RowBetween>
         </CardSection>
@@ -114,11 +114,11 @@ export default function PngBalanceContent({ setShowPngBalanceModal }: { setShowP
         <CardSection gap="sm">
           <AutoColumn gap="md">
             <RowBetween>
-              <TYPE.white color="white">PNG price:</TYPE.white>
+              <TYPE.white color="white">YAY price:</TYPE.white>
               <TYPE.white color="white">{pngPrice?.toFixed(5) ?? '-'} AVAX</TYPE.white>
             </RowBetween>
             <RowBetween>
-              <TYPE.white color="white">PNG in circulation:</TYPE.white>
+              <TYPE.white color="white">YAY in circulation:</TYPE.white>
               <TYPE.white color="white">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
             </RowBetween>
             <RowBetween>

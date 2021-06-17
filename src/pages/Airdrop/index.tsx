@@ -110,7 +110,7 @@ export default function Vote() {
       <TopSection gap="2px">
         <Confetti start={Boolean(claimConfirmed)} />
         <TYPE.mediumHeader style={{ margin: '0.5rem 0' }} textAlign="center">
-          Claim PNG from Airdrop
+          Claim YAY from Airdrop
         </TYPE.mediumHeader>
         {!claimingAllowed ? (
           <Card padding="40px">
@@ -137,7 +137,7 @@ export default function Vote() {
               wallet.
             </TYPE.body>
             <TYPE.body mt="1rem" color={theme.text1} textAlign="center">
-              {'You have ' + claimAmount?.toFixed(0, { groupSeparator: ',' }) + ' PNG available to claim'}
+              {'You have ' + claimAmount?.toFixed(0, { groupSeparator: ',' }) + ' YAY available to claim'}
             </TYPE.body>
           </Card>
         ) : attempting ? (
@@ -159,7 +159,7 @@ export default function Vote() {
           </TYPE.subHeader>
         ) : (
           <ButtonError error={!!error} padding="16px 16px" width="100%" mt="1rem" onClick={onClaim}>
-            {error ? error['data']['message'] : 'Claim ' + claimAmount?.toFixed(0, { groupSeparator: ',' }) + ' PNG'}
+            {error ? error['data']['message'] : 'Claim ' + claimAmount?.toFixed(0, { groupSeparator: ',' }) + ' YAY'}
           </ButtonError>
         )}
       </TopSection>

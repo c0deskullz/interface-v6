@@ -28,7 +28,7 @@ import { useTotalSupply } from '../../data/TotalSupply'
 import { usePair } from '../../data/Reserves'
 import usePrevious from '../../hooks/usePrevious'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
-import { BIG_INT_ZERO, PNG } from '../../constants'
+import { BIG_INT_ZERO, YAY } from '../../constants'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -109,7 +109,7 @@ export default function Manage({
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
-  const [, avaxPngTokenPair] = usePair(CAVAX, PNG[chainId ? chainId : 43114])
+  const [, avaxYayTokenPair] = usePair(CAVAX, YAY[chainId ? chainId : 43114])
   // let usdToken: Token | undefined
   if (avaxPool) {
     token = currencyA === CAVAX ? tokenB : tokenA
@@ -133,36 +133,36 @@ export default function Manage({
     // get the USD value of staked wavax
     // usdToken = wavax
   } else {
-    var png
-    if (tokenA && tokenA.equals(PNG[tokenA.chainId])) {
+    var yay
+    if (tokenA && tokenA.equals(YAY[tokenA.chainId])) {
       token = tokenB
-      png = tokenA
+      yay = tokenA
     } else {
       token = tokenA
-      png = tokenB
+      yay = tokenB
     }
 
-    if (totalSupplyOfStakingToken && stakingTokenPair && avaxPngTokenPair && tokenB && png) {
+    if (totalSupplyOfStakingToken && stakingTokenPair && avaxYayTokenPair && tokenB && yay) {
       const oneToken = JSBI.BigInt(1000000000000000000)
-      const avaxPngRatio = JSBI.divide(
-        JSBI.multiply(oneToken, avaxPngTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
-        avaxPngTokenPair.reserveOf(png).raw
+      const avaxYayRatio = JSBI.divide(
+        JSBI.multiply(oneToken, avaxYayTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
+        avaxYayTokenPair.reserveOf(yay).raw
       )
 
-      const valueOfPngInAvax = JSBI.divide(JSBI.multiply(stakingTokenPair.reserveOf(png).raw, avaxPngRatio), oneToken)
+      const valueOfYayInAvax = JSBI.divide(JSBI.multiply(stakingTokenPair.reserveOf(yay).raw, avaxYayRatio), oneToken)
 
       valueOfTotalStakedAmountInWavax = new TokenAmount(
         WAVAX[tokenB.chainId],
         JSBI.divide(
           JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPngInAvax),
+            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfYayInAvax),
             JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
           ),
           totalSupplyOfStakingToken.raw
         )
       )
     }
-    // usdToken = png
+    // usdToken = yay
   }
 
   // get the color of the token
@@ -242,7 +242,7 @@ export default function Manage({
               {stakingInfo?.totalRewardRate
                 ?.multiply((60 * 60 * 24 * 7).toString())
                 ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
-              {' PNG / week'}
+              {' YAY / week'}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
@@ -255,11 +255,11 @@ export default function Manage({
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Step 1. Get Party Liquidity tokens (PGL)</TYPE.white>
+                <TYPE.white fontWeight={600}>Step 1. Get Party Liquidity tokens (xYAY)</TYPE.white>
               </RowBetween>
               <RowBetween style={{ marginBottom: '1rem' }}>
                 <TYPE.white fontSize={14}>
-                  {`PGL tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}
+                  {`xYAY tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}
                 </TYPE.white>
               </RowBetween>
               <ButtonPrimary
@@ -314,7 +314,7 @@ export default function Manage({
                     {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
                   </TYPE.white>
                   <TYPE.white>
-                    PGL {currencyA?.symbol}-{currencyB?.symbol}
+                    xYAY {currencyA?.symbol}-{currencyB?.symbol}
                   </TYPE.white>
                 </RowBetween>
               </AutoColumn>
@@ -326,7 +326,7 @@ export default function Manage({
             <AutoColumn gap="sm">
               <RowBetween>
                 <div>
-                  <TYPE.black>Your unclaimed PNG</TYPE.black>
+                  <TYPE.black>Your unclaimed YAY</TYPE.black>
                 </div>
                 {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                   <ButtonEmpty
@@ -358,7 +358,7 @@ export default function Manage({
                   {stakingInfo?.rewardRate
                     ?.multiply((60 * 60 * 24 * 7).toString())
                     ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
-                  {' PNG / week'}
+                  {' YAY / week'}
                 </TYPE.black>
               </RowBetween>
             </AutoColumn>
@@ -368,13 +368,13 @@ export default function Manage({
           <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
             ⭐️
           </span>
-          When you withdraw, the contract will automagically claim PNG on your behalf!
+          When you withdraw, the contract will automagically claim YAY on your behalf!
         </TYPE.main>
 
         {!showAddLiquidityButton && (
           <DataRow style={{ marginBottom: '1rem' }}>
             <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
-              {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit PGL Tokens'}
+              {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit xYAY Tokens'}
             </ButtonPrimary>
 
             {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
@@ -392,7 +392,7 @@ export default function Manage({
           </DataRow>
         )}
         {!userLiquidityUnstaked ? null : userLiquidityUnstaked.equalTo('0') ? null : (
-          <TYPE.main>{userLiquidityUnstaked.toSignificant(6)} PGL tokens available</TYPE.main>
+          <TYPE.main>{userLiquidityUnstaked.toSignificant(6)} xYAY tokens available</TYPE.main>
         )}
       </PositionInfo>
     </PageWrapper>

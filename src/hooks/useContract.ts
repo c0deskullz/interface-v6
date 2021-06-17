@@ -1,11 +1,10 @@
 import { Contract } from '@ethersproject/contracts'
 import { WAVAX } from '@partyswap-libs/sdk'
-// import { abi as IPangolinPairABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinPair.sol/IPangolinPair.json'
 import { abi as IPartyPairABI } from '@partyswap-libs/party-swap-core/build/IPartyPair.json'
-import { abi as STAKING_REWARDS_ABI } from '@pangolindex/governance/artifacts/contracts/StakingRewards.sol/StakingRewards.json'
+import { abi as STAKING_REWARDS_ABI } from '@partyswap-libs/party-governance/build/contracts/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
 import { abi as GOVERNANCE_ABI } from '@pangolindex/governance/artifacts/contracts/GovernorAlpha.sol/GovernorAlpha.json'
-import { abi as PNG_ABI } from '@pangolindex/governance/artifacts/contracts/PNG.sol/Png.json'
+import { abi as YAY_ABI } from '@partyswap-libs/party-governance/build/contracts/PartyERC20.json'
 import { useMemo } from 'react'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
@@ -17,7 +16,7 @@ import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../consta
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import { AIRDROP_ADDRESS } from '../constants'
-import { GOVERNANCE_ADDRESS, PNG } from '../constants'
+import { GOVERNANCE_ADDRESS, YAY } from '../constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -77,9 +76,9 @@ export function useGovernanceContract(): Contract | null {
   return useContract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, true)
 }
 
-export function usePngContract(): Contract | null {
+export function useYayContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? PNG[chainId].address : undefined, PNG_ABI, true)
+  return useContract(chainId ? YAY[chainId].address : undefined, YAY_ABI, true)
 }
 
 export function useStakingContract(stakingAddress?: string, withSignerIfPossible?: boolean): Contract | null {

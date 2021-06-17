@@ -27,6 +27,17 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
+export const YAY: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xf1F94960f2EE20FCB123dd5B38a9ce277cAA9855', 10, 'YAY', 'YAY Token'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x55C04acAC8049C304043903e5b9D13Fb765aBEEA',
+    10,
+    'YAY',
+    'YAY Token'
+  )
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x20C62EEde571409f7101076F8dA0221867AA46dc', 18, 'PNG', 'Pangolin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin')

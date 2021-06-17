@@ -1,7 +1,7 @@
 import { UNI } from './../../constants/index'
 import { TokenAmount } from '@partyswap-libs/sdk'
 import { isAddress } from 'ethers/lib/utils'
-import { useGovernanceContract, usePngContract } from '../../hooks/useContract'
+import { useGovernanceContract, useYayContract } from '../../hooks/useContract'
 import { useSingleCallResult, useSingleContractMultipleData } from '../multicall/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { ethers, utils } from 'ethers'
@@ -200,14 +200,14 @@ export function useProposalData(id: string): ProposalData | undefined {
 // get the users delegatee if it exists
 export function useUserDelegatee(): string {
   const { account } = useActiveWeb3React()
-  const uniContract = usePngContract()
+  const uniContract = useYayContract()
   const { result } = useSingleCallResult(uniContract, 'delegates', [account ?? undefined])
   return result?.[0] ?? undefined
 }
 
 export function useUserVotes(): TokenAmount | undefined {
   const { account, chainId } = useActiveWeb3React()
-  const uniContract = usePngContract()
+  const uniContract = useYayContract()
 
   // check for available votes
   const uni = chainId ? UNI[chainId] : undefined
@@ -219,7 +219,7 @@ export function useDelegateCallback(): (delegatee: string | undefined) => undefi
   const { account, chainId, library } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
 
-  const uniContract = usePngContract()
+  const uniContract = useYayContract()
 
   return useCallback(
     (delegatee: string | undefined) => {

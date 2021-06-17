@@ -3243,6 +3243,11 @@
     web3-eth-contract "1.2.2"
     web3-utils "1.2.2"
 
+"@openzeppelin/contracts@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.1.0.tgz#baec89a7f5f73e3d8ea582a78f1980134b605375"
+  integrity sha512-TihZitscnaHNcZgXGj9zDLDyCqjziytB4tMCwXq0XimfWkAjBYyk5/pOsDbbwcavhlc79HhpTEpQcrMnPVa1mw==
+
 "@openzeppelin/fuzzy-solidity-import-parser@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/fuzzy-solidity-import-parser/-/fuzzy-solidity-import-parser-0.1.2.tgz#3b9f524d6028ca73df60474a313e0295e5610c51"
@@ -3307,6 +3312,18 @@
     "@web3-react/types" "^6.0.7"
     tiny-warning "^1.0.3"
     tsdx "^0.11.0"
+
+"@partyswap-libs/party-governance@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-governance/-/party-governance-1.0.1.tgz#10203b709f296e2f62fb1955471e821b04bd333d"
+  integrity sha512-ii9x4YUTBRi+qTZmBL+jrt4Dx2Sd3b2ra4/OCBjcrCMvGp9QHaJ8Fpk2hnPbK45lVBIdEi85AalsO1z0j3Qw8w==
+  dependencies:
+    "@openzeppelin/contracts" "^4.1.0"
+    "@partyswap-libs/party-swap-core" "^0.1.0"
+    "@truffle/hdwallet-provider" "^1.4.0"
+    dotenv "^10.0.0"
+    openzeppelin-solidity "^4.1.0"
+    truffle-contract-size "^2.0.1"
 
 "@partyswap-libs/party-swap-core@^0.1.0":
   version "0.1.0"
@@ -8327,6 +8344,13 @@ cli-table3@~0.6.0:
   optionalDependencies:
     colors "^1.1.2"
 
+cli-table@^0.3.1:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/cli-table/-/cli-table-0.3.6.tgz#e9d6aa859c7fe636981fd3787378c2a20bce92fc"
+  integrity sha512-ZkNZbnZjKERTY5NwC2SeMeLeifSPq/pubeRoTpdr3WchLlnZg6hEgvHkK5zL7KNFdd9PmHN8lxrENUwI3cE8vQ==
+  dependencies:
+    colors "1.0.3"
+
 cli-truncate@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/cli-truncate/-/cli-truncate-0.2.1.tgz#9f15cfbb0705005369216c626ac7d05ab90dd574"
@@ -8556,6 +8580,11 @@ colorette@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.2.2.tgz#cbcc79d5e99caea2dbf10eb3a26fd8b3e6acfa94"
   integrity sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==
+
+colors@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
+  integrity sha1-BDP0TYCWgP3rYO0mDxsMJi6CpAs=
 
 colors@^1.1.2:
   version "1.4.0"
@@ -17724,6 +17753,11 @@ openzeppelin-solidity@^3.4.0:
   resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-3.4.1.tgz#c250f0c46b0ed38437b91bba80fed369adf1b09e"
   integrity sha512-cr23CIbIbs77AV/l1rCB1ppSE/ROIyM+9126GYH/t+ehYwIs1FWHevZfgXQi1JFhXZqxOHjW6isRWmlDVR4OLA==
 
+openzeppelin-solidity@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-4.1.0.tgz#6f514efa71feb582920c7836184beed2bfc13319"
+  integrity sha512-eOTwAu5q909S+Lqi4QnTQClY8KLpdnpiddrrrCuDSDaOgohBbl4VMcJj325k67m2qyalqvHu/2Fj5qqj5V9oLw==
+
 opn@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.5.0.tgz#fc7164fab56d235904c51c3b27da6758ca3b9bfc"
@@ -23171,6 +23205,14 @@ truffle-config@1.1.16:
     original-require "1.0.1"
     truffle-error "^0.0.5"
     truffle-provider "^0.1.12"
+
+truffle-contract-size@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/truffle-contract-size/-/truffle-contract-size-2.0.1.tgz#9ec1b078b0b3221cc1612400bd6f5df83c7a3a09"
+  integrity sha512-AIKPwHPC/1pZwtVjgUcgcK23k6gWxKhn4ZnKLr339uieb94UgAUeIwGUkfc87T+0lqgC6ePY7YhsFeoZK2YEsA==
+  dependencies:
+    cli-table "^0.3.1"
+    yargs "^15.3.1"
 
 truffle-error@^0.0.5:
   version "0.0.5"

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCard'
-import { RouteComponentProps, NavLink } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
 import Loader from '../../components/Loader'
@@ -62,7 +62,7 @@ export default function Earn({
           }
         })
         .map(stakingInfo => {
-          return fetch(`https://api.pangolin.exchange/pangolin/apr/${stakingInfo.stakingRewardAddress}`)
+          return fetch(`${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}`)
             .then(res => res.text())
             .then(res => ({ apr: res, ...stakingInfo }))
         })
@@ -92,7 +92,7 @@ export default function Earn({
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  Deposit your Party Liquidity Provider PGL tokens to receive PNG, the Party protocol governance token.
+                  Deposit your Party Liquidity Provider xYAY tokens to receive YAY, the Party protocol governance token.
                 </TYPE.white>
               </RowBetween>{' '}
               <ExternalLink
@@ -100,14 +100,14 @@ export default function Earn({
                 href="https://pangolin.exchange/litepaper"
                 target="_blank"
               >
-                <TYPE.white fontSize={14}>Read more about PNG</TYPE.white>
+                <TYPE.white fontSize={14}>Read more about YAY</TYPE.white>
               </ExternalLink>
             </AutoColumn>
           </CardSection>
           <CardBGImage />
           <CardNoise />
         </DataCard>
-        <DataCard>
+        {/* <DataCard>
           <CardNoise />
           <CardSection>
             <AutoColumn gap="md">
@@ -125,19 +125,19 @@ export default function Earn({
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  To unstake, go to the old pools, click manage and withdraw your PGL tokens. This will also claim any
-                  earned PNG. To restake, navigate to the new pools, click manage, and then deposit.
+                  To unstake, go to the old pools, click manage and withdraw your xYAY tokens. This will also claim any
+                  earned YAY. To restake, navigate to the new pools, click manage, and then deposit.
                 </TYPE.white>
               </RowBetween>{' '}
               <NavLink style={{ color: 'white', textDecoration: 'underline' }} to="/png/0" target="_blank">
-                <TYPE.white fontSize={14}>Old PNG pools</TYPE.white>
+                <TYPE.white fontSize={14}>Old YAY pools</TYPE.white>
               </NavLink>
               <NavLink style={{ color: 'white', textDecoration: 'underline' }} to="/png/1" target="_blank">
-                <TYPE.white fontSize={14}>New PNG pools</TYPE.white>
+                <TYPE.white fontSize={14}>New YAY pools</TYPE.white>
               </NavLink>
             </AutoColumn>
           </CardSection>
-        </DataCard>
+        </DataCard> */}
       </TopSection>
 
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>

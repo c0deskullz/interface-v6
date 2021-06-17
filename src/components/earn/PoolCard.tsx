@@ -12,7 +12,7 @@ import { currencyId } from '../../utils/currencyId'
 import { Break, CardNoise, CardBGImage } from './styled'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
-import { PNG } from '../../constants'
+import { YAY } from '../../constants'
 
 const StatContainer = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ export default function PoolCard({
   if (avaxPool) {
     token = currency0 === CAVAX ? token1 : token0
   } else {
-    token = token0.equals(PNG[token0.chainId]) ? token1 : token0
+    token = token0.equals(YAY[token0.chainId]) ? token1 : token0
   }
   // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
   // get the color of the token
@@ -142,12 +142,12 @@ export default function PoolCard({
         </RowBetween>
         <RowBetween>
           <TYPE.white> Pool rate </TYPE.white>
-          <TYPE.white>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} PNG / week`}</TYPE.white>
+          <TYPE.white>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} YAY / week`}</TYPE.white>
         </RowBetween>
         <RowBetween>
           <TYPE.white> Current reward </TYPE.white>
           <TYPE.white>{`${weeklyRewardPerAvax.toFixed(4, { groupSeparator: ',' }) ??
-            '-'} PNG / Week per AVAX`}</TYPE.white>
+            '-'} YAY / Week per AVAX`}</TYPE.white>
         </RowBetween>
         <RowBetween>
           <TYPE.white> Earn up to (yearly) </TYPE.white>
@@ -169,7 +169,7 @@ export default function PoolCard({
               </span>
               {`${stakingInfo.rewardRate
                 ?.multiply(`${60 * 60 * 24 * 7}`)
-                ?.toSignificant(4, { groupSeparator: ',' })} PNG / week`}
+                ?.toSignificant(4, { groupSeparator: ',' })} YAY / week`}
             </TYPE.black>
           </BottomSection>
         </>

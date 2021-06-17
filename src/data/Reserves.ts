@@ -1,6 +1,5 @@
 import { TokenAmount, Pair, Currency, ChainId } from '@partyswap-libs/sdk'
 import { useMemo } from 'react'
-// import { abi as IPangolinPairABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinPair.sol/IPangolinPair.json'
 import { abi as IPartyPairABI } from '@partyswap-libs/party-swap-core/build/IPartyPair.json'
 
 import { Interface } from '@ethersproject/abi'
