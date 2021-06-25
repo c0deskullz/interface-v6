@@ -18,14 +18,14 @@ export const STAKING_V2: {
 }[] = [
   {
     tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
-    stakingRewardAddress: '0xA050f6F3554cA23B6B934364FCAb54610855deb5'
+    stakingRewardAddress: '0xc61671209d163B464291F3c57014029799888a06'
   },
   {
     tokens: [
       WAVAX[ChainId.FUJI],
       new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
     ],
-    stakingRewardAddress: '0x6735b3B9f5807594d22EF2e10DAB010034982189'
+    stakingRewardAddress: '0xAa8e8F1be806ac186709e1d38B073C262246AeC0'
   }
 ]
 

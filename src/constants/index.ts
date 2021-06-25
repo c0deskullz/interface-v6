@@ -28,14 +28,8 @@ type ChainTokenList = {
 }
 
 export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xf1F94960f2EE20FCB123dd5B38a9ce277cAA9855', 10, 'YAY', 'YAY Token'),
-  [ChainId.AVALANCHE]: new Token(
-    ChainId.AVALANCHE,
-    '0x55C04acAC8049C304043903e5b9D13Fb765aBEEA',
-    10,
-    'YAY',
-    'YAY Token'
-  )
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x3d3D4D81D4D702e791480cD782C55B19A506b849', 10, 'YAY', 'YAY'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x10b3A2445f29F838ed8D9d61a82205A0436B7F75', 10, 'YAY', 'YAY')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
@@ -150,6 +144,11 @@ export const VSO: { [chainId in ChainId]: Token } = {
     'VSO',
     'VersoToken'
   )
+}
+
+export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
+  [ChainId.FUJI]: '0xD64E7CDfB8F8495FA2Ccb209Ae58eAaca2f96432',
+  [ChainId.AVALANCHE]: ZERO_ADDRESS
 }
 
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {

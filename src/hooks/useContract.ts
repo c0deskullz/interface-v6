@@ -4,7 +4,8 @@ import { abi as IPartyPairABI } from '@partyswap-libs/party-swap-core/build/IPar
 import { abi as STAKING_REWARDS_ABI } from '@partyswap-libs/party-governance/build/contracts/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
 import { abi as GOVERNANCE_ABI } from '@pangolindex/governance/artifacts/contracts/GovernorAlpha.sol/GovernorAlpha.json'
-import { abi as YAY_ABI } from '@partyswap-libs/party-governance/build/contracts/PartyERC20.json'
+import { abi as YAY_ABI } from '@partyswap-libs/party-governance/build/contracts/YAYToken.json'
+import { abi as JACCUZZI_ABI } from '@partyswap-libs/party-governance/build/contracts/PartyJacuzzis.json'
 import { useMemo } from 'react'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
@@ -15,7 +16,7 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { AIRDROP_ADDRESS } from '../constants'
+import { AIRDROP_ADDRESS, JACUZZI_ADDRESS } from '../constants'
 import { GOVERNANCE_ADDRESS, YAY } from '../constants'
 
 // returns null on errors
@@ -88,4 +89,9 @@ export function useStakingContract(stakingAddress?: string, withSignerIfPossible
 export function useAirdropContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId ? AIRDROP_ADDRESS[chainId] : undefined, AIRDROP_ABI, true)
+}
+
+export function useJacuzziContract() {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId ? JACUZZI_ADDRESS[chainId] : undefined, JACCUZZI_ABI)
 }

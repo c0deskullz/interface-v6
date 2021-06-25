@@ -302,6 +302,9 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`} to={'/png/1'}>
             Piñatas
           </StyledNavLink>
+          <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>
+            Jacuzzis
+          </StyledNavLink>
           {/* <StyledNavLink id={`stake-nav-link`} to={'/png/0'}>
             Old YAY
           </StyledNavLink>

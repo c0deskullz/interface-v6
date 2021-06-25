@@ -3313,10 +3313,10 @@
     tiny-warning "^1.0.3"
     tsdx "^0.11.0"
 
-"@partyswap-libs/party-governance@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-governance/-/party-governance-1.0.1.tgz#10203b709f296e2f62fb1955471e821b04bd333d"
-  integrity sha512-ii9x4YUTBRi+qTZmBL+jrt4Dx2Sd3b2ra4/OCBjcrCMvGp9QHaJ8Fpk2hnPbK45lVBIdEi85AalsO1z0j3Qw8w==
+"@partyswap-libs/party-governance@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-governance/-/party-governance-1.0.2.tgz#a3d21c97b0d295ffda2a1d21cd01f3ec310254b5"
+  integrity sha512-vN3WiquYxrOZbg9zWQHsdEnr6iZ7gwZmt9GqGXAYY0pvp0mYStpHXVcWyKxlXVfKk3l+R0Nzr2EWbmywiB6W3Q==
   dependencies:
     "@openzeppelin/contracts" "^4.1.0"
     "@partyswap-libs/party-swap-core" "^0.1.0"

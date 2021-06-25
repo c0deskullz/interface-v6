@@ -17,6 +17,7 @@ import {
 import Earn from './Earn'
 import Manage from './Earn/Manage'
 import Pool from './Pool'
+import Jacuzzi from './Jacuzzi'
 import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
@@ -83,6 +84,7 @@ export default function App() {
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} /> {/**LIQUIDITY */}
+              <Route exact strict path="/jacuzzi" component={Jacuzzi} />
               {/**TODO: JACUZZY */}
               <Route exact strict path="/png/:version" component={Earn} /> {/**FARMS */}
               <Route exact strict path="/vote" component={Vote} />
