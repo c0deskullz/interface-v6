@@ -19,6 +19,7 @@ import { ButtonLight } from '../../components/Button'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
+import { ChainId } from '@partyswap-libs/sdk'
 
 const WALLET_TUTORIAL = LANDING_PAGE + 'tutorials/getting-started/#set-up-metamask'
 
@@ -128,7 +129,7 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error } = useWeb3React()
+  const { active, account, connector, activate, error, chainId } = useWeb3React()
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
@@ -204,7 +205,6 @@ export default function WalletModal({
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
       if (isMobile) {
-
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
             <Option
@@ -284,7 +284,7 @@ export default function WalletModal({
       provider
         .request({
           method: 'wallet_addEthereumChain',
-          params: [AVALANCHE_CHAIN_PARAMS]
+          params: [AVALANCHE_CHAIN_PARAMS[(chainId as ChainId) || ChainId.AVALANCHE]]
         })
         .catch((error: any) => {
           console.log(error)

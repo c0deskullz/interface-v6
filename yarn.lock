@@ -3336,19 +3336,30 @@
     truffle-flattener "^1.4.4"
     truffle-hdwallet-provider "^1.0.17"
 
-"@partyswap-libs/party-swap-periphery@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-periphery/-/party-swap-periphery-1.1.1.tgz#89b24807c727f2ac5dc4e889436c08928979ab76"
-  integrity sha512-qor5Fc6uqQp66UxED6xTBiX9rkUK1huZ6xAb5keaCx+Jv35NjStPdmhsfs24fEle4JEPS2jSwzf+nrux3k/M+w==
+"@partyswap-libs/party-swap-core@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-core/-/party-swap-core-0.1.1.tgz#55fc08b827f672f2189d10b28e9305bda74d5d78"
+  integrity sha512-k0DlpnqLnB9cE+dZrylRHAmQTma7gJM/Q+39Wthonq7GrRngKKVlNdtlvSRXADC+uMhHV2MJj2q5krAWHtVCcg==
+  dependencies:
+    "@truffle/hdwallet-provider" "^1.4.0"
+    dotenv "^10.0.0"
+    truffle "^5.1.41"
+    truffle-flattener "^1.4.4"
+    truffle-hdwallet-provider "^1.0.17"
+
+"@partyswap-libs/party-swap-periphery@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-periphery/-/party-swap-periphery-1.1.2.tgz#a17e6df97b43d212d1452836dbd30a76ebd3b990"
+  integrity sha512-HD06Iqd8LOwoMt8tXpOZkwtSmtCtuKfEuW30PeIa7a4I83HohD4hOFo/KQeFVlXS938QRA1hjCli+vn+t6Xsyw==
   dependencies:
     "@partyswap-libs/party-swap-core" "^0.1.0"
     truffle-hdwallet-provider "^1.0.17"
     truffle-plugin-verify "^0.4.0"
 
-"@partyswap-libs/sdk@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.1.tgz#723638ca7eb9d751b3edb9460d5dcb01ac07041d"
-  integrity sha512-54Kj2K71snbEGZLgtp27E+a030IotRycy1QnKRehJaqdiAbLnkW4+uk081V4O/Ujig3scp0G2hD3OteSTAPx6w==
+"@partyswap-libs/sdk@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.2.tgz#b9d70aa20bf123b62db275f91887d6abf5d5e2e2"
+  integrity sha512-VD41Yw0LCqdtBTae09dwJZs4fuKYN4J5/ysi34vOL7bsuk8/3jT5DUKFttx7hj2T+VXJat8C8hSHNfw1j6bsEg==
   dependencies:
     "@partyswap-libs/party-swap-core" "^0.1.0"
     big.js "^5.2.2"

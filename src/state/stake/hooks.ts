@@ -35,7 +35,8 @@ export const STAKING_REWARDS_INFO: {
     stakingRewardAddress: string
   }[][]
 } = {
-  [ChainId.FUJI]: [STAKING_V1, STAKING_V2]
+  [ChainId.FUJI]: [STAKING_V1, STAKING_V2],
+  [ChainId.AVALANCHE]: [STAKING_V1, STAKING_V1] //TODO add staking reward farms
 }
 
 export interface StakingInfo {

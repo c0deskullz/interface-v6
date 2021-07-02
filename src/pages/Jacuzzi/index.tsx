@@ -73,6 +73,9 @@ export default function Jacuzzi() {
 
     const balance = await yay.balanceOf(jacuzzi.address)
     const supply = await jacuzzi.totalSupply()
+    if (supply.toString() === '0') {
+      return setRatio(0)
+    }
     return setRatio(balance.div(supply).toString())
   }, [yay, jacuzzi])
 
@@ -106,7 +109,12 @@ export default function Jacuzzi() {
     const jacuzziBalance = await jacuzzi.balanceOf(account)
     const totalSupply = await jacuzzi.totalSupply()
     const yayJacuzziBalance = await yay.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    const stakedYAY = jacuzziBalance.mul(totalSupply).div(yayJacuzziBalance)
+    let stakedYAY
+    if (yayJacuzziBalance.toString() === '0') {
+      stakedYAY = JSBI.BigInt(0)
+    } else {
+      stakedYAY = jacuzziBalance.mul(totalSupply).div(yayJacuzziBalance)
+    }
     setUserYAYBalance(+userBalance.toString() / YAY_DECIMALS_DIVISOR)
     setUserXYAYStake(+jacuzziBalance.toString() / YAY_DECIMALS_DIVISOR)
     setUserYAYStake(+stakedYAY.toString() / YAY_DECIMALS_DIVISOR)

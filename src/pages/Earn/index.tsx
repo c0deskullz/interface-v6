@@ -62,7 +62,7 @@ export default function Earn({
           }
         })
         .map(stakingInfo => {
-          return fetch(`${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}`)
+          return fetch(`${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}/${chainId}`)
             .then(res => res.text())
             .then(res => ({ apr: res, ...stakingInfo }))
         })

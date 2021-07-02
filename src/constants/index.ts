@@ -5,13 +5,8 @@ import { injected } from '../connectors'
 
 export const GAS_PRICE = 225
 
-// export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
-//   [ChainId.FUJI]: '0x2D99ABD9008Dc933ff5c0CD271B88309593aB921',
-//   [ChainId.AVALANCHE]: '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106'
-// }
-
 export const ROUTER_ADDRESS = {
-  [ChainId.AVALANCHE]: '0xb0efe42a4C70105aBBCB1cEBDd737BD03f51496D',
+  [ChainId.AVALANCHE]: '0xBD2dc038863a9B4E404c29173E77e7f31d75e5b9',
   [ChainId.FUJI]: '0xDf822413C6C87962D85017c0Df4d8ff422f1bfEC'
 }
 
@@ -148,7 +143,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: '0xD64E7CDfB8F8495FA2Ccb209Ae58eAaca2f96432',
-  [ChainId.AVALANCHE]: ZERO_ADDRESS
+  [ChainId.AVALANCHE]: '0xf01b624847916f2cbee7536fdf0c521789523416'
 }
 
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
@@ -164,7 +159,8 @@ const WAVAX_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WAVAX_ONLY,
-  [ChainId.FUJI]: [...WAVAX_ONLY[ChainId.FUJI]]
+  [ChainId.FUJI]: [...WAVAX_ONLY[ChainId.FUJI]],
+  [ChainId.AVALANCHE]: [...WAVAX_ONLY[ChainId.AVALANCHE]]
 }
 
 /**
@@ -172,23 +168,27 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * tokens.
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.FUJI]: {}
+  [ChainId.FUJI]: {},
+  [ChainId.AVALANCHE]: {}
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WAVAX_ONLY,
-  [ChainId.FUJI]: [...WAVAX_ONLY[ChainId.FUJI]]
+  [ChainId.FUJI]: [...WAVAX_ONLY[ChainId.FUJI]],
+  [ChainId.AVALANCHE]: [...WAVAX_ONLY[ChainId.AVALANCHE]]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WAVAX_ONLY,
-  [ChainId.FUJI]: [...WAVAX_ONLY[ChainId.FUJI]]
+  [ChainId.FUJI]: [...WAVAX_ONLY[ChainId.FUJI]],
+  [ChainId.AVALANCHE]: [...WAVAX_ONLY[ChainId.AVALANCHE]]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.AVALANCHE]: []
+  [ChainId.AVALANCHE]: [],
+  [ChainId.FUJI]: []
 }
 
 export interface WalletInfo {
@@ -225,28 +225,29 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const NetworkContextName = 'NETWORK'
 
-// export const AVALANCHE_CHAIN_PARAMS = {
-//   chainId: '0xa86a', // A 0x-prefixed hexadecimal chainId
-//   chainName: 'Avalanche Mainnet C-Chain',
-//   nativeCurrency: {
-//     name: 'Avalanche',
-//     symbol: 'AVAX',
-//     decimals: 18
-//   },
-//   rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-//   blockExplorerUrls: ['https://cchain.explorer.avax.network/']
-// }
-
-export const AVALANCHE_CHAIN_PARAMS = {
-  chainId: '0xa869', // A 0x-prefixed hexadecimal chainId
-  chainName: 'Avalanche Fuji C-Chain',
-  nativeCurrency: {
-    name: 'Avalanche',
-    symbol: 'AVAX',
-    decimals: 18
+export const AVALANCHE_CHAIN_PARAMS: { [chainId in ChainId]?: any } = {
+  [ChainId.FUJI]: {
+    chainId: '0xa869', // A 0x-prefixed hexadecimal chainId
+    chainName: 'Avalanche Fuji C-Chain',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18
+    },
+    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://cchain.explorer.avax-test.network/']
   },
-  rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-  blockExplorerUrls: ['https://cchain.explorer.avax-test.network/']
+  [ChainId.AVALANCHE]: {
+    chainId: '0xa86a', // A 0x-prefixed hexadecimal chainId
+    chainName: 'Avalanche Mainnet C-Chain',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://cchain.explorer.avax.network/']
+  }
 }
 
 // default allowed slippage, in bips

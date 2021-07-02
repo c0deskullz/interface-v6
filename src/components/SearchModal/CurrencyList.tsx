@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, CAVAX, Token } from '@partyswap-libs/sdk'
+import { Currency, CurrencyAmount, currencyEquals, CAVAX, Token, ChainId } from '@partyswap-libs/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -16,6 +16,7 @@ import { MouseoverTooltip } from '../Tooltip'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
+import { YAY } from '../../constants'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CAVAX ? 'AVAX' : ''
@@ -171,7 +172,12 @@ export default function CurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.CAVAX, ...currencies] : currencies), [currencies, showETH])
+  const { chainId } = useActiveWeb3React()
+
+  const itemData = useMemo(
+    () => (showETH ? [Currency.CAVAX, YAY[chainId || ChainId.AVALANCHE], ...currencies] : currencies),
+    [currencies, showETH]
+  )
 
   const Row = useCallback(
     ({ data, index, style }) => {
