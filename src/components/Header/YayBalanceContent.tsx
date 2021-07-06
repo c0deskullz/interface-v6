@@ -50,7 +50,7 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
   const totalSupply: TokenAmount | undefined = useTotalSupply(png)
 
   // Determine YAY price in AVAX
-  const wavax = WAVAX[chainId ? chainId : 43114]
+  const wavax = WAVAX[chainId ? chainId : ChainId.AVALANCHE]
   const [, avaxPngTokenPair] = usePair(wavax, png)
   const oneToken = JSBI.BigInt(1000000000000000000)
   let pngPrice: Number | undefined
@@ -65,7 +65,7 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
   const blockTimestamp = useCurrentBlockTimestamp()
   const circulation: TokenAmount | undefined = useMemo(
     () =>
-      blockTimestamp && png && chainId === ChainId.FUJI ? computePngCirculation(png, blockTimestamp) : totalSupply,
+      blockTimestamp && png && chainId === ChainId.AVALANCHE ? computePngCirculation(png, blockTimestamp) : totalSupply,
     [blockTimestamp, chainId, totalSupply, png]
   )
 

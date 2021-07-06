@@ -97,7 +97,7 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
 // account is optional
 export function getRouterContract(chainId: ChainId, library: Web3Provider, account?: string): Contract {
   return getContract(
-    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.FUJI],
+    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.AVALANCHE],
     IPartyRouterABI,
     library,
     account
