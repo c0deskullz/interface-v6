@@ -9,6 +9,8 @@ import { useJacuzziContract, useYayContract } from '../../hooks/useContract'
 import { ButtonPrimary } from '../../components/Button'
 import JacuzziStakingModal from '../../components/jacuzzi/JacuzziStakingModal'
 import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
+import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
+import { newTransactionsFirst } from '../../components/Web3Status'
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,6 +38,17 @@ export default function Jacuzzi() {
   const [jacuzziYAYStake, setJacuzziYAYStake] = useState(0)
   const [stakeModalOpen, setStakeModalOpen] = useState(false)
   const [unstakeModalOpen, setUnstakeModalOpen] = useState(false)
+
+  const allTransactions = useAllTransactions()
+
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const confirmed = useMemo(() => sortedRecentTransactions.filter((tx: any) => tx.receipt).map((tx: any) => tx.hash), [
+    sortedRecentTransactions
+  ])
 
   const parsedMaxAmount = new TokenAmount(
     YAY[chainId ? chainId : ChainId.FUJI],
@@ -144,7 +157,7 @@ export default function Jacuzzi() {
     getPenalty()
     getUserBalances()
     getContractBalances()
-  }, [getRatio, getPenalty, getUserBalances, getContractBalances])
+  }, [getRatio, getPenalty, getUserBalances, getContractBalances, confirmed])
 
   useEffect(() => {
     if (approval === ApprovalState.PENDING) {

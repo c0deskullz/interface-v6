@@ -37,6 +37,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   const handleStake = async () => {
     if (jacuzzi && typedValue) {
       const txReceipt = await jacuzzi.enter(typedValue * YAY_DECIMALS_DIVISOR)
+
       addTransaction(txReceipt, { summary: `Stake ${typedValue} YAY to Jacuzzi` })
       onDismiss()
     }

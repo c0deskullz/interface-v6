@@ -31,7 +31,6 @@ export const YAY: { [chainId in ChainId]: Token } = {
     10,
     'PUPU',
     'PUPU Token'
-    
   )
 }
 
@@ -150,7 +149,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xD64E7CDfB8F8495FA2Ccb209Ae58eAaca2f96432',
+  [ChainId.FUJI]: '0x0B6d386887257dad237a06332A0121cD2F7b2b05',
   // [ChainId.AVALANCHE]: '0xf01b624847916f2cbee7536fdf0c521789523416',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }
