@@ -2,7 +2,7 @@ import { ChainId, JSBI, TokenAmount } from '@partyswap-libs/sdk'
 import { ethers } from 'ethers'
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { JACUZZI_ADDRESS, YAY, YAY_DECIMALS_DIVISOR } from '../../constants'
+import { JACUZZI_ADDRESS, toFixedTwo, YAY, YAY_DECIMALS_DIVISOR } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useJacuzziContract, useYayContract } from '../../hooks/useContract'
@@ -89,7 +89,10 @@ export default function Jacuzzi() {
     if (supply.toString() === '0') {
       return setRatio(0)
     }
-    return setRatio(balance.div(supply).toString())
+
+    const _ratio = balance.toString() / supply.toString()
+
+    return setRatio(+_ratio.toFixed(3))
   }, [yay, jacuzzi])
 
   const getPenalty = useCallback(async () => {
@@ -126,11 +129,11 @@ export default function Jacuzzi() {
     if (yayJacuzziBalance.toString() === '0') {
       stakedYAY = JSBI.BigInt(0)
     } else {
-      stakedYAY = jacuzziBalance.mul(totalSupply).div(yayJacuzziBalance)
+      stakedYAY = jacuzziBalance.mul(yayJacuzziBalance).div(totalSupply)
     }
-    setUserYAYBalance(+userBalance.toString() / YAY_DECIMALS_DIVISOR)
-    setUserXYAYStake(+jacuzziBalance.toString() / YAY_DECIMALS_DIVISOR)
-    setUserYAYStake(+stakedYAY.toString() / YAY_DECIMALS_DIVISOR)
+    setUserYAYBalance(toFixedTwo(userBalance.toString()))
+    setUserXYAYStake(toFixedTwo(jacuzziBalance.toString()))
+    setUserYAYStake(toFixedTwo(stakedYAY.toString()))
   }, [jacuzzi, yay, account, chainId])
 
   const getContractBalances = useCallback(async () => {
@@ -141,8 +144,8 @@ export default function Jacuzzi() {
 
     const totalSupply = await jacuzzi.totalSupply()
     const yayJacuzziBalance = await yay.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    setJacuzziXYAYStake(+totalSupply.toString() / YAY_DECIMALS_DIVISOR)
-    setJacuzziYAYStake(+yayJacuzziBalance.toString() / YAY_DECIMALS_DIVISOR)
+    setJacuzziXYAYStake(toFixedTwo(totalSupply.toString()))
+    setJacuzziYAYStake(toFixedTwo(yayJacuzziBalance.toString()))
   }, [jacuzzi, yay, chainId])
 
   const handleStake = async () => {
@@ -179,7 +182,7 @@ export default function Jacuzzi() {
       </div>
       <div>xYAY to YAY: {ratio}</div>
       <div>
-        Paper hands penalty: {earlyLeavePenalty}% right now ({earlyLeavePenaltyAfterUnlockDate}% after {unlockDate})
+        Paper hands penalty: {earlyLeavePenaltyAfterUnlockDate}% right now ({earlyLeavePenalty}% after {unlockDate})
       </div>
       <div>
         Your Stake:

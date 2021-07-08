@@ -281,3 +281,5 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000))
 export const YAY_DECIMALS_DIVISOR = 10000000000
+
+export const toFixedTwo = (value: any): number => +(value / YAY_DECIMALS_DIVISOR).toFixed(2)
