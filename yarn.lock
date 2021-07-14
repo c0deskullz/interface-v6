@@ -3356,10 +3356,10 @@
     truffle-hdwallet-provider "^1.0.17"
     truffle-plugin-verify "^0.4.0"
 
-"@partyswap-libs/sdk@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.2.tgz#b9d70aa20bf123b62db275f91887d6abf5d5e2e2"
-  integrity sha512-VD41Yw0LCqdtBTae09dwJZs4fuKYN4J5/ysi34vOL7bsuk8/3jT5DUKFttx7hj2T+VXJat8C8hSHNfw1j6bsEg==
+"@partyswap-libs/sdk@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.3.tgz#9e85293331a276e472c9d784b88a412fa7ec0626"
+  integrity sha512-G8kSRMc9Sw2FT0xbclLLna5w/z956k9aokIi/DTDMeToeVoc2ZtzixzokxxlyHoX0NED+thSyQfvlugjVgjCLQ==
   dependencies:
     "@partyswap-libs/party-swap-core" "^0.1.0"
     big.js "^5.2.2"

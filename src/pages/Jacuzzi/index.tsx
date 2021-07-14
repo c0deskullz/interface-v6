@@ -59,8 +59,8 @@ export default function Jacuzzi() {
     JSBI.BigInt(userYAYBalance * YAY_DECIMALS_DIVISOR)
   )
 
-  const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.AVALANCHE])
-  const [approval] = useApproveCallback(parsedCurrentBalance, JACUZZI_ADDRESS[chainId ? chainId : ChainId.AVALANCHE])
+  const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
+  const [approval] = useApproveCallback(parsedCurrentBalance, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
 
   const jacuzzi = useJacuzziContract()
   const yay = useYayContract()

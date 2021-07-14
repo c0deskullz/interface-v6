@@ -284,7 +284,7 @@ export default function WalletModal({
       provider
         .request({
           method: 'wallet_addEthereumChain',
-          params: [AVALANCHE_CHAIN_PARAMS[(chainId as ChainId) || ChainId.AVALANCHE]]
+          params: [AVALANCHE_CHAIN_PARAMS[(chainId as ChainId) || ChainId.FUJI]]
         })
         .catch((error: any) => {
           console.log(error)

@@ -23,7 +23,7 @@ type ChainTokenList = {
 }
 
 export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x3d3D4D81D4D702e791480cD782C55B19A506b849', 10, 'YAY', 'YAY'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xcb2367B0eaf443d46bFa48e2Ae9B5388CB4A3dC5', 10, 'YAY', 'YAY'),
   // [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x10b3A2445f29F838ed8D9d61a82205A0436B7F75', 10, 'YAY', 'YAY'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
@@ -149,7 +149,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0x0B6d386887257dad237a06332A0121cD2F7b2b05',
+  [ChainId.FUJI]: '0xD711c58A3342C001372e76aA928Ec1999214dec7',
   // [ChainId.AVALANCHE]: '0xf01b624847916f2cbee7536fdf0c521789523416',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }
