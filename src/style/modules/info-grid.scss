@@ -1,0 +1,23 @@
+/* Info Grid
+------------------------------------------------------------- */
+.infoGrid {
+  position: relative;
+  z-index: 10;
+  margin-top: -3rem;
+}
+.infoGrid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  @include module-container();
+}
+.infoGrid-item {
+  background-color: #fff;
+  min-height: 390px;
+  border-radius: 1.25rem;
+  box-shadow: 0 3px 20px rgba($color: #000000, $alpha: 0.15);
+  padding: 2rem;
+}
+.infoGrid-item:nth-child(3) {
+  grid-column: span 2;
+}
