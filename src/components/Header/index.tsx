@@ -283,6 +283,9 @@ export default function Header() {
           </PngIcon>
         </Title>
         <HeaderLinks>
+          <StyledNavLink id={`home-nav-link`} to={'/home'}>
+            Home
+          </StyledNavLink>
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('swap')}
           </StyledNavLink>
