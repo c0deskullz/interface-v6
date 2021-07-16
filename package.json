@@ -125,6 +125,7 @@
     "@partyswap-libs/party-governance": "1.0.3",
     "@partyswap-libs/party-swap-core": "^0.1.1",
     "@partyswap-libs/party-swap-periphery": "^1.1.2",
-    "@partyswap-libs/sdk": "1.0.2"
+    "@partyswap-libs/sdk": "1.0.2",
+    "sass": "^1.35.2"
   }
 }
