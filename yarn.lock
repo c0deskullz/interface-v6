@@ -3336,10 +3336,10 @@
     truffle-flattener "^1.4.4"
     truffle-hdwallet-provider "^1.0.17"
 
-"@partyswap-libs/party-swap-core@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-core/-/party-swap-core-0.1.1.tgz#55fc08b827f672f2189d10b28e9305bda74d5d78"
-  integrity sha512-k0DlpnqLnB9cE+dZrylRHAmQTma7gJM/Q+39Wthonq7GrRngKKVlNdtlvSRXADC+uMhHV2MJj2q5krAWHtVCcg==
+"@partyswap-libs/party-swap-core@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-core/-/party-swap-core-0.1.2.tgz#3b6daa985e601ed503a59e78dce3a10a3bbffac1"
+  integrity sha512-nyaGO/BTcVw2OpSUXzjH/XuSb+7rB0MWptN5M5vuuJIszJaukStQVR8j2r76r17Jgmenpj1mLpKm2QA+iG5Nxg==
   dependencies:
     "@truffle/hdwallet-provider" "^1.4.0"
     dotenv "^10.0.0"
@@ -3347,21 +3347,21 @@
     truffle-flattener "^1.4.4"
     truffle-hdwallet-provider "^1.0.17"
 
-"@partyswap-libs/party-swap-periphery@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-periphery/-/party-swap-periphery-1.1.2.tgz#a17e6df97b43d212d1452836dbd30a76ebd3b990"
-  integrity sha512-HD06Iqd8LOwoMt8tXpOZkwtSmtCtuKfEuW30PeIa7a4I83HohD4hOFo/KQeFVlXS938QRA1hjCli+vn+t6Xsyw==
+"@partyswap-libs/party-swap-periphery@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/party-swap-periphery/-/party-swap-periphery-1.1.3.tgz#6af43368eea2833f673c8ad8932c60d87bf4ef88"
+  integrity sha512-Bv5LSg4GhtXYjs3BVjdmkrzZc68vpMD5kBnUXbUUi9aX7youwI0iVjIZGR3+jqh5zOu0uHHD4VcIjlbaWJvO4g==
   dependencies:
-    "@partyswap-libs/party-swap-core" "^0.1.0"
+    "@partyswap-libs/party-swap-core" "^0.1.2"
     truffle-hdwallet-provider "^1.0.17"
     truffle-plugin-verify "^0.4.0"
 
-"@partyswap-libs/sdk@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.3.tgz#9e85293331a276e472c9d784b88a412fa7ec0626"
-  integrity sha512-G8kSRMc9Sw2FT0xbclLLna5w/z956k9aokIi/DTDMeToeVoc2ZtzixzokxxlyHoX0NED+thSyQfvlugjVgjCLQ==
+"@partyswap-libs/sdk@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.5.tgz#01f6d7d304535bafb357889af8793840095f65fa"
+  integrity sha512-Tj1/kuHHtg0c4qw1uEMls6x54n1pWypgXOof5qmPufFs5Wf6PL70Gv8go/Oa55wd7lNMWPagvC/EIR+kf85Ncg==
   dependencies:
-    "@partyswap-libs/party-swap-core" "^0.1.0"
+    "@partyswap-libs/party-swap-core" "^0.1.2"
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
     jsbi "^3.1.1"

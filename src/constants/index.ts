@@ -6,7 +6,7 @@ import { injected } from '../connectors'
 export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
-  [ChainId.AVALANCHE]: '0xBD2dc038863a9B4E404c29173E77e7f31d75e5b9',
+  [ChainId.AVALANCHE]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c',
   [ChainId.FUJI]: '0xDf822413C6C87962D85017c0Df4d8ff422f1bfEC'
 }
 
@@ -23,7 +23,7 @@ type ChainTokenList = {
 }
 
 export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xcb2367B0eaf443d46bFa48e2Ae9B5388CB4A3dC5', 10, 'YAY', 'YAY'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0f2D40e9dcaEe7792665a420feB52E76709dC53A', 10, 'YAY', 'YAY'),
   // [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x10b3A2445f29F838ed8D9d61a82205A0436B7F75', 10, 'YAY', 'YAY'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
