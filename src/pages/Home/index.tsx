@@ -4,7 +4,11 @@ import bonnie from '../../assets/svg/home-hero-bonnie.svg'
 import trent from '../../assets/svg/home-hero-trent.svg'
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 100vw;
+  margin-top: -2rem;
+  @media (min-width: 720px) {
+    margin-top: -100px;
+  }
 `
 
 export default function Home() {
