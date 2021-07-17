@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import bonnie from '../../assets/svg/home-hero-bonnie.svg'
 import trent from '../../assets/svg/home-hero-trent.svg'
+import iconFarms from '../../assets/images/grid-item-header-farms-staking.png'
+import iconStats from '../../assets/images/grid-item-header-stats.png'
 import bannerBackground from '../../assets/svg/home-banner-background.svg'
 import bannerPipo from '../../assets/svg/home-banner-pipo.svg'
 import BannerPiñata1 from '../../assets/svg/home-banner-piñata-1.svg'
@@ -27,9 +29,6 @@ export default function Home() {
             <a href="#" className="btn hero-btn">
               Unlock Wallet
             </a>
-            {/* <a href="#" className="btn btn-secondary">
-            Unlock Wallet
-          </a> */}
           </div>
         </div>
         <img src={bonnie} alt="Bonnie" className="hero-img hero-img-bonnie" />
@@ -38,8 +37,57 @@ export default function Home() {
 
       <div className="grid">
         <div className="grid-container">
-          <div className="grid-item"></div>
-          <div className="grid-item"></div>
+          <div className="grid-item">
+            <div className="grid-item-header">
+              <img src={iconFarms} alt="Farms & Staking icon" />
+              <div>
+                <h4>Farms & Staking</h4>
+                <p>Your gains since the party started.</p>
+              </div>
+            </div>
+            <div className="grid-item-farms">
+              <div>
+                <p>YAY to Claim</p>
+                <p>0.000</p>
+                <small>~$.000</small>
+              </div>
+              <div>
+                <p>YAY in Wallet</p>
+                <p>0.000</p>
+                <small>~$.000</small>
+              </div>
+            </div>
+            <p>
+              <a href="#" className="btn">
+                Claim All
+              </a>
+            </p>
+          </div>
+          <div className="grid-item">
+            <div className="grid-item-header">
+              <img src={iconStats} alt="Stats and analytics icon" />
+              <div>
+                <h4>Party Stats</h4>
+                <p>Party Analytics in a nutshell.</p>
+              </div>
+            </div>
+            <div className="grid-item-stats">
+              <p>
+                Total YAY Supply <span>13,050,695 YAY</span>
+              </p>
+              <p>
+                Total YAY Supply <span>13,050,695 YAY</span>
+              </p>
+              <p>
+                Total YAY Supply <span>13,050,695 YAY</span>
+              </p>
+            </div>
+            <p>
+              <a href="#" className="btn">
+                Check Analytics
+              </a>
+            </p>
+          </div>
           <div className="grid-item grid-banner">
             <div className="grid-banner-content">
               <p className="smallText">Stake and earn</p>
