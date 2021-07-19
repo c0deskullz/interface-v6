@@ -6,8 +6,8 @@ import { injected } from '../connectors'
 export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
-  [ChainId.AVALANCHE]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c',
-  [ChainId.FUJI]: '0xDf822413C6C87962D85017c0Df4d8ff422f1bfEC'
+  [ChainId.AVALANCHE]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c', //redeploy this
+  [ChainId.FUJI]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c'
 }
 
 export const LANDING_PAGE = 'https://pangolin.exchange/'
@@ -23,7 +23,7 @@ type ChainTokenList = {
 }
 
 export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0f2D40e9dcaEe7792665a420feB52E76709dC53A', 10, 'YAY', 'YAY'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0f2D40e9dcaEe7792665a420feB52E76709dC53A', 10, 'PUPU', 'PUPU Token'),
   // [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x10b3A2445f29F838ed8D9d61a82205A0436B7F75', 10, 'YAY', 'YAY'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
@@ -149,7 +149,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xD711c58A3342C001372e76aA928Ec1999214dec7',
+  [ChainId.FUJI]: '0x2360E39914Bec0bc6D9481444338BE8e969c0100',
   // [ChainId.AVALANCHE]: '0xf01b624847916f2cbee7536fdf0c521789523416',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }

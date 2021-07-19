@@ -13,29 +13,35 @@ export const STAKING_V1: {
 }[] = []
 
 export const STAKING_V2: {
-  tokens: [Token, Token]
-  stakingRewardAddress: string
-}[] = [
-  {
-    tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
-    stakingRewardAddress: '0xfA37B3Be28c76f234E12C691c44381A6d027FD33'
-  },
-  {
-    tokens: [
-      WAVAX[ChainId.FUJI],
-      new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
-    ],
-    stakingRewardAddress: '0xD33415824827F4d0036E90DAA354c0A3519B6b15'
-  }
-  // {
-  //   tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
-  //   stakingRewardAddress: '0x6c272EE99E8e7FbCFA59c781E82E9d64a63b9004'
-  // },
-  // {
-  //   tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-  //   stakingRewardAddress: '0x74F17bB07D4A096Bb24481378f27272F21012370'
-  // }
-]
+         tokens: [Token, Token]
+         stakingRewardAddress: string
+       }[] = [
+         {
+           tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
+           stakingRewardAddress: '0x079715efAA2dE3e35Ff3A8Fa2D020035d4af567C'
+         },
+         {
+           tokens: [
+             WAVAX[ChainId.FUJI],
+             new Token(
+               ChainId.FUJI,
+               '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22',
+               18,
+               'FUJISTABLE',
+               'The Fuji stablecoin'
+             )
+           ],
+           stakingRewardAddress: '0x52737B9876eEe80A57AE7Ed13aE61CE2Ee264a5E'
+         }
+         // {
+         //   tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
+         //   stakingRewardAddress: '0x6c272EE99E8e7FbCFA59c781E82E9d64a63b9004'
+         // },
+         // {
+         //   tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+         //   stakingRewardAddress: '0x74F17bB07D4A096Bb24481378f27272F21012370'
+         // }
+       ]
 
 export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: {
@@ -277,7 +283,6 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
         })
       }
 
-      console.log('memo: ', memo)
       return memo
     }, [])
   }, [
