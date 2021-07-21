@@ -98,6 +98,9 @@
   }
 }
 @media (min-width: 1200px) {
+  .grid-container {
+    gap: 2rem;
+  }
   .grid-banner-1,
   .grid-banner-2,
   .grid-banner-3,

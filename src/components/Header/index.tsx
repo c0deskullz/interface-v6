@@ -37,7 +37,8 @@ const HeaderFrame = styled.div`
   width: 100%;
   top: 0;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #4003b6;
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
   padding: 1rem;
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -129,8 +130,8 @@ const PNGAmount = styled(AccountElement)`
   padding: 4px 8px;
   height: 36px;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.bg3};
-  background: radial-gradient(174.47% 188.91% at 1.84% 0%, #f97316 0%, #e84142 100%), #edeef2;
+  background-color: ${({ theme }) => theme.primary1};
+  /* background: radial-gradient(174.47% 188.91% at 1.84% 0%, #f97316 0%, #e84142 100%), #edeef2; */
 `
 
 const PNGWrapper = styled.span`
@@ -184,12 +185,12 @@ const Title = styled.a`
   }
 `
 
-const PngIcon = styled.div`
-  transition: transform 0.3s ease;
-  :hover {
-    transform: rotate(-5deg);
-  }
-`
+// const PngIcon = styled.div`
+//   transition: transform 0.3s ease;
+//   :hover {
+//     transform: rotate(-5deg);
+//   }
+// `
 
 const activeClassName = 'ACTIVE'
 
@@ -202,7 +203,7 @@ const StyledNavLink = styled(NavLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.text2};
+  color: ${({ theme }) => theme.white};
   font-size: 1rem;
   width: fit-content;
   margin: 0 12px;
@@ -210,13 +211,14 @@ const StyledNavLink = styled(NavLink).attrs({
 
   &.${activeClassName} {
     border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
+    font-weight: 700;
+    color: ${({ theme }) => theme.white};
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
+    color: ${({ theme }) => darken(0.1, theme.white)};
+    text-decoration: none;
   }
 `
 
@@ -278,9 +280,7 @@ export default function Header() {
       </Modal>
       <HeaderRow>
         <Title href=".">
-          <PngIcon>
-            <img width={'24px'} src={isDark ? LogoDark : Logo} alt="logo" />
-          </PngIcon>
+          <img width={'100%'} src={isDark ? LogoDark : Logo} alt="logo" />
         </Title>
         <HeaderLinks>
           <StyledNavLink id={`home-nav-link`} to={'/home'}>
