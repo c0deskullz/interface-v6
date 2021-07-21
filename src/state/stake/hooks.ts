@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@partyswap-libs/sdk'
 import { useMemo } from 'react'
-import { USDT, YAY } from '../../constants'
+import { YAY } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -13,29 +13,35 @@ export const STAKING_V1: {
 }[] = []
 
 export const STAKING_V2: {
-  tokens: [Token, Token]
-  stakingRewardAddress: string
-}[] = [
-  // {
-  //   tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
-  //   stakingRewardAddress: '0xc61671209d163B464291F3c57014029799888a06'
-  // },
-  // {
-  //   tokens: [
-  //     WAVAX[ChainId.FUJI],
-  //     new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
-  //   ],
-  //   stakingRewardAddress: '0xAa8e8F1be806ac186709e1d38B073C262246AeC0'
-  // }
-  {
-    tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x6c272EE99E8e7FbCFA59c781E82E9d64a63b9004'
-  },
-  {
-    tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x74F17bB07D4A096Bb24481378f27272F21012370'
-  }
-]
+         tokens: [Token, Token]
+         stakingRewardAddress: string
+       }[] = [
+         {
+           tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
+           stakingRewardAddress: '0x079715efAA2dE3e35Ff3A8Fa2D020035d4af567C'
+         },
+         {
+           tokens: [
+             WAVAX[ChainId.FUJI],
+             new Token(
+               ChainId.FUJI,
+               '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22',
+               18,
+               'FUJISTABLE',
+               'The Fuji stablecoin'
+             )
+           ],
+           stakingRewardAddress: '0x52737B9876eEe80A57AE7Ed13aE61CE2Ee264a5E'
+         }
+         // {
+         //   tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
+         //   stakingRewardAddress: '0x6c272EE99E8e7FbCFA59c781E82E9d64a63b9004'
+         // },
+         // {
+         //   tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+         //   stakingRewardAddress: '0x74F17bB07D4A096Bb24481378f27272F21012370'
+         // }
+       ]
 
 export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: {
@@ -43,7 +49,7 @@ export const STAKING_REWARDS_INFO: {
     stakingRewardAddress: string
   }[][]
 } = {
-  [ChainId.FUJI]: [STAKING_V1, STAKING_V1],
+  [ChainId.FUJI]: [STAKING_V1, STAKING_V2],
   [ChainId.AVALANCHE]: [STAKING_V1, STAKING_V2] //TODO add staking reward farms
 }
 
@@ -83,7 +89,7 @@ const calculateTotalStakedAmountInAvaxFromYay = function(
   totalStakedAmount: TokenAmount
 ): TokenAmount {
   if (JSBI.EQ(totalSupply, JSBI.BigInt(0))) {
-    return new TokenAmount(WAVAX[ChainId.AVALANCHE], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[ChainId.FUJI], JSBI.BigInt(0))
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxYayRatio = JSBI.divide(JSBI.multiply(oneToken, avaxYayPairReserveOfOtherToken), avaxYayPairReserveOfYay)
@@ -91,7 +97,7 @@ const calculateTotalStakedAmountInAvaxFromYay = function(
   const valueOfYayInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfYay, avaxYayRatio), oneToken)
 
   return new TokenAmount(
-    WAVAX[ChainId.AVALANCHE],
+    WAVAX[ChainId.FUJI],
     JSBI.divide(
       JSBI.multiply(
         JSBI.multiply(totalStakedAmount.raw, valueOfYayInAvax),
@@ -110,7 +116,7 @@ const calculteTotalStakedAmountInAvax = function(
   if (JSBI.GT(totalSupply, 0)) {
     // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
     return new TokenAmount(
-      WAVAX[ChainId.AVALANCHE],
+      WAVAX[ChainId.FUJI],
       JSBI.divide(
         JSBI.multiply(
           JSBI.multiply(totalStakedAmount.raw, reserveInWavax),
@@ -120,7 +126,7 @@ const calculteTotalStakedAmountInAvax = function(
       )
     )
   } else {
-    return new TokenAmount(WAVAX[ChainId.AVALANCHE], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[ChainId.FUJI], JSBI.BigInt(0))
   }
 }
 
@@ -131,7 +137,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
   const info = useMemo(
     () =>
       chainId
-        ? STAKING_REWARDS_INFO[chainId || ChainId.AVALANCHE]?.[version]?.filter(stakingRewardInfo =>
+        ? STAKING_REWARDS_INFO[chainId || ChainId.FUJI]?.[version]?.filter(stakingRewardInfo =>
             pairToFilterBy === undefined
               ? true
               : pairToFilterBy === null
@@ -143,19 +149,25 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     [chainId, pairToFilterBy, version]
   )
 
-  const yay = YAY[ChainId.AVALANCHE]
+  // console.log('info: ', info)
+
+  const yay = YAY[ChainId.FUJI]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
+
+  // console.log('reward addresses: ', rewardsAddresses)
 
   const accountArg = useMemo(() => [account ?? undefined], [account])
 
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => info.map(({ tokens }) => tokens), [info])
+  // console.log('tokens: ', tokens)
   const balances = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'balanceOf', accountArg)
   const earnedAmounts = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'earned', accountArg)
   const totalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'totalSupply')
   const pairs = usePairs(tokens)
-  const [avaxYayPairState, avaxYayPair] = usePair(WAVAX[ChainId.AVALANCHE], yay)
+  // console.log('pairs: ', pairs)
+  const [avaxYayPairState, avaxYayPair] = usePair(WAVAX[ChainId.FUJI], yay)
 
   // tokens per second, constants
   const rewardRates = useMultipleContractSingleData(
@@ -187,6 +199,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
       const periodFinishState = periodFinishes[index]
       const [pairState, pair] = pairs[index]
 
+      // console.log('pair', pair, 'avaxYayPair', avaxYayPair)
       if (
         // these may be undefined if not logged in
         !balanceState?.loading &&
@@ -269,6 +282,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
           getHypotheticalRewardRate
         })
       }
+
       return memo
     }, [])
   }, [

@@ -7,8 +7,9 @@ import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
 import { useJacuzziContract, useYayContract } from '../../../hooks/useContract'
-import { YAY_DECIMALS_DIVISOR } from '../../../constants'
+import { toFixedTwo, YAY_DECIMALS_DIVISOR } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { ethers } from 'ethers'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -36,7 +37,9 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
 
   const handleStake = async () => {
     if (jacuzzi && typedValue) {
-      const txReceipt = await jacuzzi.enter(typedValue * YAY_DECIMALS_DIVISOR)
+      const _typedValue = ethers.BigNumber.from((typedValue * YAY_DECIMALS_DIVISOR).toString())
+      const txReceipt = await jacuzzi.enter(_typedValue)
+
       addTransaction(txReceipt, { summary: `Stake ${typedValue} YAY to Jacuzzi` })
       onDismiss()
     }
@@ -48,7 +51,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
     }
 
     const userBalance = await yay.balanceOf(account)
-    setBalance(+userBalance.toString() / YAY_DECIMALS_DIVISOR)
+    setBalance(toFixedTwo(userBalance.toString()))
   }, [chainId, account, yay])
 
   useEffect(() => {

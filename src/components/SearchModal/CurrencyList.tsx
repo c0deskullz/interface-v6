@@ -175,7 +175,7 @@ export default function CurrencyList({
   const { chainId } = useActiveWeb3React()
 
   const itemData = useMemo(
-    () => (showETH ? [Currency.CAVAX, YAY[chainId || ChainId.AVALANCHE], ...currencies] : currencies),
+    () => (showETH ? [Currency.CAVAX, YAY[chainId || ChainId.FUJI], ...currencies] : currencies),
     [currencies, showETH]
   )
 

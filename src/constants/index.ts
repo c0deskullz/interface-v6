@@ -6,8 +6,8 @@ import { injected } from '../connectors'
 export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
-  [ChainId.AVALANCHE]: '0xBD2dc038863a9B4E404c29173E77e7f31d75e5b9',
-  [ChainId.FUJI]: '0xDf822413C6C87962D85017c0Df4d8ff422f1bfEC'
+  [ChainId.AVALANCHE]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c', //redeploy this
+  [ChainId.FUJI]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c'
 }
 
 export const LANDING_PAGE = 'https://pangolin.exchange/'
@@ -23,7 +23,7 @@ type ChainTokenList = {
 }
 
 export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x3d3D4D81D4D702e791480cD782C55B19A506b849', 10, 'YAY', 'YAY'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0f2D40e9dcaEe7792665a420feB52E76709dC53A', 10, 'PUPU', 'PUPU Token'),
   // [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x10b3A2445f29F838ed8D9d61a82205A0436B7F75', 10, 'YAY', 'YAY'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
@@ -31,7 +31,6 @@ export const YAY: { [chainId in ChainId]: Token } = {
     10,
     'PUPU',
     'PUPU Token'
-    
   )
 }
 
@@ -150,7 +149,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xD64E7CDfB8F8495FA2Ccb209Ae58eAaca2f96432',
+  [ChainId.FUJI]: '0x2360E39914Bec0bc6D9481444338BE8e969c0100',
   // [ChainId.AVALANCHE]: '0xf01b624847916f2cbee7536fdf0c521789523416',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }
@@ -282,3 +281,5 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000))
 export const YAY_DECIMALS_DIVISOR = 10000000000
+
+export const toFixedTwo = (value: any): number => +(value / YAY_DECIMALS_DIVISOR).toFixed(2)
