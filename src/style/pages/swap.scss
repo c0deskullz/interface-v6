@@ -1,0 +1,13 @@
+/* Swap
+------------------------------------------------------------- */
+.swap-image {
+  position: absolute;
+}
+.swap-image.left {
+  left: 0;
+  bottom: 0;
+}
+.swap-image.right {
+  right: 0;
+  top: 73px;
+}
