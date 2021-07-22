@@ -9,7 +9,7 @@ import {
   Price,
   TokenAmount
 } from '@partyswap-libs/sdk'
-import { useCallback, useMemo } from 'react'
+import { MutableRefObject, useCallback, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
@@ -50,7 +50,7 @@ export function useDerivedMintInfo(
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
   // error handling
-  let insufficientInput: boolean = false
+  let insufficientInput: MutableRefObject<boolean> = useRef(false)
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(
@@ -128,13 +128,13 @@ export function useDerivedMintInfo(
       wrappedCurrencyAmount(currencyAAmount, chainId),
       wrappedCurrencyAmount(currencyBAmount, chainId)
     ]
-    insufficientInput = false
+    insufficientInput.current = false
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
       try {
         return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
       } catch (err) {
         if (err instanceof InsufficientInputAmountError) {
-          insufficientInput = true
+          insufficientInput.current = true
           return undefined
         } else {
           throw err
@@ -158,7 +158,7 @@ export function useDerivedMintInfo(
     error = 'Connect Wallet'
   }
 
-  if (insufficientInput) {
+  if (insufficientInput.current) {
     error = 'Insufficient input amount'
   }
 

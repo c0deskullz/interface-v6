@@ -259,8 +259,8 @@ export default function Swap() {
 
   return (
     <>
-      <img src={imageLeft} className="swap-image left" />
-      <img src={imageRight} className="swap-image right" />
+      <img alt="" src={imageLeft} className="swap-image left" />
+      <img alt="" src={imageRight} className="swap-image right" />
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}

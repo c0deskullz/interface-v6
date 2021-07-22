@@ -176,7 +176,7 @@ export default function CurrencyList({
 
   const itemData = useMemo(
     () => (showETH ? [Currency.CAVAX, YAY[chainId || ChainId.FUJI], ...currencies] : currencies),
-    [currencies, showETH]
+    [currencies, showETH, chainId]
   )
 
   const Row = useCallback(

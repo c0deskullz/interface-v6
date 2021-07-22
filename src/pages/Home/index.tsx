@@ -26,9 +26,7 @@ export default function Home() {
           <div className="hero-content">
             <p className="smallText">Welcome to the Party</p>
             <h1>The most reliable Avalanche swap yet</h1>
-            <a href="#" className="btn hero-btn">
-              Unlock Wallet
-            </a>
+            <button className="btn hero-btn">Unlock Wallet</button>
           </div>
         </div>
         <img src={bonnie} alt="Bonnie" className="hero-img hero-img-bonnie" />
@@ -58,9 +56,7 @@ export default function Home() {
               </div>
             </div>
             <p>
-              <a href="#" className="btn">
-                Claim All
-              </a>
+              <button className="btn">Claim All</button>
             </p>
           </div>
           <div className="grid-item">
@@ -83,9 +79,7 @@ export default function Home() {
               </p>
             </div>
             <p>
-              <a href="#" className="btn">
-                Check Analytics
-              </a>
+              <button className="btn">Check Analytics</button>
             </p>
           </div>
           <div className="grid-item grid-banner">
