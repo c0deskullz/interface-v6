@@ -44,6 +44,9 @@ import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import useENS from '../../hooks/useENS'
 
+import imageLeft from '../../assets/svg/swap-image-left.svg'
+import imageRight from '../../assets/svg/swap-image-right.svg'
+
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -256,6 +259,8 @@ export default function Swap() {
 
   return (
     <>
+      <img src={imageLeft} className="swap-image left" />
+      <img src={imageRight} className="swap-image right" />
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}

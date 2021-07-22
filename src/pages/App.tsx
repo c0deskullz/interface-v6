@@ -16,6 +16,7 @@ import {
 } from './AddLiquidity/redirects'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
+import Home from './Home'
 import Pool from './Pool'
 import Jacuzzi from './Jacuzzi'
 import PoolFinder from './PoolFinder'
@@ -27,6 +28,8 @@ import Airdrop from './Airdrop'
 
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
+
+import '../style/Main.scss'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -79,6 +82,7 @@ export default function App() {
           <Polling />
           <Web3ReactManager>
             <Switch>
+              <Route exact strict path="/home" component={Home} />
               <Route exact strict path="/swap" component={Swap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />

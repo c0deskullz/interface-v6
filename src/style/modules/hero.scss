@@ -1,0 +1,68 @@
+/* Hero
+------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 500px;
+  width: 100%;
+  background: $gradient-main;
+  @include module();
+}
+.hero-container {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  @include module-container();
+}
+.hero-content {
+  max-width: 540px;
+  @include margin-x();
+}
+.hero-btn {
+  margin-bottom: 0;
+}
+.hero-img {
+  max-width: 45%;
+  position: absolute;
+  bottom: 0;
+}
+.hero-img.hero-img-bonnie {
+  left: 0;
+}
+.hero-img.hero-img-trent {
+  right: 1rem;
+}
+@media (min-width: 650px) {
+  .hero {
+    min-height: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-img {
+    max-width: 30%;
+  }
+}
+@media (min-width: 850px) {
+  .hero {
+    min-height: 400px;
+  }
+}
+@media (min-width: 992px) {
+  .hero {
+    min-height: 500px;
+  }
+}
+@media (min-width: 1200px) {
+  .hero {
+    min-height: unset;
+  }
+  .hero-img {
+    max-width: unset;
+    width: 500px;
+  }
+}
+@media (min-width: 1850px) {
+  .hero-content {
+    max-width: 37.5rem;
+  }
+}

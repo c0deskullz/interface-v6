@@ -59,11 +59,11 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#FF6B00',
-    primary2: darkMode ? '#3680E7' : '#FF6B00',
-    primary3: darkMode ? '#4D8FEA' : '#FF6B00',
-    primary4: darkMode ? '#376bad70' : '#FF6B00',
-    primary5: darkMode ? '#153d6f70' : '#FF6B00',
+    primary1: darkMode ? '#2172E5' : '#690bd6',
+    primary2: darkMode ? '#3680E7' : '#690bd6',
+    primary3: darkMode ? '#4D8FEA' : '#690bd6',
+    primary4: darkMode ? '#376bad70' : '#690bd6',
+    primary5: darkMode ? '#153d6f70' : '#690bd6',
     primary6: darkMode ? '#2172E5' : '#FFFFFF',
 
     // color text
@@ -180,12 +180,12 @@ export const TYPE = {
 
 export const FixedGlobalStyle = createGlobalStyle`
 html, input, textarea, button {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-display: fallback;
 }
 @supports (font-variation-settings: normal) {
   html, input, textarea, button {
-    font-family: 'Inter var', sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
@@ -224,10 +224,10 @@ body {
   min-height: 100vh;
   background-position: 0 -30vh;
   background-repeat: no-repeat;
-  background-image: ${({ theme }) =>
+  /* background-image: ${({ theme }) =>
     `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.85, theme.primary1)} 0%, ${transparentize(
       1,
       theme.bg1
-    )} 100%)`};
+    )} 100%)`}; */
 }
 `
