@@ -103,7 +103,7 @@ const NetworkIcon = styled(Activity)`
 `
 
 // we want the latest one to come first, so return negative if a is after b
-function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+export function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
@@ -111,7 +111,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 function StatusIcon({ connector }: { connector: AbstractConnector }) {
   if (connector === injected) {
     return <Identicon />
-  } 
+  }
   return null
 }
 

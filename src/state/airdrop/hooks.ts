@@ -12,7 +12,7 @@ export function useAirdropIsClaimingAllowed(): boolean {
   const claimingAllowedResult = useSingleCallResult(airdropContract, 'claimingAllowed', [])
   return Boolean(
     !claimingAllowedResult.loading &&
-      claimingAllowedResult.result != undefined &&
+      claimingAllowedResult.result !== undefined &&
       claimingAllowedResult.result[0] === true
   )
 }
@@ -23,7 +23,7 @@ export function useUserHasAvailableClaim(account: string | null | undefined): bo
   return Boolean(
     account &&
       !withdrawAmountResult.loading &&
-      withdrawAmountResult.result != undefined &&
+      withdrawAmountResult.result !== undefined &&
       !JSBI.equal(JSBI.BigInt(withdrawAmountResult.result?.[0]), JSBI.BigInt(0))
   )
 }

@@ -2,13 +2,15 @@ import { ChainId, JSBI, TokenAmount } from '@partyswap-libs/sdk'
 import { ethers } from 'ethers'
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { JACUZZI_ADDRESS, YAY, YAY_DECIMALS_DIVISOR } from '../../constants'
+import { JACUZZI_ADDRESS, toFixedTwo, YAY, YAY_DECIMALS_DIVISOR } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useJacuzziContract, useYayContract } from '../../hooks/useContract'
 import { ButtonPrimary } from '../../components/Button'
 import JacuzziStakingModal from '../../components/jacuzzi/JacuzziStakingModal'
 import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
+import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
+import { newTransactionsFirst } from '../../components/Web3Status'
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,6 +39,17 @@ export default function Jacuzzi() {
   const [stakeModalOpen, setStakeModalOpen] = useState(false)
   const [unstakeModalOpen, setUnstakeModalOpen] = useState(false)
 
+  const allTransactions = useAllTransactions()
+
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const confirmed = useMemo(() => sortedRecentTransactions.filter((tx: any) => tx.receipt).map((tx: any) => tx.hash), [
+    sortedRecentTransactions
+  ])
+
   const parsedMaxAmount = new TokenAmount(
     YAY[chainId ? chainId : ChainId.FUJI],
     JSBI.BigInt(ethers.constants.MaxUint256)
@@ -46,8 +59,8 @@ export default function Jacuzzi() {
     JSBI.BigInt(userYAYBalance * YAY_DECIMALS_DIVISOR)
   )
 
-  const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.AVALANCHE])
-  const [approval] = useApproveCallback(parsedCurrentBalance, JACUZZI_ADDRESS[chainId ? chainId : ChainId.AVALANCHE])
+  const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
+  const [approval] = useApproveCallback(parsedCurrentBalance, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
 
   const jacuzzi = useJacuzziContract()
   const yay = useYayContract()
@@ -76,7 +89,10 @@ export default function Jacuzzi() {
     if (supply.toString() === '0') {
       return setRatio(0)
     }
-    return setRatio(balance.div(supply).toString())
+
+    const _ratio = balance.toString() / supply.toString()
+
+    return setRatio(+_ratio.toFixed(3))
   }, [yay, jacuzzi])
 
   const getPenalty = useCallback(async () => {
@@ -113,11 +129,11 @@ export default function Jacuzzi() {
     if (yayJacuzziBalance.toString() === '0') {
       stakedYAY = JSBI.BigInt(0)
     } else {
-      stakedYAY = jacuzziBalance.mul(totalSupply).div(yayJacuzziBalance)
+      stakedYAY = jacuzziBalance.mul(yayJacuzziBalance).div(totalSupply)
     }
-    setUserYAYBalance(+userBalance.toString() / YAY_DECIMALS_DIVISOR)
-    setUserXYAYStake(+jacuzziBalance.toString() / YAY_DECIMALS_DIVISOR)
-    setUserYAYStake(+stakedYAY.toString() / YAY_DECIMALS_DIVISOR)
+    setUserYAYBalance(toFixedTwo(userBalance.toString()))
+    setUserXYAYStake(toFixedTwo(jacuzziBalance.toString()))
+    setUserYAYStake(toFixedTwo(stakedYAY.toString()))
   }, [jacuzzi, yay, account, chainId])
 
   const getContractBalances = useCallback(async () => {
@@ -128,8 +144,8 @@ export default function Jacuzzi() {
 
     const totalSupply = await jacuzzi.totalSupply()
     const yayJacuzziBalance = await yay.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    setJacuzziXYAYStake(+totalSupply.toString() / YAY_DECIMALS_DIVISOR)
-    setJacuzziYAYStake(+yayJacuzziBalance.toString() / YAY_DECIMALS_DIVISOR)
+    setJacuzziXYAYStake(toFixedTwo(totalSupply.toString()))
+    setJacuzziYAYStake(toFixedTwo(yayJacuzziBalance.toString()))
   }, [jacuzzi, yay, chainId])
 
   const handleStake = async () => {
@@ -144,7 +160,7 @@ export default function Jacuzzi() {
     getPenalty()
     getUserBalances()
     getContractBalances()
-  }, [getRatio, getPenalty, getUserBalances, getContractBalances])
+  }, [getRatio, getPenalty, getUserBalances, getContractBalances, confirmed])
 
   useEffect(() => {
     if (approval === ApprovalState.PENDING) {
@@ -166,7 +182,7 @@ export default function Jacuzzi() {
       </div>
       <div>xYAY to YAY: {ratio}</div>
       <div>
-        Paper hands penalty: {earlyLeavePenalty}% right now ({earlyLeavePenaltyAfterUnlockDate}% after {unlockDate})
+        Paper hands penalty: {earlyLeavePenaltyAfterUnlockDate}% right now ({earlyLeavePenalty}% after {unlockDate})
       </div>
       <div>
         Your Stake:

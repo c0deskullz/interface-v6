@@ -69,7 +69,7 @@ export default function Earn({
     ).then(results => {
       setStakingInfoResults(results)
     })
-  }, [stakingInfos?.length])
+  }, [stakingInfos, chainId])
 
   const DataRow = styled(RowBetween)`
     ${({ theme }) => theme.mediaWidth.upToSmall`
