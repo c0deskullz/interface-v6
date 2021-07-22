@@ -259,6 +259,7 @@ export default function Swap() {
 
   return (
     <>
+      <div className="swap-image-background"></div>
       <img alt="" src={imageLeft} className="swap-image left" />
       <img alt="" src={imageRight} className="swap-image right" />
       <TokenWarningModal

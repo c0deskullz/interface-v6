@@ -11,3 +11,11 @@
   right: 0;
   top: 73px;
 }
+.swap-image-background {
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url('../../assets/svg/swap-pattern.svg');
+  height: 100vh;
+  width: 100%;
+  top: 0;
+}
