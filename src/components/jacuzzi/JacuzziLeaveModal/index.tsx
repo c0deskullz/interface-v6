@@ -7,10 +7,10 @@ import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
 import { useJacuzziContract, useYayContract } from '../../../hooks/useContract'
-import { JACUZZI_ADDRESS, toFixedTwo, YAY_DECIMALS_DIVISOR } from '../../../constants'
+import { JACUZZI_ADDRESS, toFixedTwo, YAY } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { ethers } from 'ethers'
 import { ChainId, JSBI } from '@partyswap-libs/sdk'
+import { tryParseAmount } from '../../../state/swap/hooks'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -26,21 +26,22 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
   const { chainId, account } = useActiveWeb3React()
 
   // track and parse user input
-  const [typedValue, setTypedValue] = useState(0)
+  const [typedValue, setTypedValue] = useState<string>('0')
   const [balance, setBalance] = useState(0)
   const [yayBalance, setYayBalance] = useState(0)
   const jacuzzi = useJacuzziContract()
   const yay = useYayContract()
   const addTransaction = useTransactionAdder()
 
+  const parsedAmmount = tryParseAmount(typedValue, YAY[chainId || ChainId.FUJI])
+
   const handleSetMax = () => {
-    setTypedValue(balance)
+    setTypedValue(balance.toString())
   }
 
   const handleUnstake = async () => {
-    if (jacuzzi && typedValue) {
-      const _typedValue = ethers.BigNumber.from((typedValue * YAY_DECIMALS_DIVISOR).toString())
-      const txReceipt = await jacuzzi.leave(_typedValue)
+    if (jacuzzi && parsedAmmount) {
+      const txReceipt = await jacuzzi.leave(`0x${parsedAmmount?.raw.toString(16)}`)
       addTransaction(txReceipt, { summary: `Unstake ${typedValue} xYAYs as YAY to Wallet` })
       onDismiss()
     }
@@ -86,7 +87,7 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
               type="number"
               name="value_to_unstake"
               value={typedValue}
-              onChange={e => setTypedValue(+e.target.value)}
+              onChange={e => setTypedValue(e.target.value)}
             />
           </div>
         </RowBetween>

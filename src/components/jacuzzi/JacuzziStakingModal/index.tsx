@@ -7,9 +7,10 @@ import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
 import { useJacuzziContract, useYayContract } from '../../../hooks/useContract'
-import { toFixedTwo, YAY_DECIMALS_DIVISOR } from '../../../constants'
+import { toFixedTwo, YAY } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { ethers } from 'ethers'
+import { tryParseAmount } from '../../../state/swap/hooks'
+import { ChainId } from '@partyswap-libs/sdk'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -25,20 +26,21 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   const { chainId, account } = useActiveWeb3React()
 
   // track and parse user input
-  const [typedValue, setTypedValue] = useState(0)
+  const [typedValue, setTypedValue] = useState<string>('0')
   const [balance, setBalance] = useState(0)
   const yay = useYayContract()
   const jacuzzi = useJacuzziContract()
   const addTransaction = useTransactionAdder()
 
+  const parsedAmmount = tryParseAmount(typedValue, YAY[chainId || ChainId.FUJI])
+
   const handleSetMax = () => {
-    setTypedValue(balance)
+    setTypedValue(balance.toString())
   }
 
   const handleStake = async () => {
-    if (jacuzzi && typedValue) {
-      const _typedValue = ethers.BigNumber.from((typedValue * YAY_DECIMALS_DIVISOR).toString())
-      const txReceipt = await jacuzzi.enter(_typedValue)
+    if (jacuzzi && parsedAmmount) {
+      const txReceipt = await jacuzzi.enter(`0x${parsedAmmount?.raw.toString(16)}`)
 
       addTransaction(txReceipt, { summary: `Stake ${typedValue} YAY to Jacuzzi` })
       onDismiss()
@@ -74,7 +76,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
               type="number"
               name="value_to_stake"
               value={typedValue}
-              onChange={e => setTypedValue(+e.target.value)}
+              onChange={e => setTypedValue(e.target.value)}
             />
           </div>
         </RowBetween>
