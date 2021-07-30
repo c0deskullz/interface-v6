@@ -28,17 +28,17 @@ export default function URLWarning() {
 
   return isMobile ? (
     <PhishAlert isActive={showURLWarning}>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <AlertTriangle style={{ marginRight: 6 }} size={12} /> Make sure the URL is
-        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>app.pangolin.exchange</code>
+        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>app.partyswap.io</code>
       </div>
       <StyledClose size={12} onClick={toggleURLWarning} />
     </PhishAlert>
-  ) : window.location.hostname === 'app.pangolin.exchange' ? (
+  ) : window.location.hostname === 'app.partyswap.io' ? (
     <PhishAlert isActive={showURLWarning}>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <AlertTriangle style={{ marginRight: 6 }} size={12} /> Always make sure the URL is
-        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>app.pangolin.exchange</code> - bookmark it
+        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>app.partyswap.io</code> - bookmark it
         to be safe.
       </div>
       <StyledClose size={12} onClick={toggleURLWarning} />

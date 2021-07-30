@@ -43,7 +43,7 @@ const HeaderFrame = styled.div`
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     grid-template-columns: 1fr;
-    padding: 0 1rem;
+    padding: 1rem;
     width: calc(100%);
     position: relative;
   `};
@@ -177,8 +177,13 @@ const Title = styled.a`
   pointer-events: auto;
   justify-self: flex-start;
   margin-right: 12px;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    justify-self: center;
+  img {
+    height: 3rem;
+  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`    
+    img {
+      height: 2rem;
+    }
   `};
   :hover {
     cursor: pointer;
@@ -283,9 +288,6 @@ export default function Header() {
           <img width={'100%'} src={isDark ? LogoDark : Logo} alt="logo" />
         </Title>
         <HeaderLinks>
-          <StyledNavLink id={`home-nav-link`} to={'/home'}>
-            Home
-          </StyledNavLink>
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('swap')}
           </StyledNavLink>

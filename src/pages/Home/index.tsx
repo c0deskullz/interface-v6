@@ -40,7 +40,7 @@ export default function Home() {
               <img src={iconFarms} alt="Farms & Staking icon" />
               <div>
                 <h4>Farms & Staking</h4>
-                <p>Your gains since the party started.</p>
+                <p>Gains since the party started.</p>
               </div>
             </div>
             <div className="grid-item-farms">

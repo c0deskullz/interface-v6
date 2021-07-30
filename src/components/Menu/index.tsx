@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { MessageCircle, Send, Info, Twitter, GitHub, Book} from 'react-feather'
+import { MessageCircle, Send, Info, Twitter, GitHub, Book } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 import { LANDING_PAGE } from '../../constants'
@@ -18,6 +18,8 @@ const StyledMenuIcon = styled(MenuIcon)`
 `
 
 const StyledMenuButton = styled.button`
+  display: none;
+  align-items: center;
   width: 100%;
   height: 100%;
   border: none;
@@ -35,10 +37,6 @@ const StyledMenuButton = styled.button`
     cursor: pointer;
     outline: none;
     background-color: ${({ theme }) => theme.bg4};
-  }
-
-  svg {
-    margin-top: 2px;
   }
 `
 
@@ -87,7 +85,6 @@ const MenuItem = styled(ExternalLink)`
 `
 
 export default function Menu() {
-
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.MENU)
   const toggle = useToggleModal(ApplicationModal.MENU)
@@ -126,7 +123,6 @@ export default function Menu() {
             <GitHub size={14} />
             Code
           </MenuItem>
-
         </MenuFlyout>
       )}
     </StyledMenu>

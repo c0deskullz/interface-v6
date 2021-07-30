@@ -42,6 +42,8 @@ const StyledCloseIcon = styled(X)`
 `
 
 const StyledMenuButton = styled.button`
+  display: flex;
+  align-items: center;
   position: relative;
   width: 100%;
   height: 100%;
@@ -60,10 +62,6 @@ const StyledMenuButton = styled.button`
     cursor: pointer;
     outline: none;
     background-color: ${({ theme }) => theme.bg4};
-  }
-
-  svg {
-    margin-top: 2px;
   }
 `
 const EmojiWrapper = styled.div`
