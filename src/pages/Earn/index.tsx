@@ -7,6 +7,7 @@ import PoolCard from '../../components/earn/PoolCard'
 import { RouteComponentProps } from 'react-router-dom'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
+import PoolsGrid from '../../components/PoolsGrid'
 import Loader from '../../components/Loader'
 import { useActiveWeb3React } from '../../hooks'
 import { JSBI } from '@partyswap-libs/sdk'
@@ -104,6 +105,8 @@ export default function Earn({
         <img src={imageLeft} alt="Doggo and Penguin chasing a Piñata" className="hero-img hero-img-left" />
         <img src={imageRight} alt="A piñata running from Doggo and Penguin" className="hero-img hero-img-right" />
       </div>
+
+      <PoolsGrid />
 
       <PageWrapper gap="lg" justify="center">
         <TopSection gap="md">

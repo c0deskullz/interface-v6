@@ -110,23 +110,26 @@ input[type='submit'],
   margin-right: 1.5rem;
   margin-bottom: 1rem;
   transition: all 0.25s ease-in-out;
+  cursor: pointer;
 }
 .btn:hover,
 .btn:focus,
 .btn:active {
-  background-color: darken($color: $color-accent-1, $amount: 10%);
-  transform: translate(0, -0.25rem);
+  background-color: #f5e400;
+  transform: translate(0, -0.25em);
   text-decoration: none;
 }
 .btn-secondary {
-  color: #000;
-  background-color: #fff;
-  border-color: #fff;
+  color: #fff;
+  background-color: $color-brand;
+  border-color: $color-brand;
 }
+.btn-secondary:focus,
+.btn-secondary:active,
 .btn-secondary:hover {
-  color: #000;
-  background-color: darken($color: #fff, $amount: 10%);
-  border-color: darken($color: #fff, $amount: 10%);
+  color: #fff;
+  background-color: $color-brand-dark;
+  border-color: $color-brand-dark;
 }
 .btn:last-child {
   margin-right: 0;
