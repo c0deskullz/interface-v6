@@ -18,7 +18,7 @@ export default function PoolsGridItem() {
       <div className="poolsGrid-item">
         <div className="poolsGrid-item-content">
           <div className="poolsGrid-item-header">
-            <img src={poolIcon} />
+            <img src={poolIcon} alt="" />
             <div>
               <h4>YAY/AVAX</h4>
               <div className="poolsGrid-item-header-features">
@@ -66,7 +66,7 @@ export default function PoolsGridItem() {
               <p>
                 Total Liquidity: <span>$643,936</span>
               </p>
-              <a>
+              <a href="https://avascan.info/">
                 View Contract <ExtLink />
               </a>
             </div>
