@@ -11,9 +11,21 @@ import Loader from '../../components/Loader'
 import { useActiveWeb3React } from '../../hooks'
 import { JSBI } from '@partyswap-libs/sdk'
 
+import imageLeft from '../../assets/svg/pools-hero-left.svg'
+import imageRight from '../../assets/svg/pools-hero-right.svg'
+
+const Wrapper = styled.div`
+  width: 100vw;
+  margin-top: -2rem;
+  @media (min-width: 720px) {
+    margin-top: -100px;
+  }
+`
+
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
   width: 100%;
+  margin: 2rem auto 0;
 `
 
 const TopSection = styled(AutoColumn)`
@@ -80,34 +92,48 @@ export default function Earn({
   const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
 
   return (
-    <PageWrapper gap="lg" justify="center">
-      <TopSection gap="md">
-        <DataCard>
-          <CardBGImage />
-          <CardNoise />
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>Party liquidity mining</TYPE.white>
-              </RowBetween>
-              <RowBetween>
-                <TYPE.white fontSize={14}>
-                  Deposit your Party Liquidity Provider xYAY tokens to receive YAY, the Party protocol governance token.
-                </TYPE.white>
-              </RowBetween>{' '}
-              <ExternalLink
-                style={{ color: 'white', textDecoration: 'underline' }}
-                href="https://pangolin.exchange/litepaper"
-                target="_blank"
-              >
-                <TYPE.white fontSize={14}>Read more about YAY</TYPE.white>
-              </ExternalLink>
-            </AutoColumn>
-          </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </DataCard>
-        {/* <DataCard>
+    <Wrapper>
+      <div className="hero">
+        <div className="hero-container">
+          <div className="hero-content">
+            <p className="smallText">Stake & Earn</p>
+            <h1>We Offer the Best APY in the Market</h1>
+            <button className="btn hero-btn">Learn More</button>
+          </div>
+        </div>
+        <img src={imageLeft} alt="Doggo and Penguin chasing a Piñata" className="hero-img hero-img-left" />
+        <img src={imageRight} alt="A piñata running from Doggo and Penguin" className="hero-img hero-img-right" />
+      </div>
+
+      <PageWrapper gap="lg" justify="center">
+        <TopSection gap="md">
+          <DataCard>
+            <CardBGImage />
+            <CardNoise />
+            <CardSection>
+              <AutoColumn gap="md">
+                <RowBetween>
+                  <TYPE.white fontWeight={600}>Party liquidity mining</TYPE.white>
+                </RowBetween>
+                <RowBetween>
+                  <TYPE.white fontSize={14}>
+                    Deposit your Party Liquidity Provider xYAY tokens to receive YAY, the Party protocol governance
+                    token.
+                  </TYPE.white>
+                </RowBetween>{' '}
+                <ExternalLink
+                  style={{ color: 'white', textDecoration: 'underline' }}
+                  href="https://pangolin.exchange/litepaper"
+                  target="_blank"
+                >
+                  <TYPE.white fontSize={14}>Read more about YAY</TYPE.white>
+                </ExternalLink>
+              </AutoColumn>
+            </CardSection>
+            <CardBGImage />
+            <CardNoise />
+          </DataCard>
+          {/* <DataCard>
           <CardNoise />
           <CardSection>
             <AutoColumn gap="md">
@@ -138,31 +164,32 @@ export default function Earn({
             </AutoColumn>
           </CardSection>
         </DataCard> */}
-      </TopSection>
+        </TopSection>
 
-      <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
-        <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating pools</TYPE.mediumHeader>
-          <TYPE.black fontWeight={400}>The Rewards Never End!</TYPE.black>
-        </DataRow>
+        <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating pools</TYPE.mediumHeader>
+            <TYPE.black fontWeight={400}>The Rewards Never End!</TYPE.black>
+          </DataRow>
 
-        <PoolSection>
-          {stakingRewardsExist && stakingInfos?.length === 0 ? (
-            <Loader style={{ margin: 'auto' }} />
-          ) : !stakingRewardsExist ? (
-            'No active rewards'
-          ) : (
-            stakingInfoResults?.map(stakingInfo => (
-              <PoolCard
-                apr={stakingInfo.apr}
-                key={stakingInfo.stakingRewardAddress}
-                stakingInfo={stakingInfo}
-                version={version}
-              />
-            ))
-          )}
-        </PoolSection>
-      </AutoColumn>
-    </PageWrapper>
+          <PoolSection>
+            {stakingRewardsExist && stakingInfos?.length === 0 ? (
+              <Loader style={{ margin: 'auto' }} />
+            ) : !stakingRewardsExist ? (
+              'No active rewards'
+            ) : (
+              stakingInfoResults?.map(stakingInfo => (
+                <PoolCard
+                  apr={stakingInfo.apr}
+                  key={stakingInfo.stakingRewardAddress}
+                  stakingInfo={stakingInfo}
+                  version={version}
+                />
+              ))
+            )}
+          </PoolSection>
+        </AutoColumn>
+      </PageWrapper>
+    </Wrapper>
   )
 }
