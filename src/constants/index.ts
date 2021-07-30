@@ -7,7 +7,7 @@ export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
   [ChainId.AVALANCHE]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c', //redeploy this
-  [ChainId.FUJI]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c'
+  [ChainId.FUJI]: '0xdb5931C6cEc0fF464e44c9ff414225b6171911Dc'
 }
 
 export const LANDING_PAGE = 'https://pangolin.exchange/'
@@ -23,15 +23,8 @@ type ChainTokenList = {
 }
 
 export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0f2D40e9dcaEe7792665a420feB52E76709dC53A', 10, 'PUPU', 'PUPU Token'),
-  // [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x10b3A2445f29F838ed8D9d61a82205A0436B7F75', 10, 'YAY', 'YAY'),
-  [ChainId.AVALANCHE]: new Token(
-    ChainId.AVALANCHE,
-    '0x6713CdC45d304B5D3b4F4E6104203DC854823043',
-    10,
-    'PUPU',
-    'PUPU Token'
-  )
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xEbD7fF328bC30087720e427CB8f11E9Bd8aF7d8A', 18, 'YAY', 'YAY'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', 18, 'YAY', 'YAY')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
@@ -149,8 +142,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0x2360E39914Bec0bc6D9481444338BE8e969c0100',
-  // [ChainId.AVALANCHE]: '0xf01b624847916f2cbee7536fdf0c521789523416',
+  [ChainId.FUJI]: '0xa9D9D5e3E598f003e4760975d520BDeB4446803D',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }
 
@@ -280,6 +272,6 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000))
-export const YAY_DECIMALS_DIVISOR = 10000000000
+export const YAY_DECIMALS_DIVISOR = 1000000000000000000
 
 export const toFixedTwo = (value: any): number => +(value / YAY_DECIMALS_DIVISOR).toFixed(2)
