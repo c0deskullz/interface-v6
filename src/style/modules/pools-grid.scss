@@ -164,8 +164,13 @@
   transform: rotate(180deg);
   transition: 0.25s transform ease;
 }
-.grid-item-details summary::marker {
+.grid-item-details summary:focus {
+  outline: none;
+}
+.grid-item-details summary::marker,
+.grid-item-details summary::-webkit-details-marker {
   content: '';
+  display: none;
 }
 .grid-item-details .poolsGrid-item-table {
   margin-top: 1rem;
@@ -179,6 +184,8 @@
 }
 .grid-item-details .poolsGrid-item-table a {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   font-size: $font-size-small;
   font-weight: 700;
   color: $color-brand;
