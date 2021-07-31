@@ -6,7 +6,7 @@ import { injected } from '../connectors'
 export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
-  [ChainId.AVALANCHE]: '0x22A6c35C83b0A3282B585038Bbe602236abdE96c', //redeploy this
+  [ChainId.AVALANCHE]: '0xC74eCA6CcD55f8859CC513CED47A4B56af330d35',
   [ChainId.FUJI]: '0xdb5931C6cEc0fF464e44c9ff414225b6171911Dc'
 }
 
@@ -81,6 +81,91 @@ export const DAI: { [chainId in ChainId]: Token } = {
   )
 }
 
+export const SNOB: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xf319e2f610462f846d6e93f51cdc862eeff2a554', 18, 'SNOB', 'Snowball'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xc38f41a296a4493ff429f1238e030924a1542e50',
+    18,
+    'SNOB',
+    'Snowball'
+  )
+}
+
+export const aaBLOCK: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 8, 'aaBLOCK', 'Blocknet'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xC931f61B1534EB21D8c11B24f3f5Ab2471d4aB50',
+    8,
+    'aaBLOCK',
+    'Blocknet'
+  )
+}
+
+export const SPORE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 9, 'SPORE', 'Spore.Finance'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x6e7f5C0b9f4432716bDd0a77a3601291b9D9e985',
+    9,
+    'SPORE',
+    'Spore.Finance'
+  )
+}
+
+export const BAG: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'BAG', 'Baguette'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa1144a6A1304bd9cbb16c800F7a867508726566E', 18, 'BAG', 'Baguette')
+}
+
+export const PEFI: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'PEFI', 'PenguinToken'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xe896cdeaac9615145c0ca09c8cd5c25bced6384c',
+    18,
+    'PEFI',
+    'PenguinToken'
+  )
+}
+
+export const FRAX: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'FRAX', 'Frax'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xBB69c92FBb4F1aFf528875056650c862F94D3CC1', 18, 'FRAX', 'Frax')
+}
+
+export const ZERO: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'Zero.Exchange Token'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x9Bdd302e506C3F6c23c085C37789cce6d3C1a233',
+    18,
+    'ZERO',
+    'Zero.Exchange Token'
+  )
+}
+export const ELK: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ELK', 'Elk'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xE1C8f3d529BEa8E3fA1FAC5B416335a2f998EE1C', 18, 'ELK', 'Elk')
+}
+
+export const XAVA: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XAVA', 'Avalaunch'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xd1c3f94de7e5b45fa4edbba472491a9f4b166fc4',
+    18,
+    'XAVA',
+    'Avalaunch'
+  )
+}
+
+export const AVME: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AVME', 'AVME'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x1ecd47ff4d9598f89721a2866bfeb99505a413ed', 18, 'AVME', 'AVME')
+}
+
 export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf39f9671906d8630812f9d9863bBEf5D523c84Ab', 18, 'UNI', 'Uniswap')
@@ -116,17 +201,6 @@ export const YFI: { [chainId in ChainId]: Token } = {
     18,
     'YFI',
     'yearn.finance'
-  )
-}
-
-export const SNOB: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xf319e2f610462f846d6e93f51cdc862eeff2a554', 18, 'SNOB', 'Snowball'),
-  [ChainId.AVALANCHE]: new Token(
-    ChainId.AVALANCHE,
-    '0xc38f41a296a4493ff429f1238e030924a1542e50',
-    18,
-    'SNOB',
-    'Snowball'
   )
 }
 
