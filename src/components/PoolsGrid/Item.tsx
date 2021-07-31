@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import poolIcon from '../../assets/svg/AVAX-YAY.svg'
+import { ReactComponent as PoolIcon } from '../../assets/svg/AVAX-YAY.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
@@ -18,7 +18,7 @@ export default function PoolsGridItem() {
       <div className="poolsGrid-item">
         <div className="poolsGrid-item-content">
           <div className="poolsGrid-item-header">
-            <img src={poolIcon} alt="" />
+            <PoolIcon />
             <div>
               <h4>YAY/AVAX</h4>
               <div className="poolsGrid-item-header-features">
