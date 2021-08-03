@@ -142,6 +142,7 @@
   padding: 0.5rem 0.75rem;
 }
 .poolsGrid-item-header-features span:nth-child(1) {
+  font-weight: 600;
   color: $color-brand;
   background-color: #fff;
 }
@@ -176,13 +177,15 @@
   margin-top: 1rem;
 }
 .grid-item-details .poolsGrid-item-table p {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  font-size: $font-size-small;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 .grid-item-details .poolsGrid-item-table span {
   color: #000000;
 }
 .grid-item-details .poolsGrid-item-table a {
+  width: fit-content;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -191,9 +194,14 @@
   color: $color-brand;
   text-decoration: none;
   cursor: pointer;
+  margin-left: auto;
+  margin-bottom: 0.25rem;
 }
 .grid-item-details .poolsGrid-item-table a:hover {
   text-decoration: underline;
+}
+.grid-item-details .poolsGrid-item-table a svg {
+  width: 1rem;
 }
 .grid-item-details-btn {
   display: flex;
