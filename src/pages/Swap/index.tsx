@@ -285,6 +285,10 @@ export default function Swap() {
           />
 
           <AutoColumn gap={'md'}>
+            <div>
+              <h1 style={{ fontSize: '1.5rem', color: '#000', marginBottom: '0.25rem' }}>Exchange</h1>
+              <p style={{ marginBottom: '0' }}>Trade tokens in an instant</p>
+            </div>
             <CurrencyInputPanel
               label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}
