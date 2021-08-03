@@ -1,0 +1,144 @@
+/* Sections
+------------------------------------------------------------- */
+.footer {
+  position: relative;
+  width: 100%;
+  background-color: #41008a;
+  padding-top: 3rem;
+  padding-bottom: 7rem;
+  margin-top: 3rem;
+}
+.footer-container {
+  display: grid;
+  gap: 3rem;
+  @include module-container();
+}
+.footer-section {
+  text-align: center;
+  font-size: 0.9375rem;
+}
+.footer-section-support {
+  display: none;
+}
+@media (min-width: 992px) {
+  .footer {
+    padding: 0;
+  }
+  .footer-container {
+    grid-template-columns: 1.5fr 1.25fr 1.5fr;
+    gap: 4rem;
+    justify-content: space-between;
+  }
+  .footer-section,
+  .footer-section:first-child,
+  .footer-section:nth-last-child(2) {
+    position: relative;
+    text-align: left;
+    padding-top: 4rem;
+    padding-bottom: 8rem;
+  }
+  .footer-section:nth-last-child(1) {
+    text-align: right;
+  }
+  .footer-section-support {
+    display: block;
+    width: 15rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .footer-container {
+    grid-template-columns: 1.5fr 1fr 1.5fr;
+  }
+}
+@media (min-width: 1450px) {
+  .footer-container {
+    grid-template-columns: 1.25fr 1fr 1.25fr;
+  }
+}
+
+/* Typography
+------------------------------------------------------------- */
+.footer-section h4 {
+  color: $color-text-heading;
+}
+.footer-section p,
+.footer-section a {
+  color: #fff;
+}
+.footer-section ul a {
+  text-decoration: none;
+}
+.footer-section ul a:hover {
+  text-decoration: underline;
+  text-decoration-color: $color-accent-1;
+}
+.footer-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-section li {
+  display: inline-block;
+  margin-right: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+.footer-section li:last-child {
+  margin-right: 0;
+}
+@media (min-width: 992px) {
+  .footer-section h4 {
+    margin-bottom: 1.3rem;
+  }
+  .footer-section li {
+    display: block;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Social Icons
+------------------------------------------------------------- */
+.footer-social-container {
+  display: grid;
+  grid-template-columns: repeat(4, 2.5rem);
+  justify-content: center;
+  gap: 1rem;
+}
+.footer-social .socialIcon {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+}
+.footer-social .socialIcon:hover {
+  background-color: $color-accent-1;
+}
+@media (min-width: 992px) {
+  .footer-social-container {
+    justify-content: unset;
+  }
+}
+@media (min-width: 1450px) {
+  .footer-social-container {
+    grid-template-columns: repeat(4, 2.75rem);
+    gap: 1.25rem;
+  }
+}
+
+/* Footer Copyright
+------------------------------------------------------------- */
+.footer-copyright {
+  width: 100%;
+  position: absolute;
+  background-color: transparent;
+  padding: 1rem $pad-x;
+  bottom: 0;
+}
+.footer-copyright p {
+  color: #fff;
+  font-size: 0.875rem;
+  text-align: center;
+  margin-bottom: 0;
+}

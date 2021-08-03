@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import Polling from '../components/Header/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
@@ -64,6 +65,7 @@ const BodyWrapper = styled.div`
 `
 
 const Marginer = styled.div`
+  display: none;
   margin-top: 5rem;
 `
 
@@ -109,6 +111,7 @@ export default function App() {
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>
+        <Footer />
       </AppWrapper>
     </Suspense>
   )
