@@ -12,7 +12,25 @@ import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { newTransactionsFirst } from '../../components/Web3Status'
 
+import { ReactComponent as JacuzziImg } from '../../assets/svg/jacuzzi-hero.svg'
+import { ReactComponent as PoolIcon } from '../../assets/svg/AVAX-YAY.svg'
+import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
+import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
+import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
+
 const Wrapper = styled.div`
+  width: 100vw;
+  margin-top: -2rem;
+  @media (min-width: 720px) {
+    margin-top: -100px;
+  }
+`
+
+const JacuzziImage = styled(JacuzziImg)`
+  /* display: none; */
+`
+
+const JacuzziCard = styled.div`
   display: flex;
   padding: 1rem;
   flex-direction: column;
@@ -22,6 +40,13 @@ const Wrapper = styled.div`
   div {
     margin: 0.5rem 0;
   }
+`
+const ExtLink = styled(ExternalLinkSVG)`
+  margin-left: 0.125em;
+`
+
+const BadgeIcon = styled(BadgeSVG)`
+  margin-right: 0.125em;
 `
 
 export default function Jacuzzi() {
@@ -170,32 +195,115 @@ export default function Jacuzzi() {
 
   return (
     <Wrapper>
-      YAY Pool
-      {!approvalSubmitted && (
-        <>
-          {approval === ApprovalState.NOT_APPROVED && <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>}
-        </>
-      )}
-      <div>
-        <div>{userCanStake ? <ButtonPrimary onClick={handleStake}>Stake</ButtonPrimary> : ''}</div>
-        <div>{userCanLeave ? <ButtonPrimary onClick={handleLeave}>Leave</ButtonPrimary> : ''}</div>
+      <div className="jacuzzi">
+        <div className="jacuzzi-background"></div>
+        <div className="jacuzzi-container">
+          <div className="jacuzzi-media">
+            <JacuzziImage />
+          </div>
+          <div className="poolsGrid-item">
+            <div className="poolsGrid-item-content">
+              <div className="poolsGrid-item-header">
+                <PoolIcon />
+                <div>
+                  <h4>xYAY Pool</h4>
+                  <div className="poolsGrid-item-header-features">
+                    <span>
+                      <BadgeIcon /> Core
+                    </span>
+                    <span>160X</span>
+                  </div>
+                </div>
+              </div>
+              <div className="poolsGrid-item-table">
+                <p>
+                  APR: <span>500.00%</span>
+                </p>
+                <p>
+                  xYAY to YAY: <span>{ratio}</span>
+                </p>
+                <p>
+                  Paper Hands Penalty: <span>25%</span>
+                </p>
+              </div>
+              <div className="poolsGrid-item-grid">
+                <div>
+                  <p>YAY earned</p>
+                  <p>0.000</p>
+                </div>
+                <div>
+                  <button className="btn btn-secondary">Collect</button>
+                </div>
+              </div>
+              <div className="poolsGrid-item-grid">
+                <div>
+                  <p>YAY staked</p>
+                  <p>0.000</p>
+                </div>
+                <div>
+                  <button className="btn btn-secondary">+ | -</button>
+                </div>
+              </div>
+
+              <button className="btn btn-secondary">Unlock Wallet</button>
+            </div>
+            <div className="grid-item-details">
+              <details>
+                <summary>
+                  <span className="grid-item-details-btn">
+                    Details
+                    <ArrowDown />
+                  </span>
+                </summary>
+                <div className="poolsGrid-item-table">
+                  <p>
+                    Total Liquidity: <span>$643,936</span>
+                  </p>
+                  <a href="https://avascan.info/">
+                    See Token Info <ExtLink />
+                  </a>
+                  <a href="https://avascan.info/">
+                    View Project Site <ExtLink />
+                  </a>
+                  <a href="https://avascan.info/">
+                    View Contract <ExtLink />
+                  </a>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>xYAY to YAY: {ratio}</div>
-      <div>
-        Paper hands penalty: {earlyLeavePenaltyAfterUnlockDate}% right now ({earlyLeavePenalty}% after {unlockDate})
-      </div>
-      <div>
-        Your Stake:
-        <div>xYAY: {userxYAYStake}</div>
-        <div>YAY: {userYAYStake}</div>
-      </div>
-      <div>
-        Total Stake:
-        <div>xYAY: {jacuzziXYAYStake}</div>
-        <div>YAY: {jacuzziYAYStake}</div>
-      </div>
-      <JacuzziStakingModal isOpen={stakeModalOpen} onDismiss={() => setStakeModalOpen(false)} />
-      <JacuzziLeaveModal isOpen={unstakeModalOpen} onDismiss={() => setUnstakeModalOpen(false)} />
+      <JacuzziCard>
+        YAY Pool
+        {!approvalSubmitted && (
+          <>
+            {approval === ApprovalState.NOT_APPROVED && (
+              <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
+            )}
+          </>
+        )}
+        <div>
+          <div>{userCanStake ? <ButtonPrimary onClick={handleStake}>Stake</ButtonPrimary> : ''}</div>
+          <div>{userCanLeave ? <ButtonPrimary onClick={handleLeave}>Leave</ButtonPrimary> : ''}</div>
+        </div>
+        <div>xYAY to YAY: {ratio}</div>
+        <div>
+          Paper hands penalty: {earlyLeavePenaltyAfterUnlockDate}% right now ({earlyLeavePenalty}% after {unlockDate})
+        </div>
+        <div>
+          Your Stake:
+          <div>xYAY: {userxYAYStake}</div>
+          <div>YAY: {userYAYStake}</div>
+        </div>
+        <div>
+          Total Stake:
+          <div>xYAY: {jacuzziXYAYStake}</div>
+          <div>YAY: {jacuzziYAYStake}</div>
+        </div>
+        <JacuzziStakingModal isOpen={stakeModalOpen} onDismiss={() => setStakeModalOpen(false)} />
+        <JacuzziLeaveModal isOpen={unstakeModalOpen} onDismiss={() => setUnstakeModalOpen(false)} />
+      </JacuzziCard>
     </Wrapper>
   )
 }

@@ -1,0 +1,41 @@
+/* Jacuzzi
+------------------------------------------------------------- */
+.jacuzzi {
+  position: relative;
+  background-image: url('../../assets/svg/swap-pattern.svg');
+  @include module();
+}
+.jacuzzi-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-content: center;
+  @include module-container();
+}
+.jacuzzi-media {
+  order: 1;
+}
+.jacuzzi .poolsGrid-item {
+  margin-bottom: unset;
+}
+@media (min-width: 992px) {
+  .jacuzzi-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+  .jacuzzi-media {
+    order: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .jacuzzi-container {
+    grid-template-columns: 1fr 26rem;
+    gap: 5rem;
+  }
+}
+@media (min-width: 1450px) {
+  .jacuzzi {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
