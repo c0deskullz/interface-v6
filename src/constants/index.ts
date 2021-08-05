@@ -216,7 +216,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xa9D9D5e3E598f003e4760975d520BDeB4446803D',
+  [ChainId.FUJI]: '0x7C1E73122d26Af78C44FaB3c5e10a7eaa4ED2b59',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }
 
