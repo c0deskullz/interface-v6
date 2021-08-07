@@ -100,7 +100,7 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
                   <TYPE.white color="white">
                     {pngToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
                     {pngToClaim && pngToClaim.greaterThan('0') && (
-                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/png">
+                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/yay">
                         (claim)
                       </StyledInternalLink>
                     )}

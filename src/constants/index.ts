@@ -10,8 +10,8 @@ export const ROUTER_ADDRESS = {
   [ChainId.FUJI]: '0xdb5931C6cEc0fF464e44c9ff414225b6171911Dc'
 }
 
-export const LANDING_PAGE = 'https://pangolin.exchange/'
-export const ANALYTICS_PAGE = 'https://info.pangolin.exchange/'
+export const LANDING_PAGE = 'https://partyswap.io/'
+export const ANALYTICS_PAGE = 'https://info.partyswap.io/'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 

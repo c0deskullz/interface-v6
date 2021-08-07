@@ -121,7 +121,7 @@ export default function PoolCard({
         </TYPE.white>
 
         <StyledInternalLink
-          to={`/png/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
+          to={`/yay/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
           style={{ width: '100%' }}
         >
           <ButtonPrimary padding="8px" borderRadius="8px">
