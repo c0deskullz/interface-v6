@@ -13,7 +13,7 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { newTransactionsFirst } from '../../components/Web3Status'
 
 import { ReactComponent as JacuzziImg } from '../../assets/svg/jacuzzi-hero.svg'
-import { ReactComponent as PoolIcon } from '../../assets/svg/AVAX-YAY.svg'
+import { ReactComponent as YAYIcon } from '../../assets/svg/YAY-icon.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
@@ -204,7 +204,7 @@ export default function Jacuzzi() {
           <div className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
-                <PoolIcon />
+                <YAYIcon />
                 <div>
                   <h4>xYAY Pool</h4>
                   <div className="poolsGrid-item-header-features">
@@ -245,7 +245,16 @@ export default function Jacuzzi() {
                 </div>
               </div>
 
-              <button className="btn btn-secondary">Unlock Wallet</button>
+              {/* <button className="btn btn-secondary">Unlock Wallet</button> */}
+
+              {!approvalSubmitted && (
+                <>
+                  {approval === ApprovalState.NOT_APPROVED && (
+                    <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
+                  )}
+                  {userCanStake ? <ButtonPrimary onClick={handleStake}>Stake</ButtonPrimary> : ''}
+                </>
+              )}
             </div>
             <div className="grid-item-details">
               <details>
