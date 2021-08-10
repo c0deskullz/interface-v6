@@ -1,14 +1,17 @@
 import React from 'react'
+import styled from 'styled-components'
 import PoolsGridItem from './Item'
+
+const PoolsGridItems = styled.div``
 
 export default function PoolsGrid() {
   return (
     <>
-      <div className="poolsGrid">
+      <PoolsGridItems className="poolsGrid">
         <PoolsGridItem />
         <PoolsGridItem />
         <PoolsGridItem />
-      </div>
+      </PoolsGridItems>
     </>
   )
 }

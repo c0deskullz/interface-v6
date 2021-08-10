@@ -18,6 +18,7 @@ import imageRight from '../../assets/svg/pools-hero-right.svg'
 const Wrapper = styled.div`
   width: 100vw;
   margin-top: -2rem;
+  background-color: ${({ theme }) => theme.surface3};
   @media (min-width: 720px) {
     margin-top: -100px;
   }
@@ -41,6 +42,10 @@ const PoolSection = styled.div`
   row-gap: 15px;
   width: 100%;
   justify-self: center;
+`
+
+const Hero = styled.div`
+  background: ${({ theme }) => theme.gradient1};
 `
 
 export default function Earn({
@@ -94,7 +99,7 @@ export default function Earn({
 
   return (
     <Wrapper>
-      <div className="hero">
+      <Hero className="hero">
         <div className="hero-container">
           <div className="hero-content">
             <p className="smallText">Stake & Earn</p>
@@ -104,7 +109,7 @@ export default function Earn({
         </div>
         <img src={imageLeft} alt="Doggo and Penguin chasing a Piñata" className="hero-img hero-img-left" />
         <img src={imageRight} alt="A piñata running from Doggo and Penguin" className="hero-img hero-img-right" />
-      </div>
+      </Hero>
 
       <PoolsGrid />
 

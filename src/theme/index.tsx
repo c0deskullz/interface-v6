@@ -69,6 +69,8 @@ export function colors(darkMode: boolean): Colors {
 
     // color text
     primaryText1: darkMode ? '#b16dff' : '#ffffff',
+    primaryText2: darkMode ? '#b16dff' : '#5005E6',
+    primaryText3: darkMode ? '#b16dff' : '#4003b6',
 
     // secondary colors
     secondary1: darkMode ? '#2172E5' : '#ff007a',
@@ -84,6 +86,7 @@ export function colors(darkMode: boolean): Colors {
     surface2: darkMode ? '#262652' : '#41008a',
     surface3: darkMode ? '#1A1A37' : '#ffffff',
     surface4: darkMode ? '#1F1F41' : '#ffffff',
+    surface5: darkMode ? '#262652' : '#f6f6ff',
 
     // other
     red1: '#FF6871',
