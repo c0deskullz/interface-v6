@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   width: 100vw;
   margin-top: -2rem;
   background-color: ${({ theme }) => theme.surface3};
+  
   @media (min-width: 720px) {
     margin-top: -100px;
   }
