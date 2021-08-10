@@ -2,10 +2,10 @@
 ------------------------------------------------------------- */
 .jacuzzi {
   position: relative;
-  background-image: url('../../assets/svg/swap-pattern.svg');
   @include module();
 }
 .jacuzzi-container {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;

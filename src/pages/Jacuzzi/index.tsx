@@ -18,11 +18,88 @@ import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
 
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+
 const Wrapper = styled.div`
   width: 100vw;
   margin-top: -2rem;
+  background-color: ${({ theme }) => theme.surface3};
   @media (min-width: 720px) {
     margin-top: -100px;
+  }
+`
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100%;
+  width: 100%;
+  top: 0;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
+`
+
+const Item = styled.div`
+  background-color: ${({ theme }) => theme.surface4};
+  [class*='-item-header'] h4 {
+    color: ${({ theme }) => theme.text1};
+  }
+  .poolsGrid-item-header-features span {
+    background-color: ${({ theme }) => theme.primaryText2};
+    border: 2px solid ${({ theme }) => theme.primaryText2};
+  }
+  .poolsGrid-item-header-features span:nth-child(1) {
+    color: ${({ theme }) => theme.primaryText2};
+    border-color: ${({ theme }) => theme.primaryText2};
+    background-color: transparent;
+  }
+  .poolsGrid-item-grid p:nth-child(1) {
+    color: ${({ theme }) => theme.text6};
+  }
+  .grid-item-details {
+    background-color: ${({ theme }) => theme.surface5};
+  }
+  .grid-item-details-btn {
+    color: ${({ theme }) => theme.primaryText3};
+  }
+  .grid-item-details-btn svg {
+    fill: ${({ theme }) => theme.primaryText3};
+  }
+  .grid-item-details .poolsGrid-item-table span {
+    color: ${({ theme }) => theme.text1};
+  }
+  .grid-item-details .poolsGrid-item-table a {
+    color: ${({ theme }) => theme.primaryText3};
+  }
+`
+
+const ButtonGroup = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  position: relative;
+  & :nth-child(1) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  & :nth-child(2) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  ::after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background-color: ${({ theme }) => theme.primaryText3};
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 2;
   }
 `
 
@@ -36,6 +113,8 @@ const JacuzziCard = styled.div`
   flex-direction: column;
   border-radius: 1rem;
   border: 1px solid gray;
+
+  display: none;
 
   div {
     margin: 0.5rem 0;
@@ -193,15 +272,17 @@ export default function Jacuzzi() {
     }
   }, [approval])
 
+  const isDarkMode = useIsDarkMode()
+
   return (
     <Wrapper>
       <div className="jacuzzi">
-        <div className="jacuzzi-background"></div>
+        {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
         <div className="jacuzzi-container">
           <div className="jacuzzi-media">
             <JacuzziImage />
           </div>
-          <div className="poolsGrid-item">
+          <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
                 <YAYIcon />
@@ -223,38 +304,30 @@ export default function Jacuzzi() {
                   xYAY to YAY: <span>{ratio}</span>
                 </p>
                 <p>
-                  Paper Hands Penalty: <span>25%</span>
+                  Paper Hands Penalty: <span>{earlyLeavePenaltyAfterUnlockDate}%</span>
                 </p>
               </div>
               <div className="poolsGrid-item-grid">
                 <div>
-                  <p>YAY earned</p>
-                  <p>0.000</p>
+                  <p>xYAY staked</p>
+                  <p>{userxYAYStake}</p>
                 </div>
-                <div>
-                  <button className="btn btn-secondary">Collect</button>
-                </div>
-              </div>
-              <div className="poolsGrid-item-grid">
                 <div>
                   <p>YAY staked</p>
-                  <p>0.000</p>
+                  <p>{userYAYStake}</p>
                 </div>
-                <div>
-                  <button className="btn btn-secondary">+ | -</button>
-                </div>
+                {!approvalSubmitted && (
+                  <>
+                    {approval === ApprovalState.NOT_APPROVED && (
+                      <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
+                    )}
+                  </>
+                )}
               </div>
-
-              {/* <button className="btn btn-secondary">Unlock Wallet</button> */}
-
-              {!approvalSubmitted && (
-                <>
-                  {approval === ApprovalState.NOT_APPROVED && (
-                    <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
-                  )}
-                  {userCanStake ? <ButtonPrimary onClick={handleStake}>Stake</ButtonPrimary> : ''}
-                </>
-              )}
+              <ButtonGroup>
+                <ButtonPrimary onClick={handleStake}>Add</ButtonPrimary>
+                <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
+              </ButtonGroup>
             </div>
             <div className="grid-item-details">
               <details>
@@ -280,7 +353,7 @@ export default function Jacuzzi() {
                 </div>
               </details>
             </div>
-          </div>
+          </Item>
         </div>
       </div>
       <JacuzziCard>
