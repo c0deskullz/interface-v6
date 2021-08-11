@@ -83,16 +83,16 @@ const BackgroundImage = styled.div`
   }
 `
 
-const TextHeader = styled.div`
-  h1 {
-    color: ${({ theme }) => theme.text1};
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-  }
-  p {
-    margin-bottom: 0;
-  }
-`
+// const TextHeader = styled.div`
+//   h1 {
+//     color: ${({ theme }) => theme.text1};
+//     font-size: 1.5rem;
+//     margin-bottom: 0.25rem;
+//   }
+//   p {
+//     margin-bottom: 0;
+//   }
+// `
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()

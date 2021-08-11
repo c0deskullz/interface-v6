@@ -104,13 +104,11 @@ export default function Earn({
   const [poolsLength, setPoolsLength] = useState<number>(0)
 
   useEffect(() => {
-    console.log('calling')
     fetchPoolAprs(chainId, stakingInfos, setPoolCards)
   }, [stakingInfos, setPoolCards, chainId])
 
   useEffect(() => {
     if (poolCards?.current.length && poolCards.current.length !== poolsLength) {
-      console.log('changing length')
       setPoolsLength(currValue => poolCards?.current?.length)
     }
   }, [poolCards.current, poolsLength])
