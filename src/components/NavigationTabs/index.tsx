@@ -30,11 +30,22 @@ const StyledNavLink = styled(NavLink).attrs({
   text-decoration: none;
   color: ${({ theme }) => theme.text3};
   font-size: 20px;
+  flex: 1;
 
   &.${activeClassName} {
-    border-radius: 12px;
     font-weight: 500;
     color: ${({ theme }) => theme.text1};
+    background-color: ${({ theme }) => theme.primary1};
+  }
+
+  &.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   :hover,
@@ -55,12 +66,12 @@ const StyledArrowLeft = styled(ArrowLeft)`
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()
   return (
-    <Tabs style={{ marginBottom: '20px', display: 'none' }}>
-      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
+    <Tabs style={{ marginBottom: '20px' }}>
+      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'} className="left">
         {t('swap')}
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
-        {t('pool')}
+      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'} className="right">
+        {t('liquidity')}
       </StyledNavLink>
     </Tabs>
   )

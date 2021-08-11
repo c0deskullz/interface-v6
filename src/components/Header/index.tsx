@@ -305,7 +305,7 @@ export default function Header() {
           >
             Liquidity
           </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/png/1'}>
+          <StyledNavLink id={`stake-nav-link`} to={'/yay/1'}>
             Piñatas
           </StyledNavLink>
           <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>

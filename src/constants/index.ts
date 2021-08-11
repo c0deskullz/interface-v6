@@ -10,8 +10,8 @@ export const ROUTER_ADDRESS = {
   [ChainId.FUJI]: '0xdb5931C6cEc0fF464e44c9ff414225b6171911Dc'
 }
 
-export const LANDING_PAGE = 'https://pangolin.exchange/'
-export const ANALYTICS_PAGE = 'https://info.pangolin.exchange/'
+export const LANDING_PAGE = 'https://partyswap.io/'
+export const ANALYTICS_PAGE = 'https://info.partyswap.io/'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -216,7 +216,7 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xa9D9D5e3E598f003e4760975d520BDeB4446803D',
+  [ChainId.FUJI]: '0x7C1E73122d26Af78C44FaB3c5e10a7eaa4ED2b59',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
 }
 

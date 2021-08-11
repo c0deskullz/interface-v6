@@ -237,7 +237,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
 
   // console.log('info: ', info)
 
-  const yay = YAY[ChainId.FUJI]
+  const yay = YAY[chainId || ChainId.FUJI]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
 
@@ -253,7 +253,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
   const totalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'totalSupply')
   const pairs = usePairs(tokens)
   // console.log('pairs: ', pairs)
-  const [avaxYayPairState, avaxYayPair] = usePair(WAVAX[ChainId.FUJI], yay)
+  const [avaxYayPairState, avaxYayPair] = usePair(WAVAX[chainId || ChainId.FUJI], yay)
 
   // tokens per second, constants
   const rewardRates = useMultipleContractSingleData(

@@ -3,16 +3,16 @@ import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import styled from 'styled-components'
 import { TYPE, StyledInternalLink } from '../../theme'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { CAVAX, JSBI, Token, Fraction } from '@partyswap-libs/sdk'
+import { JSBI, Fraction } from '@partyswap-libs/sdk'
 import { ButtonPrimary } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
-import { useColor } from '../../hooks/useColor'
+// import { useColor } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
-import { Break, CardNoise, CardBGImage } from './styled'
+import { Break } from './styled'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
+import PinataLogo from '../PinataLogo'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
-import { YAY } from '../../constants'
+// import { YAY } from '../../constants'
 
 const StatContainer = styled.div`
   display: flex;
@@ -28,31 +28,28 @@ const StatContainer = styled.div`
 `
 
 const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor: any }>`
-  border-radius: 12px;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  opacity: ${({ showBackground }) => (showBackground ? '1' : '1')};
-  background: ${({ theme, bgColor, showBackground }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
-  color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
-
-  ${({ showBackground }) =>
-    showBackground &&
-    `  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-     0px 24px 32px rgba(0, 0, 0, 0.01);`}
+  border-radius: 1.25rem;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: auto;
+  background: ${({ bgColor }) => bgColor};
+  color: ${({ theme }) => theme.text1} !important;
 `
 
 const TopSection = styled.div`
   display: grid;
-  grid-template-columns: 48px 1fr 120px;
-  grid-gap: 0px;
-  align-items: center;
+  grid-template-columns: 4rem auto;
+  grid-gap: 2rem;
+  gap: 2rem;
   padding: 1rem;
   z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
      grid-template-columns: 48px 1fr 96px;
    `};
+  .topRightSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 `
 
 // const APR = styled.div`
@@ -80,78 +77,72 @@ export default function PoolCard({
   version: string
   apr: string
 }) {
-  const token0 = stakingInfo.tokens[0]
-  const token1 = stakingInfo.tokens[1]
+  const { tokens, stakedAmount, totalRewardRate, totalStakedInWavax, rewardRate } = stakingInfo
+  const token0 = tokens[0]
+  const token1 = tokens[1]
 
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
 
-  const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
+  const isStaking = Boolean(stakedAmount.greaterThan('0'))
 
-  const avaxPool = currency0 === CAVAX || currency1 === CAVAX
-  let token: Token
-  if (avaxPool) {
-    token = currency0 === CAVAX ? token1 : token0
-  } else {
-    token = token0.equals(YAY[token0.chainId]) ? token1 : token0
-  }
+  // const avaxPool = currency0 === CAVAX || currency1 === CAVAX
+  // let token: Token
+  // if (avaxPool) {
+  //   token = currency0 === CAVAX ? token1 : token0
+  // } else {
+  //   token = token0.equals(YAY[token0.chainId]) ? token1 : token0
+  // }
   // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
-  // get the color of the token
-  let backgroundColor = useColor(token)
 
   // let usdToken: Token
   // const USDPrice = useUSDCPrice(usdToken)
   // valueOfTotalStakedAmountInUSDC =
   // valueOfTotalStakedAmountInWavax && USDPrice?.quote(valueOfTotalStakedAmountInWavax)
-  let weeklyRewardAmount = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(60 * 60 * 24 * 7))
-  let weeklyRewardPerAvax = weeklyRewardAmount.divide(stakingInfo.totalStakedInWavax)
+  let weeklyRewardAmount = totalRewardRate.multiply(JSBI.BigInt(60 * 60 * 24 * 7))
+  let weeklyRewardPerAvax = weeklyRewardAmount.divide(totalStakedInWavax)
   if (JSBI.EQ(weeklyRewardPerAvax.denominator, 0)) {
     weeklyRewardPerAvax = new Fraction(JSBI.BigInt(0), JSBI.BigInt(1))
   }
 
   return (
-    <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
-      <CardBGImage desaturate />
-      <CardNoise />
-
+    <Wrapper showBackground={isStaking} bgColor="#FFF">
       <TopSection>
-        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
-        <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
-          {currency0.symbol}-{currency1.symbol}
-        </TYPE.white>
-
-        <StyledInternalLink
-          to={`/png/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
-          style={{ width: '100%' }}
-        >
-          <ButtonPrimary padding="8px" borderRadius="8px">
-            {isStaking ? 'Manage' : 'Deposit'}
-          </ButtonPrimary>
-        </StyledInternalLink>
+        <PinataLogo pinataSymbol={`${currency0.symbol}-${currency1.symbol}`} />
+        <div className="topRightSection">
+          <TYPE.main fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
+            {currency0.symbol}-{currency1.symbol}
+          </TYPE.main>
+          <StyledInternalLink to={`/yay/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
+            <ButtonPrimary padding="8px" borderRadius="8px">
+              {isStaking ? 'Manage' : 'Deposit'}
+            </ButtonPrimary>
+          </StyledInternalLink>
+        </div>
       </TopSection>
 
       <StatContainer>
         <RowBetween>
-          <TYPE.white> Total deposited</TYPE.white>
-          <TYPE.white>
-            {`${stakingInfo.totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
+          <TYPE.main> Total deposited</TYPE.main>
+          <TYPE.main>
+            {`${totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
             {/* {valueOfTotalStakedAmountInUSDC
 							? `$${valueOfTotalStakedAmountInUSDC.toFixed(0, { groupSeparator: ',' })}`
 							: `${valueOfTotalStakedAmountInWavax?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`} */}
-          </TYPE.white>
+          </TYPE.main>
         </RowBetween>
         <RowBetween>
-          <TYPE.white> Pool rate </TYPE.white>
-          <TYPE.white>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} YAY / week`}</TYPE.white>
+          <TYPE.main> Pool rate </TYPE.main>
+          <TYPE.main>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} YAY / week`}</TYPE.main>
         </RowBetween>
         <RowBetween>
-          <TYPE.white> Current reward </TYPE.white>
-          <TYPE.white>{`${weeklyRewardPerAvax.toFixed(4, { groupSeparator: ',' }) ??
-            '-'} YAY / Week per AVAX`}</TYPE.white>
+          <TYPE.main> Current reward </TYPE.main>
+          <TYPE.main>{`${weeklyRewardPerAvax.toFixed(4, { groupSeparator: ',' }) ??
+            '-'} YAY / Week per AVAX`}</TYPE.main>
         </RowBetween>
         <RowBetween>
-          <TYPE.white> Earn up to (yearly) </TYPE.white>
-          <TYPE.white>{`${apr}%`}</TYPE.white>
+          <TYPE.main> Earn up to (yearly) </TYPE.main>
+          <TYPE.main>{`${apr}%`}</TYPE.main>
         </RowBetween>
       </StatContainer>
 
@@ -167,9 +158,7 @@ export default function PoolCard({
               <span role="img" aria-label="wizard-icon" style={{ marginRight: '0.5rem' }}>
                 ⚡
               </span>
-              {`${stakingInfo.rewardRate
-                ?.multiply(`${60 * 60 * 24 * 7}`)
-                ?.toSignificant(4, { groupSeparator: ',' })} YAY / week`}
+              {`${rewardRate?.multiply(`${60 * 60 * 24 * 7}`)?.toSignificant(4, { groupSeparator: ',' })} YAY / week`}
             </TYPE.black>
           </BottomSection>
         </>
