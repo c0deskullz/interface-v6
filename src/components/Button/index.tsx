@@ -17,7 +17,7 @@ const Base = styled(RebassButton)<{
   font-weight: 500;
   text-align: center;
   border-radius: 12px;
-  border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
+  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5rem')};
   outline: none;
   border: 1px solid transparent;
   color: white;
@@ -40,6 +40,9 @@ const Base = styled(RebassButton)<{
 
 export const ButtonPrimary = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
+  font-weight: 500;
+  font-family: "Poppins";
+  font-size: 1rem;
   color: white;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};

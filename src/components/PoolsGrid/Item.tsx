@@ -5,6 +5,40 @@ import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
 
+const Item = styled.div`
+  background-color: ${({ theme }) => theme.surface4};
+  [class*='-item-header'] h4 {
+    color: ${({ theme }) => theme.text1};
+  }
+  .poolsGrid-item-header-features span {
+    background-color: ${({ theme }) => theme.primaryText2};
+    border: 2px solid ${({ theme }) => theme.primaryText2};
+  }
+  .poolsGrid-item-header-features span:nth-child(1) {
+    color: ${({ theme }) => theme.primaryText2};
+    border-color: ${({ theme }) => theme.primaryText2};
+    background-color: transparent;
+  }
+  .poolsGrid-item-grid p:nth-child(1) {
+    color: ${({ theme }) => theme.text6};
+  }
+  .grid-item-details {
+    background-color: ${({ theme }) => theme.surface5};
+  }
+  .grid-item-details-btn {
+    color: ${({ theme }) => theme.primaryText3};
+  }
+  .grid-item-details-btn svg {
+    fill: ${({ theme }) => theme.primaryText3};
+  }
+  .grid-item-details .poolsGrid-item-table span {
+    color: ${({ theme }) => theme.text1};
+  }
+  .grid-item-details .poolsGrid-item-table a {
+    color: ${({ theme }) => theme.primaryText3};
+  }
+`
+
 const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
 `
@@ -15,7 +49,7 @@ const BadgeIcon = styled(BadgeSVG)`
 export default function PoolsGridItem() {
   return (
     <>
-      <div className="poolsGrid-item">
+      <Item className="poolsGrid-item">
         <div className="poolsGrid-item-content">
           <div className="poolsGrid-item-header">
             <PoolIcon />
@@ -72,7 +106,7 @@ export default function PoolsGridItem() {
             </div>
           </details>
         </div>
-      </div>
+      </Item>
     </>
   )
 }

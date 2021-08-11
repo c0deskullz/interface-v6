@@ -9,9 +9,9 @@ input[type='tel'],
 input[type='submit'],
 textarea,
 select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
+  // -moz-appearance: none;
+  // -webkit-appearance: none;
+  // appearance: none;
 }
 
 /* Form Controls
@@ -20,10 +20,10 @@ input,
 button,
 textarea,
 select {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
+  // font-family: inherit;
+  // font-size: inherit;
+  // font-weight: inherit;
+  // line-height: inherit;
 }
 input,
 input[type='number'],
@@ -33,18 +33,18 @@ input[type='email'],
 input[type='tel'],
 textarea,
 select {
-  width: 100%;
+  // width: 100%;
   color: #000;
-  background-color: #fff;
-  border: none;
-  border-bottom: 2px solid #e5e5e5;
-  border-radius: 0;
-  padding: 0.3rem 0.5rem;
-  margin-bottom: 1rem;
+  // background-color: #fff;
+  // border: none;
+  // border-bottom: 2px solid #e5e5e5;
+  // border-radius: 0;
+  // padding: 0.3rem 0.5rem;
+  // margin-bottom: 1rem;
 }
 input::placeholder,
 textarea::placeholder {
-  color: #777;
+  // color: #777;
 }
 input:focus,
 textarea:focus,
@@ -61,10 +61,10 @@ select {
   background-size: 0.65rem auto, 100%;
 }
 label {
-  color: $color-text-heading;
+  // color: $color-text-heading;
   font-family: $font-heading;
   font-weight: 600;
-  margin-bottom: 0.2rem;
+  // margin-bottom: 0.2rem;
 }
 
 /* Form Group

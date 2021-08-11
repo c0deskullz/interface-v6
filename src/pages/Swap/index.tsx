@@ -46,10 +46,52 @@ import useENS from '../../hooks/useENS'
 
 import imageLeft from '../../assets/svg/swap-image-left.svg'
 import imageRight from '../../assets/svg/swap-image-right.svg'
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
 
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 100px;
+  margin-top: -100px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 2rem 16px 0;
+    margin: -2rem -16px 0;
+  `};
+`
+
+// const PageContent = styled(AppBody)`
+//   background-color: ${({ theme }) => theme.surface3};
+// `
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100vh;
   width: 100%;
+  top: 0;
+  z-index: -1;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
+`
+
+const TextHeader = styled.div`
+  h1 {
+    color: ${({ theme }) => theme.text1};
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  p {
+    margin-bottom: 0;
+  }
 `
 
 export default function Swap() {
@@ -262,9 +304,12 @@ export default function Swap() {
     onCurrencySelection
   ])
 
+  const isDarkMode = useIsDarkMode()
+
   return (
-    <>
-      <div className="swap-image-background"></div>
+    <PageWrapper>
+      {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
+
       <img alt="" src={imageLeft} className="swap-image left" />
       <img alt="" src={imageRight} className="swap-image right" />
       <TokenWarningModal
@@ -484,6 +529,6 @@ export default function Swap() {
       </PageWrapper>
 
       <AdvancedSwapDetailsDropdown trade={trade} />
-    </>
+    </PageWrapper>
   )
 }

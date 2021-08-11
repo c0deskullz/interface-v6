@@ -37,8 +37,7 @@ const HeaderFrame = styled.div`
   width: 100%;
   top: 0;
   position: relative;
-  background-color: #4003b6;
-  /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+  background-color: ${({ theme }) => theme.surface1};
   padding: 1rem;
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -120,15 +119,15 @@ const AccountElement = styled.div<{ active: boolean }>`
   :focus {
     border: 1px solid blue;
   }
-  /* :hover {
+  :hover {
     background-color: ${({ theme, active }) => (!active ? theme.bg2 : theme.bg4)};
-  } */
+  }
 `
 
 const PNGAmount = styled(AccountElement)`
   color: white;
-  padding: 4px 8px;
-  height: 36px;
+  padding: 8px 12px;
+  /* height: 36px; */
   font-weight: 500;
   background-color: ${({ theme }) => theme.primary1};
   /* background: radial-gradient(174.47% 188.91% at 1.84% 0%, #f97316 0%, #e84142 100%), #edeef2; */
@@ -155,6 +154,8 @@ const HideSmall = styled.span`
 const NetworkCard = styled(RedCard)`
   border-radius: 12px;
   padding: 8px 12px;
+  background-color: ${({ theme }) => theme.primary1};
+  color: #fff;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
     margin-right: 0.5rem;

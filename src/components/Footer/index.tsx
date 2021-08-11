@@ -2,11 +2,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Logo } from '../../assets/svg/logo.svg'
-import SupportImage from '../../assets/svg/footer-support.svg'
-import IconTwitter from '../../assets/svg/ico-twitter.svg'
-import IconDiscord from '../../assets/svg/ico-discord.svg'
-import IconTelegram from '../../assets/svg/ico-telegram.svg'
-import IconMedium from '../../assets/svg/ico-medium.svg'
+import { ReactComponent as IconTwitter } from '../../assets/svg/ico-twitter.svg'
+import { ReactComponent as IconDiscord } from '../../assets/svg/ico-discord.svg'
+import { ReactComponent as IconTelegram } from '../../assets/svg/ico-telegram.svg'
+import { ReactComponent as IconMedium } from '../../assets/svg/ico-medium.svg'
+import { ReactComponent as SupportImage } from '../../assets/svg/footer-support.svg'
+
+const Wrapper = styled.div`
+  background-color: ${({ theme }) => theme.surface2};
+  a svg {
+    color: ${({ theme }) => theme.surface2};
+  }
+`
 
 const LogoFooter = styled(Logo)`
   height: 2rem;
@@ -16,27 +23,27 @@ const LogoFooter = styled(Logo)`
 export default function Footer() {
   return (
     <>
-      <div className="footer">
+      <Wrapper className="footer">
         <div className="footer-container">
           <div className="footer-section">
             <LogoFooter />
             <p>The most reliable Avalanche swap yet</p>
-            <img src={SupportImage} alt="" className="footer-section-support" />
+            <SupportImage className="footer-section-support" />
           </div>
           <div className="footer-section footer-social">
             <h4>Follow Us!</h4>
             <div className="footer-social-container">
               <a href="https://twitter.com/partyswapdex" target="_blank" rel="noopener noreferrer">
-                <img src={IconTwitter} className="socialIcon twitter" alt="" />
+                <IconTwitter className="socialIcon twitter" />
               </a>
               <a href="https://partyswap-ex.medium.com/" target="_blank" rel="noopener noreferrer">
-                <img src={IconDiscord} className="socialIcon medium" alt="" />
+                <IconDiscord className="socialIcon medium" />
               </a>
               <a href="https://t.me/partyswap" target="_blank" rel="noopener noreferrer">
-                <img src={IconTelegram} className="socialIcon telegram" alt="" />
+                <IconTelegram className="socialIcon telegram" />
               </a>
               <a href="https://discord.com/invite/r9fTvqCfBw" target="_blank" rel="noopener noreferrer">
-                <img src={IconMedium} className="socialIcon discord" alt="" />
+                <IconMedium className="socialIcon discord" />
               </a>
             </div>
           </div>
@@ -61,7 +68,7 @@ export default function Footer() {
         <div className="footer-copyright">
           <p>© 2021 PartySwap · All Rights Reserved</p>
         </div>
-      </div>
+      </Wrapper>
     </>
   )
 }

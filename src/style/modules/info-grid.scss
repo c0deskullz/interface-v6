@@ -5,6 +5,7 @@
   z-index: 10;
   padding-bottom: 1rem;
   margin-top: -3rem;
+  padding-bottom: 3rem;
 }
 .grid-container {
   display: grid;
@@ -18,9 +19,8 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  background-color: $color-brand;
-  background: $gradient-main-dark;
   padding: 5rem 2rem;
+  overflow: hidden;
   @include module-last-child();
 }
 .grid-banner-content {
@@ -117,7 +117,6 @@
 .grid-item {
   display: grid;
   gap: 2rem;
-  background-color: #fff;
   border-radius: 1.25rem;
   box-shadow: 0 3px 20px rgba($color: #000000, $alpha: 0.15);
   padding: 1.5rem;
@@ -134,12 +133,10 @@
 }
 .grid-item-header h4 {
   font-size: 1.5rem;
-  color: #000000;
   margin-bottom: 0;
 }
 .grid-item-header p {
   font-size: 1rem;
-  color: #555;
   margin-bottom: 0;
 }
 .grid-item-farms {
