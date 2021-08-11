@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useCallback, useRef, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
-import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
+import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCard'
 import { RouteComponentProps } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/
 import PoolsGrid from '../../components/PoolsGrid'
 import Loader from '../../components/Loader'
 import { useActiveWeb3React } from '../../hooks'
-import { JSBI } from '@partyswap-libs/sdk'
+import { ChainId, JSBI } from '@partyswap-libs/sdk'
 
 import imageLeft from '../../assets/svg/pools-hero-left.svg'
 import imageRight from '../../assets/svg/pools-hero-right.svg'
@@ -43,6 +43,48 @@ const PoolSection = styled.div`
   justify-self: center;
 `
 
+const fetchPoolAprs = async (
+  chainId: ChainId | undefined,
+  stakingInfos: StakingInfo[],
+  callback: (arr: any[]) => any
+) => {
+  const results = await Promise.all(
+    stakingInfos
+      ?.sort(function(info_a, info_b) {
+        // greater stake in avax comes first
+        return info_a.totalStakedInWavax?.greaterThan(info_b.totalStakedInWavax ?? JSBI.BigInt(0)) ? -1 : 1
+      })
+      .sort(function(info_a, info_b) {
+        if (info_a.stakedAmount.greaterThan(JSBI.BigInt(0))) {
+          if (info_b.stakedAmount.greaterThan(JSBI.BigInt(0)))
+            // both are being staked, so we keep the previous sorting
+            return 0
+          // the second is actually not at stake, so we should bring the first up
+          else return -1
+        } else {
+          if (info_b.stakedAmount.greaterThan(JSBI.BigInt(0)))
+            // first is not being staked, but second is, so we should bring the first down
+            return 1
+          // none are being staked, let's keep the  previous sorting
+          else return 0
+        }
+      })
+      .map(stakingInfo => {
+        return fetch(`${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}/${chainId}`)
+          .then(res => res.text())
+          .then(res => ({ apr: res, ...stakingInfo }))
+      })
+  )
+
+  const poolCards = results.map(stakingInfo => (
+    <PoolCard apr={'0'} key={stakingInfo.stakingRewardAddress} stakingInfo={stakingInfo} version={'1'} />
+  ))
+
+  if (poolCards.length) {
+    callback(poolCards)
+  }
+}
+
 export default function Earn({
   match: {
     params: { version }
@@ -50,39 +92,23 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
   const stakingInfos = useStakingInfo(Number(version))
-  const [stakingInfoResults, setStakingInfoResults] = useState<any[]>()
+  const poolCards = useRef([])
+  const setPoolCards = useCallback(results => {
+    poolCards.current = results
+  }, [])
+  const [poolsLength, setPoolsLength] = useState<number>(0)
 
-  useMemo(() => {
-    Promise.all(
-      stakingInfos
-        ?.sort(function(info_a, info_b) {
-          // greater stake in avax comes first
-          return info_a.totalStakedInWavax?.greaterThan(info_b.totalStakedInWavax ?? JSBI.BigInt(0)) ? -1 : 1
-        })
-        .sort(function(info_a, info_b) {
-          if (info_a.stakedAmount.greaterThan(JSBI.BigInt(0))) {
-            if (info_b.stakedAmount.greaterThan(JSBI.BigInt(0)))
-              // both are being staked, so we keep the previous sorting
-              return 0
-            // the second is actually not at stake, so we should bring the first up
-            else return -1
-          } else {
-            if (info_b.stakedAmount.greaterThan(JSBI.BigInt(0)))
-              // first is not being staked, but second is, so we should bring the first down
-              return 1
-            // none are being staked, let's keep the  previous sorting
-            else return 0
-          }
-        })
-        .map(stakingInfo => {
-          return fetch(`${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}/${chainId}`)
-            .then(res => res.text())
-            .then(res => ({ apr: res, ...stakingInfo }))
-        })
-    ).then(results => {
-      setStakingInfoResults(results)
-    })
-  }, [stakingInfos, chainId])
+  useEffect(() => {
+    console.log('calling')
+    fetchPoolAprs(chainId, stakingInfos, setPoolCards)
+  }, [stakingInfos, setPoolCards, chainId])
+
+  useEffect(() => {
+    if (poolCards?.current.length && poolCards.current.length !== poolsLength) {
+      console.log('changing length')
+      setPoolsLength(currValue => poolCards?.current?.length)
+    }
+  }, [poolCards.current, poolsLength])
 
   const DataRow = styled(RowBetween)`
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -176,19 +202,12 @@ export default function Earn({
           </DataRow>
 
           <PoolSection>
-            {stakingRewardsExist && stakingInfos?.length === 0 ? (
+            {stakingRewardsExist && poolCards?.current.length === 0 ? (
               <Loader style={{ margin: 'auto' }} />
             ) : !stakingRewardsExist ? (
               'No active rewards'
             ) : (
-              stakingInfoResults?.map(stakingInfo => (
-                <PoolCard
-                  apr={stakingInfo.apr}
-                  key={stakingInfo.stakingRewardAddress}
-                  stakingInfo={stakingInfo}
-                  version={version}
-                />
-              ))
+              poolCards.current
             )}
           </PoolSection>
         </AutoColumn>
