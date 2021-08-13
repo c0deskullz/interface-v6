@@ -77,7 +77,7 @@ export default function PoolCard({
   version: string
   apr: string
 }) {
-  const { tokens, stakedAmount, totalRewardRate, totalStakedInWavax, rewardRate } = stakingInfo
+  const { tokens, stakedAmount, totalRewardRate, totalStakedInWavax, rewardRate, earnedAmount } = stakingInfo
   const token0 = tokens[0]
   const token1 = tokens[1]
 
@@ -143,6 +143,10 @@ export default function PoolCard({
         <RowBetween>
           <TYPE.main> Earn up to (yearly) </TYPE.main>
           <TYPE.main>{`${apr}%`}</TYPE.main>
+        </RowBetween>
+        <RowBetween>
+          <TYPE.main> Earned </TYPE.main>
+          <TYPE.main>{earnedAmount.toFixed(0, { groupSeparator: ',' })}</TYPE.main>
         </RowBetween>
       </StatContainer>
 
