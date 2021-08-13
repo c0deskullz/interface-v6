@@ -17,7 +17,9 @@ import {
   SNOB,
   AVME,
   ELK,
-  XAVA
+  XAVA,
+  SHERPA,
+  YAK
 } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
@@ -61,51 +63,51 @@ export const STAKING_V2_AVALANCHE: {
 }[] = [
   {
     tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xCB625aDe11aa79809f4faFe19e117e601FAC72c7'
+    stakingRewardAddress: '0xfC59bbd5f585E183FfA5cCA4B1a34Af681Afb034'
   },
   {
     tokens: [YAY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x85196Ea6AF1310145374AE50CC3eaeaBeA79B1af'
+    stakingRewardAddress: '0x4D1B8c4146783Eed90d056e68605D13E0b9674ee'
   },
   {
     tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x32174AA3191186283B57eE182982F87601639C0b'
+    stakingRewardAddress: '0x2701641b39142bfCcf6aCfaC8a31eFe5c34F2D50'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xA2363ce89B48a51E5FaF6A75642a0b111340abD7'
+    stakingRewardAddress: '0xE9070510EE2B3B8bA98225E17C3c51E1d4D0aF36'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xF55741FF63EAb8E29B46DddE3Ad30E329B578B43'
+    stakingRewardAddress: '0x3A7A60DFb11DEE4Dc166fF49877107C7703016cE'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x96D858143c057e608cd42972670E6b05B68d0bc3'
+    stakingRewardAddress: '0x17228AFA1F998d3666A754E39A2A06ef0359b5e2'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], aaBLOCK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x0573F3177Ad734D5d16f0c78bdFFA2fD5D266059'
+    stakingRewardAddress: '0xF595aA03C82c17cB95dEBdE2e06e290b860cc3e8'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], SPORE[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x51DC60DD02E6393c67F031C74021fA9bB1718262'
+    stakingRewardAddress: '0xF0Fc692eb67E84bbbF2EaBdd28da662333ea16e0'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xD9690b58b8e5F5aAeDe625aFfaa1F8f06A0144a5'
+    stakingRewardAddress: '0x56a801dc2e185C7A3E6f1a2f14eD79cA81eF8998'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], PNG[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x421Ddca249fA5fDDCa84f5e25fCE8E45117081C7'
+    stakingRewardAddress: '0xE65c7A99DC4c73faF90C67c4ec8ef2a6C74FFCBE'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], PEFI[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x2016824D66fB791c0b09daf6a94eFAa7256BdB28'
+    stakingRewardAddress: '0x7d3E93bB90a83Deaa6343dBc37822060B453f8F4'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], FRAX[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xE3e7725728aAa5239ed73d5b163AdbB4B13C025E'
+    stakingRewardAddress: '0xBE08e949A42927E53Baa003F33642F6f7dDF927E'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], ZERO[ChainId.AVALANCHE]],
@@ -113,19 +115,27 @@ export const STAKING_V2_AVALANCHE: {
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], SNOB[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xa2aF347ddc105011AA07924166Fb90E3Bae172D2'
+    stakingRewardAddress: '0x905B97DE228840a31D32cb5E02158DD7FA488806'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], ELK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x40beFEad4fe1Da122D51857403DF940C800F71AF'
+    stakingRewardAddress: '0x2ABd108E2B636754497405F52aE4A1F5dFd50D32'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x74Ea968eD0b1a8135A42d8B55dbE578BeD10c985'
+    stakingRewardAddress: '0xE4EF45EDb2cd401150De8709c8eE53Fa06A7A19e'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], AVME[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xBf42a3C4760d230C0FF5D661D9a444b7D6A200f7'
+    stakingRewardAddress: '0xc3258CA969eC69CCCE3589D191C7E58EF824fdb6'
+  },
+  {
+    tokens: [WAVAX[ChainId.AVALANCHE], SHERPA[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x4f5926E110FFDfDF830E2984015f31476f3fD199'
+  },
+  {
+    tokens: [WAVAX[ChainId.AVALANCHE], YAK[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x4A8186F5753830B3f3B43D09746516814240ee5C'
   }
 ]
 

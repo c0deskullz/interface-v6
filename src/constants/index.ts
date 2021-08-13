@@ -193,6 +193,28 @@ export const AAVE: { [chainId in ChainId]: Token } = {
   )
 }
 
+export const SHERPA: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'SHERPA', 'Sherpa'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xa5E59761eBD4436fa4d20E1A27cBa29FB2471Fc6',
+    18,
+    'SHERPA',
+    'Sherpa'
+  )
+}
+
+export const YAK: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'YAK', 'Yak Token'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x59414b3089ce2AF0010e7523Dea7E2b35d776ec7',
+    18,
+    'YAK',
+    'Yak Token'
+  )
+}
+
 export const YFI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'YFI', 'yearn.finance'),
   [ChainId.AVALANCHE]: new Token(
