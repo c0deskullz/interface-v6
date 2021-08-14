@@ -16,8 +16,12 @@ import AvaxZero from './AVAX-ZERO.png'
 import YayAvax from './YAY-AVAX.png'
 import YayDai from './YAY-DAI.png'
 import YayUsdt from './YAY-USDT.png'
+import AvaxYak from './AVAX-YAK.png'
+import AvaxSherpa from './AVAX-SHERPA.png'
 
 export {
+  AvaxYak,
+  AvaxSherpa,
   AvaxAaBlock,
   AvaxAvme,
   AvaxBag,

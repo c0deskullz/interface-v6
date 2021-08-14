@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
 import {
+  AvaxSherpa,
+  AvaxYak,
   AvaxAaBlock,
   AvaxAvme,
   AvaxBag,
@@ -59,6 +61,10 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxXava
       case 'AVAX-ZERO':
         return AvaxZero
+      case 'AVAX-SHERPA':
+        return AvaxSherpa
+      case 'AVAX-YAK':
+        return AvaxYak
       case 'YAY-DAI':
         return YayDai
       default:

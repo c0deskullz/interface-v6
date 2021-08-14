@@ -1,16 +1,19 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react'
-import { AutoColumn } from '../../components/Column'
+// import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
-import PoolCard from '../../components/earn/PoolCard'
+// import PoolCard from '../../components/earn/PoolCard'
 import { RouteComponentProps } from 'react-router-dom'
 import PoolsGrid from '../../components/PoolsGrid'
+import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
+import PoolsGridItem from '../../components/PoolsGrid/Item'
 import Loader from '../../components/Loader'
 import { useActiveWeb3React } from '../../hooks'
 import { ChainId, JSBI } from '@partyswap-libs/sdk'
 
 import imageLeft from '../../assets/svg/pools-hero-left.svg'
 import imageRight from '../../assets/svg/pools-hero-right.svg'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -21,30 +24,13 @@ const Wrapper = styled.div`
   }
 `
 
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
-  width: 100%;
-  margin: 2rem auto 0;
-`
-
-const TopSection = styled(AutoColumn)`
-  max-width: 720px;
-  width: 100%;
-`
-
-const PoolSection = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  column-gap: 10px;
-  row-gap: 15px;
-  width: 100%;
-  justify-self: center;
-`
-
 const fetchPoolAprs = async (
   chainId: ChainId | undefined,
   stakingInfos: StakingInfo[],
-  callback: (arr: any[]) => any
+  callback: (arr: any[]) => any,
+  props: {
+    onClickClaim: (stakingInfo: StakingInfo) => void
+  }
 ) => {
   const results = await Promise.all(
     stakingInfos
@@ -74,12 +60,27 @@ const fetchPoolAprs = async (
       })
   )
 
-  const poolCards = results.map(stakingInfo => (
-    <PoolCard apr={'0'} key={stakingInfo.stakingRewardAddress} stakingInfo={stakingInfo} version={'1'} />
-  ))
+  if (results.length) {
+    callback(
+      results.map(stakingInfo => {
+        const { tokens, apr } = stakingInfo
 
-  if (poolCards.length) {
-    callback(poolCards)
+        const token0 = tokens[0]
+        const token1 = tokens[1]
+
+        const currency0 = unwrappedToken(token0)
+        const currency1 = unwrappedToken(token1)
+        return (
+          <PoolsGridItem
+            apr={apr}
+            stakingInfo={stakingInfo}
+            version={'1'}
+            key={`${currency0.symbol}-${currency1.symbol}`}
+            onClickClaim={props.onClickClaim}
+          />
+        )
+      })
+    )
   }
 }
 
@@ -94,14 +95,28 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
   const stakingInfos = useStakingInfo(Number(version))
-  const poolCards = useRef([])
+  const poolCards = useRef<
+    {
+      stakingInfo: StakingInfo
+      version: string
+      apr: string
+    }[]
+  >([])
   const setPoolCards = useCallback(results => {
     poolCards.current = results
   }, [])
   const [poolsLength, setPoolsLength] = useState<number>(0)
 
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+  const [currentStakingPool, setCurrentStakingPool] = useState<StakingInfo | undefined>()
+
   useEffect(() => {
-    fetchPoolAprs(chainId, stakingInfos, setPoolCards)
+    fetchPoolAprs(chainId, stakingInfos, setPoolCards, {
+      onClickClaim: stakingInfo => {
+        setCurrentStakingPool(stakingInfo)
+        setShowClaimRewardModal(true)
+      }
+    })
   }, [stakingInfos, setPoolCards, chainId])
 
   useEffect(() => {
@@ -114,6 +129,16 @@ export default function Earn({
 
   return (
     <Wrapper>
+      {currentStakingPool && (
+        <ClaimRewardModal
+          isOpen={showClaimRewardModal}
+          onDismiss={() => {
+            setCurrentStakingPool(undefined)
+            setShowClaimRewardModal(false)
+          }}
+          stakingInfo={currentStakingPool}
+        />
+      )}
       <Hero className="hero">
         <div className="hero-container">
           <div className="hero-content">
@@ -126,55 +151,21 @@ export default function Earn({
         <img src={imageRight} alt="A piñata running from Doggo and Penguin" className="hero-img hero-img-right" />
       </Hero>
 
-      <PoolsGrid />
+      {stakingRewardsExist && poolCards?.current.length === 0 ? (
+        <Loader style={{ margin: 'auto' }} />
+      ) : !stakingRewardsExist ? (
+        'No active rewards'
+      ) : (
+        <PoolsGrid pools={poolCards.current} />
+      )}
 
-      <PageWrapper gap="lg" justify="center">
-        <TopSection gap="md">
-          {/* <DataCard>
-          <CardNoise />
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>IMPORTANT UPDATE</TYPE.white>
-              </RowBetween>
-              <RowBetween>
-                <TYPE.white fontSize={14}>
-                  As a result of Party governance proposal 1, Party is changing staking contracts! After approximately
-                  08:59 UTC on 4/19, all staking rewards will be distributed to the new staking contracts. Before the
-                  switch, all rewards will still be distributed to the old contracts. To avoid interruptions to yield
-                  farming rewards, you need to unstake your liquidity from the old contracts and restake in the new
-                  contracts. You do not need to remove liquidity from your pools or alter your positions.
-                </TYPE.white>
-              </RowBetween>
-              <RowBetween>
-                <TYPE.white fontSize={14}>
-                  To unstake, go to the old pools, click manage and withdraw your xYAY tokens. This will also claim any
-                  earned YAY. To restake, navigate to the new pools, click manage, and then deposit.
-                </TYPE.white>
-              </RowBetween>{' '}
-              <NavLink style={{ color: 'white', textDecoration: 'underline' }} to="/png/0" target="_blank">
-                <TYPE.white fontSize={14}>Old YAY pools</TYPE.white>
-              </NavLink>
-              <NavLink style={{ color: 'white', textDecoration: 'underline' }} to="/png/1" target="_blank">
-                <TYPE.white fontSize={14}>New YAY pools</TYPE.white>
-              </NavLink>
-            </AutoColumn>
-          </CardSection>
-        </DataCard> */}
-        </TopSection>
-
+      {/* <PageWrapper gap="lg" justify="center">
         <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
           <PoolSection>
-            {stakingRewardsExist && poolCards?.current.length === 0 ? (
-              <Loader style={{ margin: 'auto' }} />
-            ) : !stakingRewardsExist ? (
-              'No active rewards'
-            ) : (
-              poolCards.current
-            )}
+            
           </PoolSection>
         </AutoColumn>
-      </PageWrapper>
+      </PageWrapper> */}
     </Wrapper>
   )
 }

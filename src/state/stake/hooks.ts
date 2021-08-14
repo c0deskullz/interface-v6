@@ -13,7 +13,7 @@ import {
   USDT,
   WBTC,
   YAY,
-  ZERO,
+  // ZERO,
   SNOB,
   AVME,
   ELK,
@@ -24,28 +24,39 @@ import {
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
-import { NEVER_RELOAD, useMultipleContractSingleData } from '../multicall/hooks'
+import { useLiquidityPoolManagerContract } from '../../hooks/useContract'
+import {
+  MethodArg,
+  NEVER_RELOAD,
+  OptionalMethodInputs,
+  useMultipleContractSingleData,
+  useSingleContractMultipleData
+} from '../multicall/hooks'
 import { tryParseAmount } from '../swap/hooks'
 
 export const STAKING_V1: {
   tokens: [Token, Token]
   stakingRewardAddress: string
+  pair: string
 }[] = []
 
 export const STAKING_V2: {
   tokens: [Token, Token]
   stakingRewardAddress: string
+  pair: string
 }[] = [
   {
     tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
-    stakingRewardAddress: '0xcf3E7F88178Aa7889acAc76F08768E2EF1949Fe7'
+    stakingRewardAddress: '0xcf3E7F88178Aa7889acAc76F08768E2EF1949Fe7',
+    pair: '0x17dB829157c59202Ae553a633Fd183047d533eEC'
   },
   {
     tokens: [
       WAVAX[ChainId.FUJI],
       new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
     ],
-    stakingRewardAddress: '0x9376BCCe88d8c6b0DEd85147c8685ED295e030fc'
+    stakingRewardAddress: '0x9376BCCe88d8c6b0DEd85147c8685ED295e030fc',
+    pair: '0xC19f58BDBD64814cBE32b1C305d08bD662A392fF'
   }
   // {
   //   tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
@@ -60,82 +71,102 @@ export const STAKING_V2: {
 export const STAKING_V2_AVALANCHE: {
   tokens: [Token, Token]
   stakingRewardAddress: string
+  pair: string
 }[] = [
   {
     tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xfC59bbd5f585E183FfA5cCA4B1a34Af681Afb034'
+    stakingRewardAddress: '0xfC59bbd5f585E183FfA5cCA4B1a34Af681Afb034',
+    pair: '0xC8d03a17509Aa21f1AA1f7E04ce0A99e5dB3516E'
   },
   {
     tokens: [YAY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x4D1B8c4146783Eed90d056e68605D13E0b9674ee'
+    stakingRewardAddress: '0x4D1B8c4146783Eed90d056e68605D13E0b9674ee',
+    pair: '0x7e28A8612baA734CC2745de81baAf43C76aaF127'
   },
   {
     tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x2701641b39142bfCcf6aCfaC8a31eFe5c34F2D50'
+    stakingRewardAddress: '0x2701641b39142bfCcf6aCfaC8a31eFe5c34F2D50',
+    pair: '0xf81d80C6FC672a728a4B7949D9338a6906636f23'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xE9070510EE2B3B8bA98225E17C3c51E1d4D0aF36'
+    stakingRewardAddress: '0xE9070510EE2B3B8bA98225E17C3c51E1d4D0aF36',
+    pair: '0x5712e1E7100741006249131233bD7b96CD4ac735'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x3A7A60DFb11DEE4Dc166fF49877107C7703016cE'
+    stakingRewardAddress: '0x3A7A60DFb11DEE4Dc166fF49877107C7703016cE',
+    pair: '0xF5e6909d10bd8601470c3b582F9dBb3199C63411'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x17228AFA1F998d3666A754E39A2A06ef0359b5e2'
+    stakingRewardAddress: '0x17228AFA1F998d3666A754E39A2A06ef0359b5e2',
+    pair: '0xc52Bb891e10201B304C27Ab391B501a5d556174B'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], aaBLOCK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xF595aA03C82c17cB95dEBdE2e06e290b860cc3e8'
+    stakingRewardAddress: '0xF595aA03C82c17cB95dEBdE2e06e290b860cc3e8',
+    pair: '0x8CA9f094E7eB322475caC9853d21598B31Ff186a'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], SPORE[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xF0Fc692eb67E84bbbF2EaBdd28da662333ea16e0'
+    stakingRewardAddress: '0xF0Fc692eb67E84bbbF2EaBdd28da662333ea16e0',
+    pair: '0xB919Af56d83B769af265Ef9662932c019892af97'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x56a801dc2e185C7A3E6f1a2f14eD79cA81eF8998'
+    stakingRewardAddress: '0x56a801dc2e185C7A3E6f1a2f14eD79cA81eF8998',
+    pair: '0xb4A181DC34A38b450C1DbcDF6643D4d9Eb99c79d'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], PNG[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xE65c7A99DC4c73faF90C67c4ec8ef2a6C74FFCBE'
+    stakingRewardAddress: '0xE65c7A99DC4c73faF90C67c4ec8ef2a6C74FFCBE',
+    pair: '0x55C4487538D14e4A2C5bf6540a112FCbc0951Ded'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], PEFI[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x7d3E93bB90a83Deaa6343dBc37822060B453f8F4'
+    stakingRewardAddress: '0x7d3E93bB90a83Deaa6343dBc37822060B453f8F4',
+    pair: '0x60451cB01AcF41175AB97Df46bbE8054BD1c1b7F'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], FRAX[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xBE08e949A42927E53Baa003F33642F6f7dDF927E'
+    stakingRewardAddress: '0xBE08e949A42927E53Baa003F33642F6f7dDF927E',
+    pair: '0xa4dC371AA429657df67A26E1926F6c59229b92a0'
   },
-  {
-    tokens: [WAVAX[ChainId.AVALANCHE], ZERO[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x3b9b4502A9980be3C46BefcFa637ec9Ed0be2485'
-  },
+  //  {
+  //    tokens: [WAVAX[ChainId.AVALANCHE], ZERO[ChainId.AVALANCHE]],
+  //    stakingRewardAddress: '0x3b9b4502A9980be3C46BefcFa637ec9Ed0be2485',
+  //    pair: ''
+  //  },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], SNOB[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x905B97DE228840a31D32cb5E02158DD7FA488806'
+    stakingRewardAddress: '0x905B97DE228840a31D32cb5E02158DD7FA488806',
+    pair: '0xaaA255A7e4b0A6C2Fe1519697e9029d2Dfc909c3'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], ELK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x2ABd108E2B636754497405F52aE4A1F5dFd50D32'
+    stakingRewardAddress: '0x2ABd108E2B636754497405F52aE4A1F5dFd50D32',
+    pair: '0x25eEd2139986E176F63D750A4A1ccB9B8097Fc7E'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xE4EF45EDb2cd401150De8709c8eE53Fa06A7A19e'
+    stakingRewardAddress: '0xE4EF45EDb2cd401150De8709c8eE53Fa06A7A19e',
+    pair: '0x2bC629f7C52982dEe9972b4A068A87e34AefD499'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], AVME[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xc3258CA969eC69CCCE3589D191C7E58EF824fdb6'
+    stakingRewardAddress: '0xc3258CA969eC69CCCE3589D191C7E58EF824fdb6',
+    pair: '0x9cb667908aC886e1266516356d37E6cB2d17876f'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], SHERPA[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x4f5926E110FFDfDF830E2984015f31476f3fD199'
+    stakingRewardAddress: '0x4f5926E110FFDfDF830E2984015f31476f3fD199',
+    pair: '0x2ca256Ca2A16bcB63bEF6E8F8e0c97213E0dD014'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], YAK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x4A8186F5753830B3f3B43D09746516814240ee5C'
+    stakingRewardAddress: '0x4A8186F5753830B3f3B43D09746516814240ee5C',
+    pair: '0xc2667ccd2E71c25761818E754F7638e91110Ac2b'
   }
 ]
 
@@ -143,6 +174,7 @@ export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: {
     tokens: [Token, Token]
     stakingRewardAddress: string
+    pair: string
   }[][]
 } = {
   [ChainId.FUJI]: [STAKING_V1, STAKING_V2],
@@ -175,6 +207,7 @@ export interface StakingInfo {
     totalStakedAmount: TokenAmount,
     totalRewardRate: TokenAmount
   ) => TokenAmount
+  multiplier?: JSBI
 }
 
 const calculateTotalStakedAmountInAvaxFromYay = function(
@@ -250,6 +283,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
   const yay = YAY[chainId || ChainId.FUJI]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
+  const pairAddresses = useMemo(() => info.map(({ pair }) => [pair] as MethodArg[]), [info])
 
   // console.log('reward addresses: ', rewardsAddresses)
 
@@ -261,8 +295,13 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
   const balances = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'balanceOf', accountArg)
   const earnedAmounts = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'earned', accountArg)
   const totalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'totalSupply')
+  const liquidityPoolManager = useLiquidityPoolManagerContract()
+  const weights = useSingleContractMultipleData(
+    liquidityPoolManager,
+    'weights',
+    pairAddresses as OptionalMethodInputs[]
+  )
   const pairs = usePairs(tokens)
-  // console.log('pairs: ', pairs)
   const [avaxYayPairState, avaxYayPair] = usePair(WAVAX[chainId || ChainId.FUJI], yay)
 
   // tokens per second, constants
@@ -293,9 +332,9 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
       const totalSupplyState = totalSupplies[index]
       const rewardRateState = rewardRates[index]
       const periodFinishState = periodFinishes[index]
+      const weight = weights[index]
       const [pairState, pair] = pairs[index]
 
-      // console.log('pair', pair, 'avaxYayPair', avaxYayPair)
       if (
         // these may be undefined if not logged in
         !balanceState?.loading &&
@@ -307,6 +346,8 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
         !rewardRateState.loading &&
         periodFinishState &&
         !periodFinishState.loading &&
+        weight &&
+        !weight.loading &&
         pair &&
         avaxYayPair &&
         pairState !== PairState.LOADING &&
@@ -318,6 +359,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
           totalSupplyState.error ||
           rewardRateState.error ||
           periodFinishState.error ||
+          weight.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS ||
           avaxYayPairState === PairState.INVALID ||
@@ -347,7 +389,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
               pair.reserveOf(yay).raw,
               totalStakedAmount
             )
-
+        const multiplier = JSBI.divide(JSBI.BigInt(weight.result?.[0]), JSBI.BigInt(100))
         const getHypotheticalRewardRate = (
           stakedAmount: TokenAmount,
           totalStakedAmount: TokenAmount,
@@ -375,6 +417,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
           stakedAmount: stakedAmount,
           totalStakedAmount: totalStakedAmount,
           totalStakedInWavax: totalStakedInWavax,
+          multiplier,
           getHypotheticalRewardRate
         })
       }
@@ -393,7 +436,8 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     avaxYayPairState,
     pairs,
     yay,
-    avaxYayPair
+    avaxYayPair,
+    weights
   ])
 }
 

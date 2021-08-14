@@ -237,6 +237,11 @@ export const VSO: { [chainId in ChainId]: Token } = {
   )
 }
 
+export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } = {
+  [ChainId.FUJI]: '0x4c80a41c7E7F30778230110dCE0D84EC60edB323',
+  [ChainId.AVALANCHE]: '0x72798DaA24590643B0A4E36a6919989d1Aa5cb37'
+}
+
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: '0x7C1E73122d26Af78C44FaB3c5e10a7eaa4ED2b59',
   [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
