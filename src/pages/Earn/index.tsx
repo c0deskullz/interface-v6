@@ -24,6 +24,13 @@ const Wrapper = styled.div`
   }
 `
 
+const LoaderWrapper = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
+
 const fetchPoolAprs = async (
   chainId: ChainId | undefined,
   stakingInfos: StakingInfo[],
@@ -152,7 +159,9 @@ export default function Earn({
       </Hero>
 
       {stakingRewardsExist && poolCards?.current.length === 0 ? (
-        <Loader style={{ margin: 'auto' }} />
+        <LoaderWrapper>
+          <Loader style={{ margin: 'auto' }} />
+        </LoaderWrapper>
       ) : !stakingRewardsExist ? (
         'No active rewards'
       ) : (
