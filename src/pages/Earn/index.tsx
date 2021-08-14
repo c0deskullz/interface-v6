@@ -108,7 +108,7 @@ export default function Earn({
     if (poolCards?.current.length && poolCards.current.length !== poolsLength) {
       setPoolsLength(currValue => poolCards?.current?.length)
     }
-  }, [poolCards.current, poolsLength])
+  }, [poolsLength])
 
   const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
 
