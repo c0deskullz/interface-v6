@@ -10,12 +10,18 @@ import BannerPiñata1 from '../../assets/svg/home-banner-piñata-1.svg'
 import BannerPiñata2 from '../../assets/svg/home-banner-piñata-2.svg'
 import BannerPiñata3 from '../../assets/svg/home-banner-piñata-3.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { ChainId, JSBI, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
+import { useTotalYayEarned } from '../../state/stake/hooks'
+import { usePair } from '../../data/Reserves'
+import { useActiveWeb3React } from '../../hooks'
+import { YAY } from '../../constants'
+import { useTokenBalance } from '../../state/wallet/hooks'
 
 const Wrapper = styled.div`
   width: 100vw;
   margin-top: -2rem;
   background-color: ${({ theme }) => theme.surface3};
-  
+
   @media (min-width: 720px) {
     margin-top: -100px;
   }
@@ -45,7 +51,25 @@ const GridItem = styled.div`
 `
 
 export default function Home() {
+  const { chainId, account } = useActiveWeb3React()
+
   const isDarkMode = useIsDarkMode()
+  const yay = chainId ? YAY[chainId] : undefined
+  const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
+
+  const yayBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, yay)
+  const yayToClaim: TokenAmount | undefined = useTotalYayEarned()
+  const oneToken = JSBI.BigInt(1000000000000000000)
+  const [, avaxYayTokenPair] = usePair(wavax, yay)
+  let yayPrice: Number | undefined
+  if (avaxYayTokenPair && yay) {
+    const reserve =
+      avaxYayTokenPair.reserveOf(yay).raw.toString() === '0' ? JSBI.BigInt(1) : avaxYayTokenPair.reserveOf(yay).raw
+    const avaxYayRatio = JSBI.divide(JSBI.multiply(oneToken, avaxYayTokenPair.reserveOf(wavax).raw), reserve)
+    yayPrice = JSBI.toNumber(avaxYayRatio) / 1000000000000000000
+  }
+  const avaxInWallet = +(yayBalance?.toFixed(1) || 0) * (yayPrice ? +yayPrice : 0)
+  const avaxToClaim = +(yayToClaim?.toFixed(1) || 0) * (yayPrice ? +yayPrice : 0)
   return (
     <Wrapper>
       <Hero className="hero">
@@ -75,13 +99,13 @@ export default function Home() {
             <div className="grid-item-farms">
               <div>
                 <p>YAY to Claim</p>
-                <p>0.000</p>
-                <small>~$.000</small>
+                <p> {yayToClaim?.toFixed(4, { groupSeparator: ',' })} </p>
+                <small>~{avaxToClaim.toFixed(3)} AVAX</small>
               </div>
               <div>
                 <p>YAY in Wallet</p>
-                <p>0.000</p>
-                <small>~$.000</small>
+                <p>{yayBalance?.toFixed(4, { groupSeparator: ',' })}</p>
+                <small>~{avaxInWallet.toFixed(3)} AVAX</small>
               </div>
             </div>
             <p>

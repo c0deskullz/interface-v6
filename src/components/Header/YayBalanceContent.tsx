@@ -41,32 +41,31 @@ const StyledClose = styled(X)`
  */
 export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowPngBalanceModal: any }) {
   const { account, chainId } = useActiveWeb3React()
-  const png = chainId ? YAY[chainId] : undefined
+  const yay = chainId ? YAY[chainId] : undefined
 
   const total = useAggregateYayBalance()
-  const pngBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, png)
-  const pngToClaim: TokenAmount | undefined = useTotalYayEarned()
+  const yayBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, yay)
+  const yayToClaim: TokenAmount | undefined = useTotalYayEarned()
 
-  const totalSupply: TokenAmount | undefined = useTotalSupply(png)
+  const totalSupply: TokenAmount | undefined = useTotalSupply(yay)
 
   // Determine YAY price in AVAX
   const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
-  const [, avaxPngTokenPair] = usePair(wavax, png)
+  const [, avaxYayTokenPair] = usePair(wavax, yay)
   const oneToken = JSBI.BigInt(1000000000000000000)
-  let pngPrice: Number | undefined
-  if (avaxPngTokenPair && png) {
-    const avaxPngRatio = JSBI.divide(
-      JSBI.multiply(oneToken, avaxPngTokenPair.reserveOf(wavax).raw),
-      avaxPngTokenPair.reserveOf(png).raw
-    )
-    pngPrice = JSBI.toNumber(avaxPngRatio) / 1000000000000000000
+  let yayPrice: Number | undefined
+  if (avaxYayTokenPair && yay) {
+    const reserve =
+      avaxYayTokenPair.reserveOf(yay).raw.toString() === '0' ? JSBI.BigInt(1) : avaxYayTokenPair.reserveOf(yay).raw
+    const avaxYayRatio = JSBI.divide(JSBI.multiply(oneToken, avaxYayTokenPair.reserveOf(wavax).raw), reserve)
+    yayPrice = JSBI.toNumber(avaxYayRatio) / 1000000000000000000
   }
 
   const blockTimestamp = useCurrentBlockTimestamp()
   const circulation: TokenAmount | undefined = useMemo(
     () =>
-      blockTimestamp && png && chainId === ChainId.FUJI ? computePngCirculation(png, blockTimestamp) : totalSupply,
-    [blockTimestamp, chainId, totalSupply, png]
+      blockTimestamp && yay && chainId === ChainId.FUJI ? computePngCirculation(yay, blockTimestamp) : totalSupply,
+    [blockTimestamp, chainId, totalSupply, yay]
   )
 
   return (
@@ -93,14 +92,14 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
               <AutoColumn gap="md">
                 <RowBetween>
                   <TYPE.white color="white">Balance:</TYPE.white>
-                  <TYPE.white color="white">{pngBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
+                  <TYPE.white color="white">{yayBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
                 </RowBetween>
                 <RowBetween>
                   <TYPE.white color="white">Unclaimed:</TYPE.white>
                   <TYPE.white color="white">
-                    {pngToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
-                    {pngToClaim && pngToClaim.greaterThan('0') && (
-                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/yay">
+                    {yayToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
+                    {yayToClaim && yayToClaim.greaterThan('0') && (
+                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/yay/1">
                         (claim)
                       </StyledInternalLink>
                     )}
@@ -115,7 +114,7 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
           <AutoColumn gap="md">
             <RowBetween>
               <TYPE.white color="white">YAY price:</TYPE.white>
-              <TYPE.white color="white">{pngPrice?.toFixed(5) ?? '-'} AVAX</TYPE.white>
+              <TYPE.white color="white">{yayPrice?.toFixed(5) ?? '-'} AVAX</TYPE.white>
             </RowBetween>
             <RowBetween>
               <TYPE.white color="white">YAY in circulation:</TYPE.white>
