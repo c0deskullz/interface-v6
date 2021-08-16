@@ -124,6 +124,10 @@ const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
 `
 
+const IconYAY = styled(YAYIcon)`
+  width: 100%;
+`
+
 const BadgeIcon = styled(BadgeSVG)`
   margin-right: 0.125em;
 `
@@ -285,7 +289,7 @@ export default function Jacuzzi() {
           <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
-                <YAYIcon />
+                <IconYAY />
                 <div>
                   <h4>xYAY Pool</h4>
                   <div className="poolsGrid-item-header-features">
@@ -316,18 +320,22 @@ export default function Jacuzzi() {
                   <p>YAY staked</p>
                   <p>{userYAYStake}</p>
                 </div>
-                {!approvalSubmitted && (
-                  <>
-                    {approval === ApprovalState.NOT_APPROVED && (
-                      <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
-                    )}
-                  </>
-                )}
               </div>
-              <ButtonGroup>
-                <ButtonPrimary onClick={handleStake}>Add</ButtonPrimary>
-                <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
-              </ButtonGroup>
+              {!approvalSubmitted && (
+                <>
+                  {approval === ApprovalState.NOT_APPROVED && (
+                    <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
+                  )}
+                </>
+              )}
+              {userCanStake ? (
+                <ButtonGroup>
+                  <ButtonPrimary onClick={handleStake}>Add</ButtonPrimary>
+                  <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
+                </ButtonGroup>
+              ) : (
+                ''
+              )}
             </div>
             <div className="grid-item-details">
               <details>

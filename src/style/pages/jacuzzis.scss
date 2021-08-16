@@ -28,14 +28,12 @@
   }
 }
 @media (min-width: 1200px) {
-  .jacuzzi-container {
-    grid-template-columns: 1fr 26rem;
-    gap: 5rem;
-  }
-}
-@media (min-width: 1450px) {
   .jacuzzi {
     padding-top: 5rem;
     padding-bottom: 5rem;
+  }
+  .jacuzzi-container {
+    grid-template-columns: 1fr 26rem;
+    gap: 5rem;
   }
 }

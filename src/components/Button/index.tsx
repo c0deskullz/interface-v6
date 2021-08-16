@@ -41,7 +41,7 @@ const Base = styled(RebassButton)<{
 export const ButtonPrimary = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
   font-weight: 500;
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-size: 1rem;
   color: white;
   &:focus {

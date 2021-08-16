@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
 import { NavLink, Link as HistoryLink } from 'react-router-dom'
 
@@ -10,9 +9,13 @@ import QuestionHelper from '../QuestionHelper'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
-  align-items: center;
-  border-radius: 3rem;
+  width: 20rem;
   justify-content: space-evenly;
+  align-items: center;
+  background-color: ${({ theme }) => theme.surface3};
+  border: 1px solid ${({ theme }) => theme.primary1};
+  border-radius: 5rem;
+  margin: 0 auto 2rem;
 `
 
 const activeClassName = 'ACTIVE'
@@ -24,33 +27,29 @@ const StyledNavLink = styled(NavLink).attrs({
   align-items: center;
   justify-content: center;
   height: 3rem;
-  border-radius: 3rem;
+  border-radius: 5rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.text3};
-  font-size: 20px;
+  color: ${({ theme }) => theme.text6};
+  font-size: 1.125rem;
+  font-weight: 600;
   flex: 1;
 
   &.${activeClassName} {
-    font-weight: 500;
-    color: ${({ theme }) => theme.text1};
+    color: #fff;
     background-color: ${({ theme }) => theme.primary1};
-  }
-
-  &.left {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  &.right {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    :hover,
+    :focus {
+      color: #fff;
+      background-color: ${({ theme }) => theme.primary1};
+    }
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
+    color: ${({ theme }) => theme.text6};
+    text-decoration: none;
   }
 `
 
@@ -66,12 +65,12 @@ const StyledArrowLeft = styled(ArrowLeft)`
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()
   return (
-    <Tabs style={{ marginBottom: '20px' }}>
-      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'} className="left">
-        {t('swap')}
+    <Tabs>
+      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
+        {t('Swap')}
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'} className="right">
-        {t('liquidity')}
+      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
+        {t('Liquidity')}
       </StyledNavLink>
     </Tabs>
   )

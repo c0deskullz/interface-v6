@@ -34,7 +34,7 @@ input[type='tel'],
 textarea,
 select {
   // width: 100%;
-  color: #000;
+  // color: #000;
   // background-color: #fff;
   // border: none;
   // border-bottom: 2px solid #e5e5e5;
@@ -49,7 +49,7 @@ textarea::placeholder {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: $color-accent-1;
+  // border-color: $color-accent-1;
   outline: 0;
 }
 select {
