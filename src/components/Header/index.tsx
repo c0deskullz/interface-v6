@@ -48,7 +48,7 @@ const HeaderFrame = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
   `}
 `
 
@@ -58,7 +58,7 @@ const HeaderControls = styled.div`
   align-items: center;
   justify-self: flex-end;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row;
     justify-content: space-between;
     justify-self: center;
@@ -93,17 +93,121 @@ const HeaderElementWrap = styled.div`
 `
 
 const HeaderRow = styled(RowFixed)`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
    width: 100%;
   `};
 `
 
 const HeaderLinks = styled(Row)`
   justify-content: center;
+  .drawer {
+    display: none;
+  }
+  .spread {
+    display: flex;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
-`};
+    .drawer{
+      display: flex;
+    }
+    .spread {
+      display: none;
+    }
+  `};
+`
+
+const StyledBurger = styled.button`
+  position: absolute;
+  top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+
+  &:focus {
+    outline: none;
+  }
+
+  div {
+    width: 2rem;
+    height: 0.25rem;
+    background: ${({ open }: { open: boolean }) => (open ? '#0D0C1D' : '#EFFFFA')};
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+
+    :first-child {
+      transform: ${({ open }: { open: boolean }) => (open ? 'rotate(45deg)' : 'rotate(0)')};
+    }
+
+    :nth-child(2) {
+      opacity: ${({ open }: { open: boolean }) => (open ? '0' : '1')};
+      transform: ${({ open }: { open: boolean }) => (open ? 'translateX(20px)' : 'translateX(0)')};
+    }
+
+    :nth-child(3) {
+      transform: ${({ open }: { open: boolean }) => (open ? 'rotate(-45deg)' : 'rotate(0)')};
+    }
+  }
+`
+
+const Burger = ({ open, setOpen, className }: { open: boolean; setOpen: any; className?: string }) => {
+  return (
+    <StyledBurger className={className} open={open} onClick={() => setOpen(!open)}>
+      <div />
+      <div />
+      <div />
+    </StyledBurger>
+  )
+}
+
+const StyledMenu = styled.nav`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: ${({ theme }) => theme.primary1};
+  transform: ${({ open }: { open: boolean }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
+  height: 100vh;
+  text-align: left;
+  padding: 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease-in-out;
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+
+  a {
+    font-size: 2rem;
+    text-transform: uppercase;
+    padding: 2rem 0;
+    font-weight: bold;
+    letter-spacing: 0.5rem;
+    color: ${({ theme }) => theme.text1};
+    text-decoration: none;
+    transition: color 0.3s linear;
+
+    @media (max-width: 576px) {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    &:hover {
+      color: ${({ theme }) => theme.primaryText1};
+    }
+  }
 `
 
 const AccountElement = styled.div<{ active: boolean }>`
@@ -265,9 +369,47 @@ const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.AVALANCHE]: 'Avalanche'
 }
 
+const Links = ({ className }: { className?: string }) => {
+  const { t } = useTranslation()
+
+  return (
+    <div className={className}>
+      <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
+        {t('swap')}
+      </StyledNavLink>
+      <StyledNavLink
+        id={`pool-nav-link`}
+        to={'/pool'}
+        isActive={(match, { pathname }) =>
+          Boolean(match) ||
+          pathname.startsWith('/add') ||
+          pathname.startsWith('/remove') ||
+          pathname.startsWith('/create') ||
+          pathname.startsWith('/find')
+        }
+      >
+        Liquidity
+      </StyledNavLink>
+      <StyledNavLink id={`stake-nav-link`} to={'/yay/1'}>
+        Piñatas
+      </StyledNavLink>
+      <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>
+        Jacuzzis
+      </StyledNavLink>
+    </div>
+  )
+}
+
+const DrawerMenu = ({ open }: { open: boolean }) => {
+  return (
+    <StyledMenu open={open}>
+      <Links />
+    </StyledMenu>
+  )
+}
+
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
-  const { t } = useTranslation()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
@@ -275,12 +417,14 @@ export default function Header() {
   const aggregateBalance: TokenAmount | undefined = useAggregateYayBalance()
 
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (
     <HeaderFrame>
+      <DrawerMenu open={open} />
       <Modal isOpen={showPngBalanceModal} onDismiss={() => setShowPngBalanceModal(false)}>
         <YayBalanceContent setShowPngBalanceModal={setShowPngBalanceModal} />
       </Modal>
@@ -289,28 +433,8 @@ export default function Header() {
           <img width={'100%'} src={isDark ? LogoDark : Logo} alt="logo" />
         </Title>
         <HeaderLinks>
-          <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
-            {t('swap')}
-          </StyledNavLink>
-          <StyledNavLink
-            id={`pool-nav-link`}
-            to={'/pool'}
-            isActive={(match, { pathname }) =>
-              Boolean(match) ||
-              pathname.startsWith('/add') ||
-              pathname.startsWith('/remove') ||
-              pathname.startsWith('/create') ||
-              pathname.startsWith('/find')
-            }
-          >
-            Liquidity
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/yay/1'}>
-            Piñatas
-          </StyledNavLink>
-          <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>
-            Jacuzzis
-          </StyledNavLink>
+          <Burger className="drawer" open={open} setOpen={setOpen} />
+          <Links className="spread" />
           {/* <StyledNavLink id={`stake-nav-link`} to={'/png/0'}>
             Old YAY
           </StyledNavLink>
