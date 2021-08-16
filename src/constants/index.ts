@@ -11,7 +11,7 @@ export const ROUTER_ADDRESS = {
 }
 
 export const LANDING_PAGE = 'https://partyswap.io/'
-export const ANALYTICS_PAGE = 'https://info.partyswap.io/'
+export const ANALYTICS_PAGE = 'https://partyswap-analytics.netlify.app/'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 

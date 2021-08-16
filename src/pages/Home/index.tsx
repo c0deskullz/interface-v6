@@ -14,7 +14,7 @@ import { ChainId, JSBI, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
 import { useTotalYayEarned } from '../../state/stake/hooks'
 import { usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
-import { YAY } from '../../constants'
+import { ANALYTICS_PAGE, YAY } from '../../constants'
 import { useTokenBalance } from '../../state/wallet/hooks'
 
 const Wrapper = styled.div`
@@ -132,7 +132,9 @@ export default function Home() {
               </p>
             </div>
             <p>
-              <button className="btn">Check Analytics</button>
+              <a href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer" className="btn">
+                Check Analytics
+              </a>
             </p>
           </GridItem>
           <GridItem className="grid-item grid-banner">
