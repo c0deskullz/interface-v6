@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react'
+import React, { useEffect, useCallback, useRef, useState, ReactNode } from 'react'
 // import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
@@ -113,25 +113,23 @@ export default function Earn({
   const setPoolCards = useCallback(results => {
     poolCards.current = results
   }, [])
-  const [poolsLength, setPoolsLength] = useState<number>(0)
+  const [, setPoolsLength] = useState<number>(0)
 
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
   const [currentStakingPool, setCurrentStakingPool] = useState<StakingInfo | undefined>()
 
   useEffect(() => {
-    fetchPoolAprs(chainId, stakingInfos, setPoolCards, {
+    const updatePoolCards = (results: ReactNode[]) => {
+      setPoolCards(results)
+      setPoolsLength(results.length)
+    }
+    fetchPoolAprs(chainId, stakingInfos, updatePoolCards, {
       onClickClaim: stakingInfo => {
         setCurrentStakingPool(stakingInfo)
         setShowClaimRewardModal(true)
       }
     })
   }, [stakingInfos, setPoolCards, chainId])
-
-  useEffect(() => {
-    if (poolCards?.current.length && poolCards.current.length !== poolsLength) {
-      setPoolsLength(currValue => poolCards?.current?.length)
-    }
-  }, [poolsLength])
 
   const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
 
