@@ -16,6 +16,8 @@ import { usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { ANALYTICS_PAGE, YAY } from '../../constants'
 import { useTokenBalance } from '../../state/wallet/hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { Link } from 'react-router-dom'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -52,6 +54,7 @@ const GridItem = styled.div`
 
 export default function Home() {
   const { chainId, account } = useActiveWeb3React()
+  const toggleWalletModal = useWalletModalToggle()
 
   const isDarkMode = useIsDarkMode()
   const yay = chainId ? YAY[chainId] : undefined
@@ -77,7 +80,15 @@ export default function Home() {
           <div className="hero-content">
             <p className="smallText">Welcome to the Party</p>
             <h1>The most reliable Avalanchche swap yet</h1>
-            <button className="btn hero-btn">Unlock Wallet</button>
+            {account ? (
+              <Link to="/yay/1">
+                <button className="btn">Let's Hit Some Piñatas</button>
+              </Link>
+            ) : (
+              <button className="btn hero-btn" onClick={toggleWalletModal}>
+                Unlock Wallet
+              </button>
+            )}
           </div>
         </div>
 
@@ -109,7 +120,9 @@ export default function Home() {
               </div>
             </div>
             <p>
-              <button className="btn">Claim All</button>
+              <Link to="/yay/1">
+                <button className="btn">Claim All</button>
+              </Link>
             </p>
           </GridItem>
           <GridItem className="grid-item">
