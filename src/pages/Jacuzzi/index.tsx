@@ -124,6 +124,10 @@ const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
 `
 
+const IconYAY = styled(YAYIcon)`
+  width: 100%;
+`
+
 const BadgeIcon = styled(BadgeSVG)`
   margin-right: 0.125em;
 `
@@ -285,7 +289,7 @@ export default function Jacuzzi() {
           <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
-                <YAYIcon />
+                <IconYAY />
                 <div>
                   <h4>xYAY Pool</h4>
                   <div className="poolsGrid-item-header-features">
