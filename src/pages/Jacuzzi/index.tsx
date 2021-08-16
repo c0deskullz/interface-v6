@@ -320,18 +320,22 @@ export default function Jacuzzi() {
                   <p>YAY staked</p>
                   <p>{userYAYStake}</p>
                 </div>
-                {!approvalSubmitted && (
-                  <>
-                    {approval === ApprovalState.NOT_APPROVED && (
-                      <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
-                    )}
-                  </>
-                )}
               </div>
-              <ButtonGroup>
-                <ButtonPrimary onClick={handleStake}>Add</ButtonPrimary>
-                <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
-              </ButtonGroup>
+              {!approvalSubmitted && (
+                <>
+                  {approval === ApprovalState.NOT_APPROVED && (
+                    <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
+                  )}
+                </>
+              )}
+              {userCanStake ? (
+                <ButtonGroup>
+                  <ButtonPrimary onClick={handleStake}>Add</ButtonPrimary>
+                  <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
+                </ButtonGroup>
+              ) : (
+                ''
+              )}
             </div>
             <div className="grid-item-details">
               <details>

@@ -17,6 +17,52 @@ const ContentWrapper = styled(AutoColumn)`
   padding: 1rem;
 `
 
+const InfoWrapper = styled.div`
+  & p {
+    margin-bottom: 1rem;
+  }
+  & p:last-child {
+    margin-bottom: 0;
+  }
+`
+
+const UnstakeAmount = styled(RowBetween)`
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 1.5rem;
+  background-color: ${({ theme }) => theme.surface5};
+  border-radius: 1.25rem;
+  padding: 1rem 1rem;
+  button {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: ${({ theme }) => theme.primaryText3};
+    border: 2px solid ${({ theme }) => theme.primaryText3};
+    border-radius: 1.5rem;
+    color: #fff;
+    &:hover,
+    &:focus {
+      background-color: ${({ theme }) => theme.primary1};
+      border-color: ${({ theme }) => theme.primary1};
+    }
+  }
+  > * {
+    height: 100%;
+  }
+`
+
+const StakeInput = styled.input`
+  color: ${({ theme }) => theme.text1};
+  background-color: transparent;
+  border: none;
+  padding: 0.5rem;
+  font-size: 15px;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+`
+
 interface StakingModalProps {
   isOpen: boolean
   onDismiss: () => void
@@ -74,23 +120,22 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
       <ContentWrapper gap="lg">
         <RowBetween>
-          <TYPE.mediumHeader>Unstake</TYPE.mediumHeader>
+          <TYPE.largeHeader>Unstake</TYPE.largeHeader>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
-        <RowBetween>Your balance: {balance} xYAYs</RowBetween>
-        <RowBetween>Worth: {yayBalance} YAYs</RowBetween>
-        <RowBetween>
-          <label htmlFor="value_to_unstake">Amount:</label>
-          <div>
-            <button onClick={handleSetMax}>max</button>
-            <input
-              type="number"
-              name="value_to_unstake"
-              value={typedValue}
-              onChange={e => setTypedValue(e.target.value)}
-            />
-          </div>
-        </RowBetween>
+        <InfoWrapper>
+          <p>Your balance: {balance} xYAYs</p>
+          <p>Worth: {yayBalance} YAYs</p>
+        </InfoWrapper>
+        <UnstakeAmount>
+          <button onClick={handleSetMax}>MAX</button>
+          <StakeInput
+            type="number"
+            name="value_to_unstake"
+            value={typedValue}
+            onChange={e => setTypedValue(e.target.value)}
+          />
+        </UnstakeAmount>
         <ButtonPrimary onClick={handleUnstake}>Unstake</ButtonPrimary>
       </ContentWrapper>
     </Modal>
