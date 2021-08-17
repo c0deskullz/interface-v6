@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import bonnie from '../../assets/svg/home-hero-bonnie.svg'
 import trent from '../../assets/svg/home-hero-trent.svg'
@@ -90,17 +90,20 @@ const useAnalyticsData = () => {
 const useYayTotalSupply = () => {
   const yayContract = useYayContract()
 
-  const getTotalSupply = async (callback: (params: any) => void) => {
-    const totalSupply = await yayContract?.totalSupply()
-    const tokenAmmount = new TokenAmount(YAY[ChainId.AVALANCHE], totalSupply)
-    callback(tokenAmmount)
-  }
+  const getTotalSupply = useCallback(
+    async (callback: (params: any) => void) => {
+      const totalSupply = await yayContract?.totalSupply()
+      const tokenAmmount = new TokenAmount(YAY[ChainId.AVALANCHE], totalSupply)
+      callback(tokenAmmount)
+    },
+    [yayContract]
+  )
 
   const [totalSupply, setTotalSupply] = useState<TokenAmount>()
 
   useEffect(() => {
     getTotalSupply(setTotalSupply)
-  }, [yayContract])
+  }, [getTotalSupply])
 
   return totalSupply
 }
