@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import bonnie from '../../assets/svg/home-hero-bonnie.svg'
 import trent from '../../assets/svg/home-hero-trent.svg'
@@ -18,6 +18,9 @@ import { ANALYTICS_PAGE, YAY } from '../../constants'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Link } from 'react-router-dom'
+import { infoClient } from '../../apollo/client'
+import { GET_FACTORY_DATA } from '../../apollo/queries'
+import { useYayContract } from '../../hooks/useContract'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -52,14 +55,67 @@ const GridItem = styled.div`
   }
 `
 
+const queryAnalyticsData = async (callback: (params: any) => void) => {
+  const { data } = await infoClient.query({
+    query: GET_FACTORY_DATA,
+    variables: {
+      first: 1
+    }
+  })
+
+  callback(data?.partyswapFactories[0])
+  return data?.partyswapFactories[0]
+}
+
+const useAnalyticsData = () => {
+  const [{ id, pairCount, totalVolumeETH, totalVolumeUSD }, setAnalyticsData] = useState<{
+    id: string
+    pairCount: number
+    totalVolumeUSD: number
+    totalVolumeETH: string
+  }>({
+    id: '',
+    pairCount: 0,
+    totalVolumeETH: '0',
+    totalVolumeUSD: 0
+  })
+
+  useEffect(() => {
+    queryAnalyticsData(setAnalyticsData)
+  }, [])
+
+  return { id, pairCount, totalVolumeETH, totalVolumeUSD }
+}
+
+const useYayTotalSupply = () => {
+  const yayContract = useYayContract()
+
+  const getTotalSupply = async (callback: (params: any) => void) => {
+    const totalSupply = await yayContract?.totalSupply()
+    const tokenAmmount = new TokenAmount(YAY[ChainId.AVALANCHE], totalSupply)
+    callback(tokenAmmount)
+  }
+
+  const [totalSupply, setTotalSupply] = useState<TokenAmount>()
+
+  useEffect(() => {
+    getTotalSupply(setTotalSupply)
+  }, [yayContract])
+
+  return totalSupply
+}
+
 export default function Home() {
   const { chainId, account } = useActiveWeb3React()
+
   const toggleWalletModal = useWalletModalToggle()
 
   const isDarkMode = useIsDarkMode()
   const yay = chainId ? YAY[chainId] : undefined
+
   const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
 
+  const totalSupply = useYayTotalSupply()
   const yayBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, yay)
   const yayToClaim: TokenAmount | undefined = useTotalYayEarned()
   const oneToken = JSBI.BigInt(1000000000000000000)
@@ -73,6 +129,8 @@ export default function Home() {
   }
   const avaxInWallet = +(yayBalance?.toFixed(1) || 0) * (yayPrice ? +yayPrice : 0)
   const avaxToClaim = +(yayToClaim?.toFixed(1) || 0) * (yayPrice ? +yayPrice : 0)
+  const { totalVolumeETH, totalVolumeUSD } = useAnalyticsData()
+
   return (
     <Wrapper>
       <Hero className="hero">
@@ -135,13 +193,13 @@ export default function Home() {
             </div>
             <div className="grid-item-stats">
               <p>
-                Total YAY Supply <span>13,050,695 YAY</span>
+                Total YAY Supply <span>$YAY {totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
-                Total YAY Supply <span>13,050,695 YAY</span>
+                Total Volume in AVAX <span>{totalVolumeETH}</span>
               </p>
               <p>
-                Total YAY Supply <span>13,050,695 YAY</span>
+                Total Volume in USD <span>{totalVolumeUSD}</span>
               </p>
             </div>
             <p>

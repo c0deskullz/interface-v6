@@ -14,3 +14,14 @@ export const GET_BLOCK = gql`
     }
   }
 `
+
+export const GET_FACTORY_DATA = gql`
+  query factoryData($first: Int!){
+    partyswapFactories(first: 500) {
+      id
+      pairCount
+      totalVolumeUSD
+      totalVolumeETH
+    }
+  }
+`

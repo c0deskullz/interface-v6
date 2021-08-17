@@ -12,7 +12,7 @@ export const blockClient = new ApolloClient({
 
 export const infoClient = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://thegraph.com/legacy-explorer/subgraph/josema03/partyswap-dexbby',
+    uri: 'https://api.thegraph.com/subgraphs/name/josema03/partyswap-dex',
   }),
   cache: new InMemoryCache(),
 })
