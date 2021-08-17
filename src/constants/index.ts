@@ -244,7 +244,7 @@ export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } =
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: '0xc3175E89cE175f6C752D152Deec6F682e873636c',
-  [ChainId.AVALANCHE]: '0x85A8B761c025a58e51d16B8C70a151246391eED1'
+  [ChainId.AVALANCHE]: '0x68583A0a7e763400B8B0904095133F76922657ae'
 }
 
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {

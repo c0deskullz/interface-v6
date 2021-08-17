@@ -36,14 +36,14 @@ export default function Footer() {
               <a href="https://twitter.com/partyswapdex" target="_blank" rel="noopener noreferrer">
                 <IconTwitter className="socialIcon twitter" />
               </a>
-              <a href="https://partyswap-ex.medium.com/" target="_blank" rel="noopener noreferrer">
-                <IconDiscord className="socialIcon medium" />
+              <a href="https://discord.com/invite/r9fTvqCfBw" target="_blank" rel="noopener noreferrer">
+                <IconDiscord className="socialIcon discord" />
               </a>
               <a href="https://t.me/partyswap" target="_blank" rel="noopener noreferrer">
                 <IconTelegram className="socialIcon telegram" />
               </a>
-              <a href="https://discord.com/invite/r9fTvqCfBw" target="_blank" rel="noopener noreferrer">
-                <IconMedium className="socialIcon discord" />
+              <a href="https://partyswap-ex.medium.com/" target="_blank" rel="noopener noreferrer">
+                <IconMedium className="socialIcon medium" />
               </a>
             </div>
           </div>

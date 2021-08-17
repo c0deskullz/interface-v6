@@ -94,8 +94,10 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   }, [chainId, account, yay])
 
   useEffect(() => {
-    getUserBalance()
-  }, [getUserBalance])
+    if (isOpen) {
+      getUserBalance()
+    }
+  }, [getUserBalance, isOpen])
 
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
