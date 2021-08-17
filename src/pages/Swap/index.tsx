@@ -65,10 +65,6 @@ const PageWrapper = styled.div`
   `};
 `
 
-// const PageContent = styled(AppBody)`
-//   background-color: ${({ theme }) => theme.surface3};
-// `
-
 const BackgroundImage = styled.div`
   position: absolute;
   background-color: #f6f6ff;
@@ -83,16 +79,16 @@ const BackgroundImage = styled.div`
   }
 `
 
-// const TextHeader = styled.div`
-//   h1 {
-//     color: ${({ theme }) => theme.text1};
-//     font-size: 1.5rem;
-//     margin-bottom: 0.25rem;
-//   }
-//   p {
-//     margin-bottom: 0;
-//   }
-// `
+const TextHeader = styled.div`
+  h1 {
+    color: ${({ theme }) => theme.text1};
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  p {
+    margin-bottom: 0;
+  }
+`
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -337,10 +333,10 @@ export default function Swap() {
               onDismiss={handleConfirmDismiss}
             />
             <AutoColumn gap={'md'}>
-              <div>
-                <h1 style={{ fontSize: '1.5rem', color: '#000', marginBottom: '0.25rem' }}>Exchange</h1>
-                <p style={{ marginBottom: '0' }}>Trade tokens in an instant</p>
-              </div>
+              <TextHeader>
+                <h1>Exchange</h1>
+                <p>Trade tokens in an instant</p>
+              </TextHeader>
               <CurrencyInputPanel
                 label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
                 value={formattedAmounts[Field.INPUT]}
