@@ -116,6 +116,10 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
     if (isOpen) {
       getUserBalance()
     }
+
+    return () => {
+      setTypedValue('0')
+    }
   }, [getUserBalance, isOpen])
 
   return (

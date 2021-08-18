@@ -97,6 +97,10 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
     if (isOpen) {
       getUserBalance()
     }
+
+    return () => {
+      setTypedValue('0')
+    }
   }, [getUserBalance, isOpen])
 
   return (

@@ -155,7 +155,7 @@ export default function PoolsGridItem({
               Get LP tokens: <span>{`${currency0.symbol}-${currency1.symbol}`} LP</span>
             </p>
             <p>
-              Total Staked In Wavax:{' '}
+              Total Staked In WAVAX:{' '}
               <span>{`${totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}</span>
             </p>
             <a href={avascanUrl} target="_blank" rel="noopener noreferrer">

@@ -107,19 +107,6 @@ const JacuzziImage = styled(JacuzziImg)`
   /* display: none; */
 `
 
-const JacuzziCard = styled.div`
-  display: flex;
-  padding: 1rem;
-  flex-direction: column;
-  border-radius: 1rem;
-  border: 1px solid gray;
-
-  display: none;
-
-  div {
-    margin: 0.5rem 0;
-  }
-`
 const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
 `
@@ -136,9 +123,9 @@ export default function Jacuzzi() {
   const { chainId, account } = useActiveWeb3React()
   const [approvalSubmitted, setApprovalSubmitted] = useState(false)
   const [ratio, setRatio] = useState(0)
-  const [earlyLeavePenalty, setEarlyLeavePenalty] = useState(0)
+  const [, setEarlyLeavePenalty] = useState(0)
   const [earlyLeavePenaltyAfterUnlockDate, setEarlyLeavePenaltyAfterUnlockDate] = useState(0)
-  const [unlockDate, setUnlockDate] = useState(new Date().toLocaleString())
+  const [, setUnlockDate] = useState(new Date().toLocaleString())
   const [userxYAYStake, setUserXYAYStake] = useState(0)
   const [userYAYStake, setUserYAYStake] = useState(0)
   const [userYAYBalance, setUserYAYBalance] = useState(0)
@@ -180,12 +167,12 @@ export default function Jacuzzi() {
     return userApprovedYAYJacuzzi && userHasYAYs
   }, [approval, userYAYBalance, account])
 
-  const userCanLeave = useMemo(() => {
-    const userApprovedYAYJacuzzi = account && approval && approval === ApprovalState.APPROVED
-    const userHasxYAYs = userxYAYStake > 0
+  // const userCanLeave = useMemo(() => {
+  //   const userApprovedYAYJacuzzi = account && approval && approval === ApprovalState.APPROVED
+  //   const userHasxYAYs = userxYAYStake > 0
 
-    return userApprovedYAYJacuzzi && userHasxYAYs
-  }, [approval, userxYAYStake, account])
+  //   return userApprovedYAYJacuzzi && userHasxYAYs
+  // }, [approval, userxYAYStake, account])
 
   const getRatio = useCallback(async () => {
     if (!jacuzzi || !yay) {
@@ -256,6 +243,17 @@ export default function Jacuzzi() {
     setJacuzziYAYStake(toFixedTwo(yayJacuzziBalance.toString()))
   }, [jacuzzi, yay, chainId])
 
+  const apr = useMemo(() => {
+    const TOKENS_PER_DAY = JSBI.BigInt(32900)
+    if (!jacuzziYAYStake) {
+      return 0
+    }
+
+    const roi = JSBI.divide(TOKENS_PER_DAY, JSBI.BigInt(jacuzziYAYStake))
+
+    return JSBI.multiply(roi, JSBI.BigInt(365)).toString()
+  }, [jacuzziYAYStake])
+
   const handleStake = async () => {
     setStakeModalOpen(true)
   }
@@ -280,6 +278,9 @@ export default function Jacuzzi() {
 
   return (
     <Wrapper>
+      <JacuzziStakingModal isOpen={stakeModalOpen} onDismiss={() => setStakeModalOpen(false)} />
+      <JacuzziLeaveModal isOpen={unstakeModalOpen} onDismiss={() => setUnstakeModalOpen(false)} />
+
       <div className="jacuzzi">
         {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
         <div className="jacuzzi-container">
@@ -302,7 +303,7 @@ export default function Jacuzzi() {
               </div>
               <div className="poolsGrid-item-table">
                 <p>
-                  APR: <span>500.00%</span>
+                  APR: <span>{apr}%</span>
                 </p>
                 <p>
                   xYAY to YAY: <span>{ratio}</span>
@@ -313,11 +314,11 @@ export default function Jacuzzi() {
               </div>
               <div className="poolsGrid-item-grid">
                 <div>
-                  <p>xYAY staked</p>
+                  <p>xYAY Staked</p>
                   <p>{userxYAYStake}</p>
                 </div>
                 <div>
-                  <p>YAY staked</p>
+                  <p>YAY Equivalent</p>
                   <p>{userYAYStake}</p>
                 </div>
               </div>
@@ -347,16 +348,16 @@ export default function Jacuzzi() {
                 </summary>
                 <div className="poolsGrid-item-table">
                   <p>
-                    Total Liquidity: <span>$643,936</span>
+                    Total Liquidity: <span> {jacuzziYAYStake} YAY</span>
                   </p>
-                  <a href="https://avascan.info/">
+                  <p>
+                    Total xYAY Supply: <span>{jacuzziXYAYStake}</span>
+                  </p>
+                  <a href="https://cchain.explorer.avax.network/address/0x68583A0a7e763400B8B0904095133F76922657ae/transactions">
                     See Token Info <ExtLink />
                   </a>
-                  <a href="https://avascan.info/">
-                    View Project Site <ExtLink />
-                  </a>
-                  <a href="https://avascan.info/">
-                    View Contract <ExtLink />
+                  <a href="https://partyswap.gitbook.io/partyswap/jacuzzis">
+                    How it works <ExtLink />
                   </a>
                 </div>
               </details>
@@ -364,36 +365,6 @@ export default function Jacuzzi() {
           </Item>
         </div>
       </div>
-      <JacuzziCard>
-        YAY Pool
-        {!approvalSubmitted && (
-          <>
-            {approval === ApprovalState.NOT_APPROVED && (
-              <ButtonPrimary onClick={handleAprove}>Approve YAY</ButtonPrimary>
-            )}
-          </>
-        )}
-        <div>
-          <div>{userCanStake ? <ButtonPrimary onClick={handleStake}>Stake</ButtonPrimary> : ''}</div>
-          <div>{userCanLeave ? <ButtonPrimary onClick={handleLeave}>Leave</ButtonPrimary> : ''}</div>
-        </div>
-        <div>xYAY to YAY: {ratio}</div>
-        <div>
-          Paper hands penalty: {earlyLeavePenaltyAfterUnlockDate}% right now ({earlyLeavePenalty}% after {unlockDate})
-        </div>
-        <div>
-          Your Stake:
-          <div>xYAY: {userxYAYStake}</div>
-          <div>YAY: {userYAYStake}</div>
-        </div>
-        <div>
-          Total Stake:
-          <div>xYAY: {jacuzziXYAYStake}</div>
-          <div>YAY: {jacuzziYAYStake}</div>
-        </div>
-        <JacuzziStakingModal isOpen={stakeModalOpen} onDismiss={() => setStakeModalOpen(false)} />
-        <JacuzziLeaveModal isOpen={unstakeModalOpen} onDismiss={() => setUnstakeModalOpen(false)} />
-      </JacuzziCard>
     </Wrapper>
   )
 }
