@@ -10,6 +10,8 @@ import PinataLogo from '../PinataLogo'
 import { StyledInternalLink } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { useActiveWeb3React } from '../../hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { WithLockedValue } from '../WithLockedValue'
 
 const Item = styled.div`
   background-color: ${({ theme }) => theme.surface4};
@@ -63,7 +65,7 @@ export default function PoolsGridItem({
   apr: string
   onClickClaim: (stakingInfo: StakingInfo) => void
 }) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const {
     tokens,
     stakedAmount,
@@ -92,6 +94,8 @@ export default function PoolsGridItem({
   }
 
   const isStaking = Boolean(stakedAmount.greaterThan('0'))
+  const toggleWalletModal = useWalletModalToggle()
+
   return (
     <Item className="poolsGrid-item">
       <div className="poolsGrid-item-content">
@@ -118,17 +122,25 @@ export default function PoolsGridItem({
         <div className="poolsGrid-item-grid">
           <div>
             <p>YAY earned</p>
-            <p>{earnedAmount.toFixed(0, { groupSeparator: ',' })}</p>
+            <WithLockedValue>
+              <p>{earnedAmount.toFixed(0, { groupSeparator: ',' })}</p>
+            </WithLockedValue>
           </div>
           <div>
-            <button className="btn" onClick={() => onClickClaim(stakingInfo)}>
+            <button className="btn" onClick={() => onClickClaim(stakingInfo)} disabled={!account}>
               Claim
             </button>
           </div>
         </div>
-        <StyledInternalLink to={`/yay/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
-          <button className="btn btn-secondary">{isStaking ? 'Manage' : 'Deposit'}</button>
-        </StyledInternalLink>
+        {account ? (
+          <StyledInternalLink to={`/yay/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
+            <button className="btn btn-secondary">{isStaking ? 'Manage' : 'Deposit'}</button>
+          </StyledInternalLink>
+        ) : (
+          <button className="btn hero-btn" onClick={toggleWalletModal}>
+            Unlock Wallet
+          </button>
+        )}
       </div>
       <div className="grid-item-details">
         <details>

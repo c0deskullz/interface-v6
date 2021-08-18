@@ -5,7 +5,7 @@ import { hex } from 'wcag-contrast'
 import { Token } from '@partyswap-libs/sdk'
 
 async function getColorFromToken(token: Token): Promise<string | null> {
-  const path = `https://raw.githubusercontent.com/ava-labs/bridge-tokens/main/avalanche-tokens/${token.address}/logo.png`
+  const path = `https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/0x15957be9802B50c6D66f58a99A2a3d73F5aaf615/logo.png`
 
   return Vibrant.from(path)
     .getPalette()

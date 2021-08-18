@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom'
 import { infoClient } from '../../apollo/client'
 import { GET_FACTORY_DATA } from '../../apollo/queries'
 import { useYayContract } from '../../hooks/useContract'
+import { WithLockedValue } from '../../components/WithLockedValue'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -171,19 +172,29 @@ export default function Home() {
             <div className="grid-item-farms">
               <div>
                 <p>YAY to Claim</p>
-                <p> {yayToClaim?.toFixed(4, { groupSeparator: ',' })} </p>
-                <small>~{avaxToClaim.toFixed(3)} AVAX</small>
+                <WithLockedValue>
+                  <p> {yayToClaim?.toFixed(4, { groupSeparator: ',' })} </p>
+                  <small>~{avaxToClaim.toFixed(3)} AVAX</small>{' '}
+                </WithLockedValue>
               </div>
               <div>
                 <p>YAY in Wallet</p>
-                <p>{yayBalance?.toFixed(4, { groupSeparator: ',' })}</p>
-                <small>~{avaxInWallet.toFixed(3)} AVAX</small>
+                <WithLockedValue>
+                  <p>{yayBalance?.toFixed(4, { groupSeparator: ',' })}</p>
+                  <small>~{avaxInWallet.toFixed(3)} AVAX</small>
+                </WithLockedValue>
               </div>
             </div>
             <p>
-              <Link to="/yay/1">
-                <button className="btn">Claim All</button>
-              </Link>
+              {account ? (
+                <Link to="/yay/1">
+                  <button className="btn">Claim All</button>
+                </Link>
+              ) : (
+                <button className="btn hero-btn" onClick={toggleWalletModal}>
+                  Unlock Wallet
+                </button>
+              )}
             </p>
           </GridItem>
           <GridItem className="grid-item">

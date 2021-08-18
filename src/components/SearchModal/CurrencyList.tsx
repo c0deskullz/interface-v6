@@ -174,10 +174,18 @@ export default function CurrencyList({
 }) {
   const { chainId } = useActiveWeb3React()
 
-  const itemData = useMemo(
-    () => (showETH ? [Currency.CAVAX, YAY[chainId || ChainId.FUJI], ...currencies] : currencies),
-    [currencies, showETH, chainId]
-  )
+  const itemData = useMemo(() => {
+    let curatedCurrencies = [...currencies]
+    if (showETH) {
+      curatedCurrencies.unshift(Currency.CAVAX)
+    }
+
+    if (!currencies.some(currency => currency.symbol === YAY[chainId || ChainId.AVALANCHE].symbol)) {
+      curatedCurrencies.unshift(YAY[chainId || ChainId.AVALANCHE])
+    }
+
+    return curatedCurrencies
+  }, [currencies, showETH, chainId])
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -198,7 +206,7 @@ export default function CurrencyList({
     [onCurrencySelect, otherCurrency, selectedCurrency]
   )
 
-  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
+  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]) + '-' + index, [])
 
   return (
     <FixedSizeList

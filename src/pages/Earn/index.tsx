@@ -166,14 +166,6 @@ export default function Earn({
       ) : (
         <PoolsGrid pools={poolCards.current} />
       )}
-
-      {/* <PageWrapper gap="lg" justify="center">
-        <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
-          <PoolSection>
-            
-          </PoolSection>
-        </AutoColumn>
-      </PageWrapper> */}
     </Wrapper>
   )
 }

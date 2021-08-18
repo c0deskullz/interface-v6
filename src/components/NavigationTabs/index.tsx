@@ -18,6 +18,15 @@ const Tabs = styled.div`
   margin: 0 auto 2rem;
 `
 
+const NoBorderTabs = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  width: 20rem;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: ${({ theme }) => theme.surface3};
+  margin: 0 auto 2rem;
+`
+
 const activeClassName = 'ACTIVE'
 
 const StyledNavLink = styled(NavLink).attrs({
@@ -78,7 +87,7 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
 
 export function FindPoolTabs() {
   return (
-    <Tabs>
+    <NoBorderTabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
           <StyledArrowLeft />
@@ -86,13 +95,13 @@ export function FindPoolTabs() {
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper text={"Use this tool to find pairs that don't automatically appear in the interface."} />
       </RowBetween>
-    </Tabs>
+    </NoBorderTabs>
   )
 }
 
 export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating: boolean }) {
   return (
-    <Tabs>
+    <NoBorderTabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
           <StyledArrowLeft />
@@ -106,6 +115,6 @@ export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating:
           }
         />
       </RowBetween>
-    </Tabs>
+    </NoBorderTabs>
   )
 }

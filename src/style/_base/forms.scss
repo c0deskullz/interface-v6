@@ -119,6 +119,11 @@ input[type='submit'],
   transform: translate(0, -0.25em);
   text-decoration: none;
 }
+
+.btn:disabled {
+  background-color: lightgray;
+  cursor: not-allowed;
+}
 .btn-secondary {
   color: #fff;
   background-color: $color-brand;
