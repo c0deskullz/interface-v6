@@ -31,7 +31,7 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
     switch (pinataSymbol) {
       case 'AVAX-YAY':
         return YayAvax
-      case 'AVAX-AABLOCK':
+      case 'AVAX-aaBLOCK':
         return AvaxAaBlock
       case 'AVAX-AVME':
         return AvaxAvme
@@ -51,7 +51,7 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxPefi
       case 'AVAX-PNG':
         return AvaxPng
-      case 'AVAX-Sno':
+      case 'AVAX-SNOB':
         return AvaxSno
       case 'AVAX-SPORE':
         return AvaxSpore
