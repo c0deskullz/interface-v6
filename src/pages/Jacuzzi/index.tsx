@@ -1,4 +1,4 @@
-import { ChainId, JSBI, TokenAmount } from '@partyswap-libs/sdk'
+import { ChainId, JSBI, Token, TokenAmount } from '@partyswap-libs/sdk'
 import { ethers } from 'ethers'
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
@@ -126,13 +126,15 @@ export default function Jacuzzi() {
   const [, setEarlyLeavePenalty] = useState(0)
   const [earlyLeavePenaltyAfterUnlockDate, setEarlyLeavePenaltyAfterUnlockDate] = useState(0)
   const [, setUnlockDate] = useState(new Date().toLocaleString())
-  const [userxYAYStake, setUserXYAYStake] = useState(0)
-  const [userYAYStake, setUserYAYStake] = useState(0)
   const [userYAYBalance, setUserYAYBalance] = useState(0)
-  const [jacuzziXYAYStake, setJacuzziXYAYStake] = useState(0)
   const [jacuzziYAYStake, setJacuzziYAYStake] = useState(0)
   const [stakeModalOpen, setStakeModalOpen] = useState(false)
   const [unstakeModalOpen, setUnstakeModalOpen] = useState(false)
+
+  const [displayTotalLiquidity, setDisplayTotalLiquidity] = useState('')
+  const [displayTotalSupply, setDisplayTotalsupply] = useState('')
+  const [displayUserTotalLiquidity, setDisplayUserTotalLiquidity] = useState('')
+  const [displayUserTotalSupply, setDisplayUserTotalsupply] = useState('')
 
   const allTransactions = useAllTransactions()
 
@@ -210,48 +212,69 @@ export default function Jacuzzi() {
     return setEarlyLeavePenalty(percentageFee)
   }, [jacuzzi, yay])
 
+  const createYAYTokenInstance = useCallback(() => {
+    return new Token(chainId || ChainId.AVALANCHE, YAY[chainId || ChainId.AVALANCHE].address, 18, 'YAY', 'YAY')
+  }, [chainId])
+
+  const createxYAYTokenInstance = useCallback(() => {
+    return new Token(
+      chainId || ChainId.AVALANCHE,
+      JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE] || '',
+      18,
+      'YAY',
+      'YAY'
+    )
+  }, [chainId])
+
   const getUserBalances = useCallback(async () => {
     if (!jacuzzi || !yay || !account) {
-      setUserYAYStake(0)
-      return setUserXYAYStake(0)
+      setDisplayUserTotalLiquidity('0')
+      return setDisplayUserTotalsupply('0')
     }
 
     const userBalance = await yay.balanceOf(account)
     const jacuzziBalance = await jacuzzi.balanceOf(account)
-    const totalSupply = await jacuzzi.totalSupply()
-    const yayJacuzziBalance = await yay.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    let stakedYAY
-    if (yayJacuzziBalance.toString() === '0') {
-      stakedYAY = JSBI.BigInt(0)
-    } else {
-      stakedYAY = jacuzziBalance.mul(yayJacuzziBalance).div(totalSupply)
-    }
+
+    const userXyayToYAY = +jacuzziBalance?.toString() * ratio
+
     setUserYAYBalance(toFixedTwo(userBalance.toString()))
-    setUserXYAYStake(toFixedTwo(jacuzziBalance.toString()))
-    setUserYAYStake(toFixedTwo(stakedYAY.toString()))
-  }, [jacuzzi, yay, account, chainId])
+
+    setDisplayUserTotalLiquidity(
+      new TokenAmount(createYAYTokenInstance(), JSBI.BigInt(userXyayToYAY)).toFixed(2, { groupSeparator: ',' })
+    )
+    setDisplayUserTotalsupply(
+      new TokenAmount(createxYAYTokenInstance(), jacuzziBalance).toFixed(2, { groupSeparator: ',' })
+    )
+  }, [ratio, jacuzzi, yay, account, createYAYTokenInstance, createxYAYTokenInstance])
 
   const getContractBalances = useCallback(async () => {
     if (!jacuzzi || !yay) {
-      setJacuzziXYAYStake(0)
+      setDisplayTotalsupply('0')
       return setJacuzziYAYStake(0)
     }
 
-    const totalSupply = await jacuzzi.totalSupply()
     const yayJacuzziBalance = await yay.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    setJacuzziXYAYStake(toFixedTwo(totalSupply.toString()))
     setJacuzziYAYStake(toFixedTwo(yayJacuzziBalance.toString()))
-  }, [jacuzzi, yay, chainId])
+
+    setDisplayTotalLiquidity(
+      new TokenAmount(createYAYTokenInstance(), yayJacuzziBalance).toFixed(2, { groupSeparator: ',' })
+    )
+    setDisplayTotalsupply(
+      new TokenAmount(createxYAYTokenInstance(), yayJacuzziBalance).toFixed(2, { groupSeparator: ',' })
+    )
+  }, [jacuzzi, yay, chainId, createYAYTokenInstance, createxYAYTokenInstance])
 
   const apr = useMemo(() => {
-    const TOKENS_PER_DAY = JSBI.BigInt(32900)
+    const TOKENS_PER_DAY = 32900
+    console.log('JACUZZI STAKE: ', jacuzziYAYStake)
     if (!jacuzziYAYStake) {
+      console.log('GOING TO ZERO: ', jacuzziYAYStake)
       return 0
     }
 
-    const roi = JSBI.divide(TOKENS_PER_DAY, JSBI.BigInt(jacuzziYAYStake))
+    const roi = TOKENS_PER_DAY / +jacuzziYAYStake?.toString()
 
-    return JSBI.multiply(roi, JSBI.BigInt(365)).toString()
+    return (roi * 365).toFixed(2)
   }, [jacuzziYAYStake])
 
   const handleStake = async () => {
@@ -315,11 +338,11 @@ export default function Jacuzzi() {
               <div className="poolsGrid-item-grid">
                 <div>
                   <p>xYAY Staked</p>
-                  <p>{userxYAYStake}</p>
+                  <p>{displayUserTotalSupply}</p>
                 </div>
                 <div>
                   <p>YAY Equivalent</p>
-                  <p>{userYAYStake}</p>
+                  <p>{displayUserTotalLiquidity}</p>
                 </div>
               </div>
               {!approvalSubmitted && (
@@ -348,10 +371,10 @@ export default function Jacuzzi() {
                 </summary>
                 <div className="poolsGrid-item-table">
                   <p>
-                    Total Liquidity: <span> {jacuzziYAYStake} YAY</span>
+                    Total Liquidity: <span> {displayTotalLiquidity} YAY</span>
                   </p>
                   <p>
-                    Total xYAY Supply: <span>{jacuzziXYAYStake}</span>
+                    Total xYAY Supply: <span>{displayTotalSupply}</span>
                   </p>
                   <a href="https://cchain.explorer.avax.network/address/0x68583A0a7e763400B8B0904095133F76922657ae/transactions">
                     See Token Info <ExtLink />
