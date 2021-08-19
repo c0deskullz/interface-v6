@@ -2,7 +2,6 @@ import { ChainId, TokenAmount, WAVAX, JSBI } from '@partyswap-libs/sdk'
 import React, { useMemo } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
-import tokenLogo from '../../assets/images/token-logo.png'
 import { YAY } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
@@ -84,7 +83,10 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
           <>
             <CardSection gap="sm">
               <AutoColumn gap="md" justify="center">
-                <PngTokenAnimated width="48px" src={tokenLogo} />{' '}
+                <PngTokenAnimated
+                  width="48px"
+                  src="https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/0x15957be9802B50c6D66f58a99A2a3d73F5aaf615/logo.png"
+                />{' '}
                 <TYPE.white fontSize={48} fontWeight={600} color="white">
                   {total?.toFixed(2, { groupSeparator: ',' })}
                 </TYPE.white>

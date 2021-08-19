@@ -23,7 +23,7 @@ const NoBorderTabs = styled.div`
   width: 20rem;
   justify-content: space-evenly;
   align-items: center;
-  background-color: ${({ theme }) => theme.surface3};
+  background-color: transparent;
   margin: 0 auto 2rem;
 `
 

@@ -435,18 +435,6 @@ export default function Header() {
         <HeaderLinks>
           <Burger className="drawer" open={open} setOpen={setOpen} />
           <Links className="spread" />
-          {/* <StyledNavLink id={`stake-nav-link`} to={'/png/0'}>
-            Old YAY
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-            Vote
-          </StyledNavLink>
-          <StyledExternalLink id={`info-nav-link`} href={ANALYTICS_PAGE}>
-            Charts <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-          <StyledExternalLink id={`gov-nav-link`} href={'https://gov.pangolin.exchange'}>
-            Forum <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink> */}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
