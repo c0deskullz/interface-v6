@@ -141,7 +141,7 @@ export default function Home() {
         <div className="hero-container">
           <div className="hero-content">
             <p className="smallText">Welcome to the Party</p>
-            <h1>The most reliable Avalanchche swap yet</h1>
+            <h1>The most reliable Avalanche swap yet</h1>
             {account ? (
               <Link to="/yay/1">
                 <button className="btn">Let's Hit Some Piñatas</button>
