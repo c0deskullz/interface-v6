@@ -59,16 +59,22 @@ export default function Footer() {
             <h4>Connect</h4>
             <ul>
               <li>
-                <a href="#">About</a>
+                <a href="https://partyswap.io/" target="_blank" rel="noopener noreferrer">
+                  About
+                </a>
               </li>
               <li>
-                <a href="#">GitHub</a>
+                <a href="https://github.com/PartySwapDEX" target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
               </li>
               <li>
-                <a href="#">Documentation</a>
+                <a href="https://partyswap.gitbook.io/partyswap/" target="_blank" rel="noopener noreferrer">
+                  Documentation
+                </a>
               </li>
               <li>
-                <a href="#">Contact</a>
+                <a href="mailto:hello@partyswap.io">Contact</a>
               </li>
             </ul>
           </div>
