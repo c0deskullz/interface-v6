@@ -6,7 +6,7 @@ import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
@@ -39,6 +39,34 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { ChainId } from '@partyswap-libs/sdk'
+
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+
+const PageWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 6rem 0;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 2rem 1rem;
+  `};
+`
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
+`
 
 export default function AddLiquidity({
   match: {
@@ -260,7 +288,7 @@ export default function AddLiquidity({
     ) : (
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+          <Text fontSize="2.5rem" fontWeight={500} lineHeight="1" marginRight={10}>
             {liquidityMinted?.toSignificant(6)}
           </Text>
           <DoubleCurrencyLogo
@@ -274,7 +302,7 @@ export default function AddLiquidity({
             {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
           </Text>
         </Row>
-        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
+        <TYPE.italic fontSize={12} textAlign="left">
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
             100}% your transaction will revert.`}
         </TYPE.italic>
@@ -337,8 +365,12 @@ export default function AddLiquidity({
 
   const isCreate = history.location.pathname.includes('/create')
 
+  const isDarkMode = useIsDarkMode()
+
   return (
-    <>
+    <PageWrapper>
+      {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
+
       <AppBody>
         <AddRemoveTabs creating={isCreate} adding={true} />
         <Wrapper>
@@ -479,10 +511,10 @@ export default function AddLiquidity({
       </AppBody>
 
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
-        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '420px', margin: '1.5rem auto 0' }}>
           <MinimalPositionCard showUnwrapped={oneCurrencyIsWAVAX} pair={pair} />
         </AutoColumn>
       ) : null}
-    </>
+    </PageWrapper>
   )
 }

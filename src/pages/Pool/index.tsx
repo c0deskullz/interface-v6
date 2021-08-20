@@ -20,9 +20,39 @@ import { Dots } from '../../components/swap/styleds'
 import { ChainId } from '@partyswap-libs/sdk'
 import { ANALYTICS_PAGE } from '../../constants'
 
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+
+const PageWrapper = styled.div`
+  position: relative;
+  min-height: 100vh;
   width: 100%;
+  padding: 6rem 0;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 2rem 1rem;
+  `};
+`
+
+const PageContent = styled.div`
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+`
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
 `
 
 const TitleRow = styled(RowBetween)`
@@ -108,74 +138,80 @@ export default function Pool() {
 
   const hasV1Liquidity = undefined
 
+  const isDarkMode = useIsDarkMode()
+
   return (
     <>
       <PageWrapper>
-        <SwapPoolTabs active={'pool'} />
-        <ExternalLink
-          style={{ marginTop: '1.5rem', color: 'black', textDecoration: 'underline' }}
-          target="_blank"
-          href={AccountAnalytics}
-        >
-          <TYPE.black fontSize={18}>View your staked liquidity</TYPE.black>
-        </ExternalLink>
+        {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
 
-        <AutoColumn gap="lg" justify="center">
-          <AutoColumn gap="lg" style={{ width: '100%' }}>
-            <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
-              <HideSmall>
-                <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
-                  Your liquidity
-                </TYPE.mediumHeader>
-              </HideSmall>
-              <ButtonRow>
-                <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/AVAX">
-                  Create a pair
-                </ResponsiveButtonSecondary>
-                <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/AVAX">
-                  <Text fontWeight={500} fontSize={16}>
-                    Add Liquidity
-                  </Text>
-                </ResponsiveButtonPrimary>
-              </ButtonRow>
-            </TitleRow>
+        <PageContent>
+          <SwapPoolTabs active={'pool'} />
+          <ExternalLink
+            style={{ marginTop: '1.5rem', color: 'black', textDecoration: 'underline' }}
+            target="_blank"
+            href={AccountAnalytics}
+          >
+            <TYPE.black fontSize={18}>View your staked liquidity</TYPE.black>
+          </ExternalLink>
 
-            {!account ? (
-              <Card padding="40px">
-                <TYPE.body color={theme.text3} textAlign="center">
-                  Connect to a wallet to view your liquidity.
-                </TYPE.body>
-              </Card>
-            ) : v2IsLoading ? (
-              <EmptyProposals>
-                <TYPE.body color={theme.text3} textAlign="center">
-                  <Dots>Loading</Dots>
-                </TYPE.body>
-              </EmptyProposals>
-            ) : allV2PairsWithLiquidity?.length > 0 ? (
-              <>
-                {allV2PairsWithLiquidity.map(v2Pair => (
-                  <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
-                ))}
-              </>
-            ) : (
-              <EmptyProposals>
-                <TYPE.body color={theme.text3} textAlign="center">
-                  No liquidity found.
-                </TYPE.body>
-              </EmptyProposals>
-            )}
+          <AutoColumn gap="lg" justify="center">
+            <AutoColumn gap="lg" style={{ width: '100%' }}>
+              <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
+                <HideSmall>
+                  <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
+                    Your liquidity
+                  </TYPE.mediumHeader>
+                </HideSmall>
+                <ButtonRow>
+                  <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/AVAX">
+                    Create a pair
+                  </ResponsiveButtonSecondary>
+                  <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/AVAX">
+                    <Text fontWeight={500} fontSize={16}>
+                      Add Liquidity
+                    </Text>
+                  </ResponsiveButtonPrimary>
+                </ButtonRow>
+              </TitleRow>
 
-            <AutoColumn justify={'center'} gap="md">
-              <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-                {hasV1Liquidity ? 'Uniswap V1 liquidity found!' : "Don't see a pool you joined?"}{' '}
-                <StyledInternalLink id="import-pool-link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
-                  {hasV1Liquidity ? 'Migrate now.' : 'Import it.'}
-                </StyledInternalLink>
-              </Text>
+              {!account ? (
+                <Card padding="40px">
+                  <TYPE.body color={theme.text3} textAlign="center">
+                    Connect to a wallet to view your liquidity.
+                  </TYPE.body>
+                </Card>
+              ) : v2IsLoading ? (
+                <EmptyProposals>
+                  <TYPE.body color={theme.text3} textAlign="center">
+                    <Dots>Loading</Dots>
+                  </TYPE.body>
+                </EmptyProposals>
+              ) : allV2PairsWithLiquidity?.length > 0 ? (
+                <>
+                  {allV2PairsWithLiquidity.map(v2Pair => (
+                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
+                  ))}
+                </>
+              ) : (
+                <EmptyProposals>
+                  <TYPE.body color={theme.text3} textAlign="center">
+                    No liquidity found.
+                  </TYPE.body>
+                </EmptyProposals>
+              )}
+
+              <AutoColumn justify={'center'} gap="md">
+                <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+                  {hasV1Liquidity ? 'Uniswap V1 liquidity found!' : "Don't see a pool you joined?"}{' '}
+                  <StyledInternalLink id="import-pool-link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
+                    {hasV1Liquidity ? 'Migrate now.' : 'Import it.'}
+                  </StyledInternalLink>
+                </Text>
+              </AutoColumn>
             </AutoColumn>
           </AutoColumn>
-        </AutoColumn>
+        </PageContent>
       </PageWrapper>
     </>
   )

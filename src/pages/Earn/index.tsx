@@ -20,9 +20,6 @@ const Wrapper = styled.div`
   margin-top: -2rem;
   background-color: ${({ theme }) => theme.surface3};
   overflow: hidden;
-  @media (min-width: 720px) {
-    margin-top: -100px;
-  }
 `
 
 const LoaderWrapper = styled.div`

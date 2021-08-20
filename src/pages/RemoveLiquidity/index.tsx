@@ -7,7 +7,7 @@ import { ArrowDown, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../components/Button'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
@@ -44,6 +44,34 @@ import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@partyswap-libs/sdk'
 import GasFeeAlert from '../../components/GasFeeAlert'
+
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+
+const PageWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 6rem 0;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 2rem 1rem;
+  `};
+`
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
+`
 
 export default function RemoveLiquidity({
   history,
@@ -476,8 +504,12 @@ export default function RemoveLiquidity({
     liquidityPercentChangeCallback
   )
 
+  const isDarkMode = useIsDarkMode()
+
   return (
-    <>
+    <PageWrapper>
+      {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
+
       <AppBody>
         <AddRemoveTabs creating={false} adding={false} />
         <Wrapper>
@@ -691,10 +723,10 @@ export default function RemoveLiquidity({
       </AppBody>
 
       {pair ? (
-        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', margin: '1rem auto 0' }}>
           <MinimalPositionCard showUnwrapped={oneCurrencyIsWAVAX} pair={pair} />
         </AutoColumn>
       ) : null}
-    </>
+    </PageWrapper>
   )
 }

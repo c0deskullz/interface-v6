@@ -15,6 +15,7 @@ const Base = styled(RebassButton)<{
   padding: ${({ padding }) => (padding ? padding : '18px')};
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
+  font-family: 'Poppins';
   text-align: center;
   border-radius: 12px;
   border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5rem')};
@@ -29,6 +30,9 @@ const Base = styled(RebassButton)<{
   cursor: pointer;
   position: relative;
   z-index: 1;
+  &:hover {
+    text-decoration: none;
+  }
   &:disabled {
     cursor: auto;
   }
@@ -113,9 +117,9 @@ export const ButtonGray = styled(Base)`
 `
 
 export const ButtonSecondary = styled(Base)`
-  border: 1px solid ${({ theme }) => theme.primary4};
-  color: ${({ theme }) => theme.primary1};
-  background-color: transparent;
+  border: 1px solid ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.text7};
+  background-color: ${({ theme }) => theme.bg1};
   font-size: 16px;
   border-radius: 5rem;
   padding: ${({ padding }) => (padding ? padding : '10px')};
@@ -125,7 +129,8 @@ export const ButtonSecondary = styled(Base)`
     border: 1px solid ${({ theme }) => theme.primary3};
   }
   &:hover {
-    border: 1px solid ${({ theme }) => theme.primary3};
+    background-color: ${({ theme }) => darken(0.05, theme.bg1)};
+    border: 1px solid ${({ theme }) => theme.primary1};
   }
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};
@@ -215,7 +220,7 @@ export const ButtonOutlined = styled(Base)`
 
 export const ButtonEmpty = styled(Base)`
   background-color: transparent;
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.text6};
   display: flex;
   justify-content: center;
   align-items: center;
