@@ -8,7 +8,7 @@ import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { StyledInternalLink, TYPE, HideSmall, ExternalLink } from '../../theme'
 import { Text } from 'rebass'
-import Card from '../../components/Card'
+import { GreyCard } from '../../components/Card'
 import { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
@@ -176,11 +176,11 @@ export default function Pool() {
               </TitleRow>
 
               {!account ? (
-                <Card padding="40px">
-                  <TYPE.body color={theme.text3} textAlign="center">
+                <GreyCard padding="40px" border={`2px solid ${theme.bg6}`}>
+                  <TYPE.mediumHeader color={theme.text1} textAlign="center">
                     Connect to a wallet to view your liquidity.
-                  </TYPE.body>
-                </Card>
+                  </TYPE.mediumHeader>
+                </GreyCard>
               ) : v2IsLoading ? (
                 <EmptyProposals>
                   <TYPE.body color={theme.text3} textAlign="center">
