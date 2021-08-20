@@ -30,9 +30,40 @@ import usePrevious from '../../hooks/usePrevious'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
 import { BIG_INT_ZERO, YAY } from '../../constants'
 
-const PageWrapper = styled(AutoColumn)`
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+
+const PageWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 6rem 0;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 2rem 1rem;
+  `};
+`
+
+const PageContent = styled(AutoColumn)`
   max-width: 640px;
   width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+`
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
 `
 
 const PositionInfo = styled(AutoColumn)<{ dim: any }>`
@@ -214,187 +245,192 @@ export default function Manage({
     }
   }, [account, toggleWalletModal])
 
-  return (
-    <PageWrapper gap="lg" justify="center">
-      <RowBetween style={{ gap: '24px' }}>
-        <TYPE.mediumHeader style={{ margin: 0 }}>
-          {currencyA?.symbol}-{currencyB?.symbol} Liquidity Mining
-        </TYPE.mediumHeader>
-        <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={24} />
-      </RowBetween>
+  const isDarkMode = useIsDarkMode()
 
-      <DataRow style={{ gap: '24px' }}>
-        <PoolData>
-          <AutoColumn gap="sm">
-            <TYPE.body style={{ margin: 0 }}>Total Staked</TYPE.body>
-            <TYPE.body fontSize={24} fontWeight={500}>
-              {`${valueOfTotalStakedAmountInWavax?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
-              {/* {valueOfTotalStakedAmountInUSDC
+  return (
+    <PageWrapper>
+      {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
+      <PageContent gap="lg" justify="center">
+        <RowBetween style={{ gap: '24px' }}>
+          <TYPE.mediumHeader style={{ margin: 0 }}>
+            {currencyA?.symbol}-{currencyB?.symbol} Liquidity Mining
+          </TYPE.mediumHeader>
+          <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={24} />
+        </RowBetween>
+
+        <DataRow style={{ gap: '24px' }}>
+          <PoolData>
+            <AutoColumn gap="sm">
+              <TYPE.body style={{ margin: 0 }}>Total Staked</TYPE.body>
+              <TYPE.body fontSize={24} fontWeight={500}>
+                {`${valueOfTotalStakedAmountInWavax?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
+                {/* {valueOfTotalStakedAmountInUSDC
 							? `$${valueOfTotalStakedAmountInUSDC.toFixed(0, { groupSeparator: ',' })}`
 							: `${valueOfTotalStakedAmountInWavax?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`} */}
-            </TYPE.body>
-          </AutoColumn>
-        </PoolData>
-        <PoolData>
-          <AutoColumn gap="sm">
-            <TYPE.body style={{ margin: 0 }}>Pool Rate</TYPE.body>
-            <TYPE.body fontSize={24} fontWeight={500}>
-              {stakingInfo?.totalRewardRate
-                ?.multiply((60 * 60 * 24 * 7).toString())
-                ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
-              {' YAY / week'}
-            </TYPE.body>
-          </AutoColumn>
-        </PoolData>
-      </DataRow>
-
-      {showAddLiquidityButton && (
-        <VoteCard>
-          <CardBGImage />
-          <CardNoise />
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>Step 1. Get Party Liquidity tokens (xYAY)</TYPE.white>
-              </RowBetween>
-              <RowBetween style={{ marginBottom: '1rem' }}>
-                <TYPE.white fontSize={14}>
-                  {`xYAY tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}
-                </TYPE.white>
-              </RowBetween>
-              <ButtonPrimary
-                padding="8px"
-                borderRadius="8px"
-                width={'fit-content'}
-                as={Link}
-                to={`/add/${currencyA && currencyId(currencyA)}/${currencyB && currencyId(currencyB)}`}
-              >
-                {`Add ${currencyA?.symbol}-${currencyB?.symbol} liquidity`}
-              </ButtonPrimary>
+              </TYPE.body>
             </AutoColumn>
-          </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </VoteCard>
-      )}
+          </PoolData>
+          <PoolData>
+            <AutoColumn gap="sm">
+              <TYPE.body style={{ margin: 0 }}>Pool Rate</TYPE.body>
+              <TYPE.body fontSize={24} fontWeight={500}>
+                {stakingInfo?.totalRewardRate
+                  ?.multiply((60 * 60 * 24 * 7).toString())
+                  ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
+                {' YAY / week'}
+              </TYPE.body>
+            </AutoColumn>
+          </PoolData>
+        </DataRow>
 
-      {stakingInfo && (
-        <>
-          <StakingModal
-            isOpen={showStakingModal}
-            onDismiss={() => setShowStakingModal(false)}
-            stakingInfo={stakingInfo}
-            userLiquidityUnstaked={userLiquidityUnstaked}
-          />
-          <UnstakingModal
-            isOpen={showUnstakingModal}
-            onDismiss={() => setShowUnstakingModal(false)}
-            stakingInfo={stakingInfo}
-          />
-          <ClaimRewardModal
-            isOpen={showClaimRewardModal}
-            onDismiss={() => setShowClaimRewardModal(false)}
-            stakingInfo={stakingInfo}
-          />
-        </>
-      )}
-
-      <PositionInfo gap="lg" justify="center" dim={showAddLiquidityButton}>
-        <BottomSection gap="lg" justify="center">
-          <StyledDataCard disabled={disableTop} bgColor={backgroundColor} showBackground={!showAddLiquidityButton}>
+        {showAddLiquidityButton && (
+          <VoteCard>
+            <CardBGImage />
+            <CardNoise />
             <CardSection>
-              <CardBGImage desaturate />
-              <CardNoise />
               <AutoColumn gap="md">
                 <RowBetween>
-                  <TYPE.white fontWeight={600}>Your liquidity deposits</TYPE.white>
+                  <TYPE.white fontWeight={600}>Step 1. Get Party Liquidity tokens (xYAY)</TYPE.white>
                 </RowBetween>
-                <RowBetween style={{ alignItems: 'baseline' }}>
-                  <TYPE.white fontSize={36} fontWeight={600}>
-                    {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
-                  </TYPE.white>
-                  <TYPE.white>
-                    xYAY {currencyA?.symbol}-{currencyB?.symbol}
+                <RowBetween style={{ marginBottom: '1rem' }}>
+                  <TYPE.white fontSize={14}>
+                    {`xYAY tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}
                   </TYPE.white>
                 </RowBetween>
-              </AutoColumn>
-            </CardSection>
-          </StyledDataCard>
-          <StyledBottomCard dim={stakingInfo?.stakedAmount?.equalTo(JSBI.BigInt(0))}>
-            <CardBGImage desaturate />
-            <CardNoise />
-            <AutoColumn gap="sm">
-              <RowBetween>
-                <div>
-                  <TYPE.black>Your unclaimed YAY</TYPE.black>
-                </div>
-                {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
-                  <ButtonEmpty
-                    padding="8px"
-                    borderRadius="8px"
-                    width="fit-content"
-                    onClick={() => setShowClaimRewardModal(true)}
-                  >
-                    Claim
-                  </ButtonEmpty>
-                )}
-              </RowBetween>
-              <RowBetween style={{ alignItems: 'baseline' }}>
-                <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    key={countUpAmount}
-                    isCounting
-                    decimalPlaces={4}
-                    start={parseFloat(countUpAmountPrevious)}
-                    end={parseFloat(countUpAmount)}
-                    thousandsSeparator={','}
-                    duration={1}
-                  />
-                </TYPE.largeHeader>
-                <TYPE.black fontSize={16} fontWeight={500}>
-                  <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
-                    ⚡
-                  </span>
-                  {stakingInfo?.rewardRate
-                    ?.multiply((60 * 60 * 24 * 7).toString())
-                    ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
-                  {' YAY / week'}
-                </TYPE.black>
-              </RowBetween>
-            </AutoColumn>
-          </StyledBottomCard>
-        </BottomSection>
-        <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
-          <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
-            ⭐️
-          </span>
-          When you withdraw, the contract will automagically claim YAY on your behalf!
-        </TYPE.main>
-
-        {!showAddLiquidityButton && (
-          <DataRow style={{ marginBottom: '1rem' }}>
-            <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
-              {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit xYAY Tokens'}
-            </ButtonPrimary>
-
-            {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
-              <>
                 <ButtonPrimary
                   padding="8px"
                   borderRadius="8px"
-                  width="160px"
-                  onClick={() => setShowUnstakingModal(true)}
+                  width={'fit-content'}
+                  as={Link}
+                  to={`/add/${currencyA && currencyId(currencyA)}/${currencyB && currencyId(currencyB)}`}
                 >
-                  Withdraw
+                  {`Add ${currencyA?.symbol}-${currencyB?.symbol} liquidity`}
                 </ButtonPrimary>
-              </>
-            )}
-          </DataRow>
+              </AutoColumn>
+            </CardSection>
+            <CardBGImage />
+            <CardNoise />
+          </VoteCard>
         )}
-        {!userLiquidityUnstaked ? null : userLiquidityUnstaked.equalTo('0') ? null : (
-          <TYPE.main>{userLiquidityUnstaked.toSignificant(6)} xYAY tokens available</TYPE.main>
+
+        {stakingInfo && (
+          <>
+            <StakingModal
+              isOpen={showStakingModal}
+              onDismiss={() => setShowStakingModal(false)}
+              stakingInfo={stakingInfo}
+              userLiquidityUnstaked={userLiquidityUnstaked}
+            />
+            <UnstakingModal
+              isOpen={showUnstakingModal}
+              onDismiss={() => setShowUnstakingModal(false)}
+              stakingInfo={stakingInfo}
+            />
+            <ClaimRewardModal
+              isOpen={showClaimRewardModal}
+              onDismiss={() => setShowClaimRewardModal(false)}
+              stakingInfo={stakingInfo}
+            />
+          </>
         )}
-      </PositionInfo>
+
+        <PositionInfo gap="lg" justify="center" dim={showAddLiquidityButton}>
+          <BottomSection gap="lg" justify="center">
+            <StyledDataCard disabled={disableTop} bgColor={backgroundColor} showBackground={!showAddLiquidityButton}>
+              <CardSection>
+                <CardBGImage desaturate />
+                <CardNoise />
+                <AutoColumn gap="md">
+                  <RowBetween>
+                    <TYPE.white fontWeight={600}>Your liquidity deposits</TYPE.white>
+                  </RowBetween>
+                  <RowBetween style={{ alignItems: 'baseline' }}>
+                    <TYPE.white fontSize={36} fontWeight={600}>
+                      {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
+                    </TYPE.white>
+                    <TYPE.white>
+                      xYAY {currencyA?.symbol}-{currencyB?.symbol}
+                    </TYPE.white>
+                  </RowBetween>
+                </AutoColumn>
+              </CardSection>
+            </StyledDataCard>
+            <StyledBottomCard dim={stakingInfo?.stakedAmount?.equalTo(JSBI.BigInt(0))}>
+              <CardBGImage desaturate />
+              <CardNoise />
+              <AutoColumn gap="sm">
+                <RowBetween>
+                  <div>
+                    <TYPE.black>Your unclaimed YAY</TYPE.black>
+                  </div>
+                  {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
+                    <ButtonEmpty
+                      padding="8px"
+                      borderRadius="8px"
+                      width="fit-content"
+                      onClick={() => setShowClaimRewardModal(true)}
+                    >
+                      Claim
+                    </ButtonEmpty>
+                  )}
+                </RowBetween>
+                <RowBetween style={{ alignItems: 'baseline' }}>
+                  <TYPE.largeHeader fontSize={36} fontWeight={600}>
+                    <CountUp
+                      key={countUpAmount}
+                      isCounting
+                      decimalPlaces={4}
+                      start={parseFloat(countUpAmountPrevious)}
+                      end={parseFloat(countUpAmount)}
+                      thousandsSeparator={','}
+                      duration={1}
+                    />
+                  </TYPE.largeHeader>
+                  <TYPE.black fontSize={16} fontWeight={500}>
+                    <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
+                      ⚡
+                    </span>
+                    {stakingInfo?.rewardRate
+                      ?.multiply((60 * 60 * 24 * 7).toString())
+                      ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
+                    {' YAY / week'}
+                  </TYPE.black>
+                </RowBetween>
+              </AutoColumn>
+            </StyledBottomCard>
+          </BottomSection>
+          <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
+            <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
+              ⭐️
+            </span>
+            When you withdraw, the contract will automagically claim YAY on your behalf!
+          </TYPE.main>
+
+          {!showAddLiquidityButton && (
+            <DataRow style={{ marginBottom: '1rem' }}>
+              <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
+                {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit xYAY Tokens'}
+              </ButtonPrimary>
+
+              {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
+                <>
+                  <ButtonPrimary
+                    padding="8px"
+                    borderRadius="8px"
+                    width="160px"
+                    onClick={() => setShowUnstakingModal(true)}
+                  >
+                    Withdraw
+                  </ButtonPrimary>
+                </>
+              )}
+            </DataRow>
+          )}
+          {!userLiquidityUnstaked ? null : userLiquidityUnstaked.equalTo('0') ? null : (
+            <TYPE.main>{userLiquidityUnstaked.toSignificant(6)} xYAY tokens available</TYPE.main>
+          )}
+        </PositionInfo>
+      </PageContent>
     </PageWrapper>
   )
 }
