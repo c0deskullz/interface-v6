@@ -61,6 +61,7 @@ const BackgroundImage = styled.div`
   height: 100%;
   width: 100%;
   top: 0;
+  left: 0;
   z-index: -1;
   &.darkMode {
     background-color: #1a1a37;
