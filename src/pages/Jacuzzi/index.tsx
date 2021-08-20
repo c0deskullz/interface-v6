@@ -1,7 +1,7 @@
+import React, { useEffect, useMemo, useState, useCallback, useContext } from 'react'
 import { ChainId, JSBI, Token, TokenAmount } from '@partyswap-libs/sdk'
 import { ethers } from 'ethers'
-import React, { useEffect, useMemo, useState, useCallback } from 'react'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { JACUZZI_ADDRESS, toFixedTwo, YAY, YAY_DECIMALS_DIVISOR } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -21,6 +21,7 @@ import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-lin
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { TYPE } from '../../theme'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -117,6 +118,7 @@ const BadgeIcon = styled(BadgeSVG)`
 `
 
 export default function Jacuzzi() {
+  const theme = useContext(ThemeContext)
   const { chainId, account } = useActiveWeb3React()
   const [approvalSubmitted, setApprovalSubmitted] = useState(false)
   const [ratio, setRatio] = useState(0)
@@ -353,7 +355,9 @@ export default function Jacuzzi() {
                   <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
                 </ButtonGroup>
               ) : (
-                ''
+                <TYPE.subHeader color={theme.text1} textAlign="center">
+                  Must have some YAY in order to see Add & Remove buttons
+                </TYPE.subHeader>
               )}
             </div>
             <div className="grid-item-details">
