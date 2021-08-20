@@ -13,8 +13,6 @@ import { TYPE } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ButtonPrimary, ButtonEmpty } from '../Button'
-import { transparentize } from 'polished'
-import { CardNoise } from '../earn/styled'
 
 import { useColor } from '../../hooks/useColor'
 
@@ -26,7 +24,7 @@ import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
 
 export const FixedHeightRow = styled(RowBetween)`
-  height: 24px;
+  /* height: 24px; */
 `
 
 export const HoverCard = styled(Card)`
@@ -36,11 +34,49 @@ export const HoverCard = styled(Card)`
   }
 `
 const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
-  border: none;
-  background: ${({ theme, bgColor }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
+  border: 1px solid ${({ theme }) => theme.bg6};
   position: relative;
   overflow: hidden;
+  padding: 0;
+  .poolsGrid-item-content {
+    padding: 2rem;
+  }
+  [class*='-item-header'] {
+    align-items: center;
+    gap: 1rem;
+  }
+  [class*='-item-header'] h4 {
+    color: ${({ theme }) => theme.text1};
+    margin-bottom: 0;
+  }
+  .poolsGrid-item-grid p:nth-child(1) {
+    color: ${({ theme }) => theme.text6};
+  }
+  .poolsGrid-item-table span {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
+  @media (max-width: 550px) {
+    [class*='-item-header'] {
+      grid-template-columns: 2.5rem auto;
+      gap: 0.5rem;
+    }
+    [class*='-item-header'] h4 {
+      font-size: 1rem;
+    }
+    [class*='-item-header'] img {
+      width: 20px;
+      height: 20px;
+    }
+    .poolsGrid-item-content {
+      padding: 1.5rem;
+    }
+    .poolsGrid-item-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
 `
 
 interface PositionCardProps {
@@ -163,7 +199,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
 
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(true)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
@@ -188,118 +224,100 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor = useColor(pair?.token0)
 
   return (
-    <StyledPositionCard border={border} bgColor={backgroundColor}>
-      <CardNoise />
-      <AutoColumn gap="12px">
-        <FixedHeightRow>
-          <RowFixed>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
-            <Text fontWeight={500} fontSize={20}>
-              {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
-            </Text>
-          </RowFixed>
+    <StyledPositionCard border={border} bgColor={backgroundColor} className="poolsGrid-item">
+      <div className="poolsGrid-item-content">
+        <AutoColumn gap="1.5rem">
+          <FixedHeightRow>
+            <div className="poolsGrid-item-header">
+              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={false} size={32} />
+              <h4>{!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}</h4>
+            </div>
 
-          <RowFixed gap="8px">
-            <ButtonEmpty
-              padding="6px 8px"
-              borderRadius="12px"
-              width="fit-content"
-              onClick={() => setShowMore(!showMore)}
-            >
-              {showMore ? (
-                <>
-                  {' '}
-                  Manage
-                  <ChevronUp size="20" style={{ marginLeft: '10px' }} />
-                </>
-              ) : (
-                <>
-                  Manage
-                  <ChevronDown size="20" style={{ marginLeft: '10px' }} />
-                </>
-              )}
-            </ButtonEmpty>
-          </RowFixed>
-        </FixedHeightRow>
+            <RowFixed gap="8px">
+              <ButtonEmpty
+                padding="6px 8px"
+                borderRadius="12px"
+                width="fit-content"
+                onClick={() => setShowMore(!showMore)}
+              >
+                {showMore ? (
+                  <>
+                    <small>Collapse</small>
+                    <ChevronUp size="20" style={{ marginLeft: '0.5rem' }} />
+                  </>
+                ) : (
+                  <>
+                    <small>Expand</small>
+                    <ChevronDown size="20" style={{ marginLeft: '0.5rem' }} />
+                  </>
+                )}
+              </ButtonEmpty>
+            </RowFixed>
+          </FixedHeightRow>
 
-        {showMore && (
-          <AutoColumn gap="8px">
-            <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                Your pool tokens:
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
-              </Text>
-            </FixedHeightRow>
-            <FixedHeightRow>
-              <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
-                  Pooled {currency0.symbol}:
-                </Text>
-              </RowFixed>
-              {token0Deposited ? (
-                <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token0Deposited?.toSignificant(6)}
-                  </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
-                </RowFixed>
-              ) : (
-                '-'
-              )}
-            </FixedHeightRow>
-
-            <FixedHeightRow>
-              <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
+          {showMore && (
+            <AutoColumn gap="1.5rem">
+              <div className="poolsGrid-item-table">
+                <p>
                   Pooled {currency1.symbol}:
-                </Text>
-              </RowFixed>
-              {token1Deposited ? (
-                <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token1Deposited?.toSignificant(6)}
-                  </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
-                </RowFixed>
-              ) : (
-                '-'
-              )}
-            </FixedHeightRow>
+                  <span>
+                    {token0Deposited ? (
+                      <>
+                        {token0Deposited?.toSignificant(6)}
+                        <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
+                      </>
+                    ) : (
+                      '-'
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Pooled {currency0.symbol}:
+                  <span>
+                    {token1Deposited ? (
+                      <>
+                        {token1Deposited?.toSignificant(6)}
+                        <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
+                      </>
+                    ) : (
+                      '-'
+                    )}
+                  </span>
+                </p>
+              </div>
+              <div className="poolsGrid-item-grid">
+                <div>
+                  <p>Your pool tokens</p>
+                  <p>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</p>
+                </div>
+                <div>
+                  <p>Your pool share</p>
+                  <p>{poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}</p>
+                </div>
+              </div>
 
-            <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                Your pool share:
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
-              </Text>
-            </FixedHeightRow>
-
-            <RowBetween marginTop="10px">
-              <ButtonPrimary
-                padding="8px"
-                borderRadius="8px"
-                as={Link}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                width="48%"
-              >
-                Add
-              </ButtonPrimary>
-              <ButtonPrimary
-                padding="8px"
-                borderRadius="8px"
-                as={Link}
-                width="48%"
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-              >
-                Remove
-              </ButtonPrimary>
-            </RowBetween>
-          </AutoColumn>
-        )}
-      </AutoColumn>
+              <RowBetween>
+                <ButtonPrimary
+                  padding="0.75rem"
+                  as={Link}
+                  to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  width="48%"
+                >
+                  Add
+                </ButtonPrimary>
+                <ButtonPrimary
+                  padding="0.75rem"
+                  as={Link}
+                  width="48%"
+                  to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                >
+                  Remove
+                </ButtonPrimary>
+              </RowBetween>
+            </AutoColumn>
+          )}
+        </AutoColumn>
+      </div>
     </StyledPositionCard>
   )
 }

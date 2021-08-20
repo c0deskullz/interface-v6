@@ -57,12 +57,10 @@ const PageWrapper = styled.div`
   position: relative;
   width: 100vw;
   min-height: 100vh;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  margin-top: -100px;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding: 2rem 16px 0;
-    margin: -2rem -16px 0;
+    padding: 2rem 1rem;
   `};
 `
 
@@ -70,9 +68,10 @@ const BackgroundImage = styled.div`
   position: absolute;
   background-color: #f6f6ff;
   background-image: url(${pattern});
-  height: 100vh;
+  height: 100%;
   width: 100%;
   top: 0;
+  left: 0;
   z-index: -1;
   &.darkMode {
     background-color: #1a1a37;

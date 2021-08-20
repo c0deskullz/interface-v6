@@ -24,11 +24,7 @@ import { useIsDarkMode } from '../../state/user/hooks'
 
 const Wrapper = styled.div`
   width: 100vw;
-  margin-top: -2rem;
   background-color: ${({ theme }) => theme.surface3};
-  @media (min-width: 720px) {
-    margin-top: -100px;
-  }
 `
 
 const BackgroundImage = styled.div`
@@ -38,6 +34,7 @@ const BackgroundImage = styled.div`
   height: 100%;
   width: 100%;
   top: 0;
+  left: 0;
   &.darkMode {
     background-color: #1a1a37;
     background-image: url(${patternDarkMode});

@@ -21,7 +21,6 @@ const Tabs = styled.div`
 
 const NoBorderTabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 20rem;
   justify-content: space-evenly;
   align-items: center;
   background-color: transparent;

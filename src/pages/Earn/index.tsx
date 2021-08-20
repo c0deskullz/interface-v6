@@ -20,9 +20,6 @@ const Wrapper = styled.div`
   margin-top: -2rem;
   background-color: ${({ theme }) => theme.surface3};
   overflow: hidden;
-  @media (min-width: 720px) {
-    margin-top: -100px;
-  }
 `
 
 const LoaderWrapper = styled.div`
@@ -150,7 +147,9 @@ export default function Earn({
           <div className="hero-content">
             <p className="smallText">Stake & Earn</p>
             <h1>We Offer the Best APY in the Market</h1>
-            <button className="btn hero-btn">Learn More</button>
+            <a className="btn hero-btn" href="https://partyswap.gitbook.io/partyswap/pinatas" target="blank">
+              Learn More
+            </a>
           </div>
         </div>
         <img src={imageLeft} alt="Doggo and Penguin chasing a Piñata" className="hero-img hero-img-left" />
