@@ -17,6 +17,9 @@ const Item = styled.div`
   background-color: ${({ theme }) => theme.surface4};
   [class*='-item-header'] h4 {
     color: ${({ theme }) => theme.text1};
+    span {
+      display: inline-block;
+    }
   }
   .poolsGrid-item-header-features span {
     background-color: ${({ theme }) => theme.primaryText2};
@@ -102,7 +105,9 @@ export default function PoolsGridItem({
         <div className="poolsGrid-item-header">
           <PinataLogo pinataSymbol={`${currency0.symbol}-${currency1.symbol}`} />
           <div>
-            <h4>{`${currency0.symbol}/${currency1.symbol}`}</h4>
+            <h4>
+              <span>{currency0.symbol}</span>/<span>{currency1.symbol}</span>
+            </h4>
             <div className="poolsGrid-item-header-features">
               <span>
                 <BadgeIcon /> Core

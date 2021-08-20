@@ -22,6 +22,7 @@ const StakeAmount = styled(RowBetween)`
   grid-template-columns: 5rem 1fr;
   gap: 1.5rem;
   background-color: ${({ theme }) => theme.surface5};
+  border: 2px solid ${({ theme }) => theme.bg7};
   border-radius: 1.25rem;
   padding: 1rem 1rem;
   button {
