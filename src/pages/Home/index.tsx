@@ -185,7 +185,7 @@ export default function Home() {
                 </WithLockedValue>
               </div>
             </div>
-            <p>
+            <p style={{ marginTop: 'auto' }}>
               {account ? (
                 <Link to="/yay/1">
                   <button className="btn">Claim All</button>
