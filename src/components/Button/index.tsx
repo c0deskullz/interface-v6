@@ -140,6 +140,37 @@ export const ButtonSecondary = styled(Base)`
   }
 `
 
+export const ButtonTertiary = styled(Base)`
+  border: 1px solid ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.text8};
+  background-color: ${({ theme }) => theme.text1};
+  font-size: 16px;
+  border-radius: 5rem;
+  padding: ${({ padding }) => (padding ? padding : '1rem 2rem')};
+  width: fit-content;
+  transition: all 0.25s ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};
+    border: 1px solid ${({ theme }) => theme.text1};
+  }
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.text1};
+    transform: translate(0, -0.25em);
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};
+    border: 1px solid ${({ theme }) => theme.text1};
+  }
+  &:disabled {
+    opacity: 50%;
+    cursor: auto;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+`
+
 export const ButtonPink = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
   color: white;
