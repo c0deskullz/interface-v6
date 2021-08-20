@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { ButtonTertiary } from '../../components/Button'
 import bonnie from '../../assets/svg/home-hero-bonnie.svg'
 import trent from '../../assets/svg/home-hero-trent.svg'
 import iconFarms from '../../assets/svg/grid-item-header-farms-staking.svg'
@@ -191,7 +192,7 @@ export default function Home() {
                   <button className="btn">Claim All</button>
                 </Link>
               ) : (
-                <button className="btn hero-btn" onClick={toggleWalletModal}>
+                <button className="btn" onClick={toggleWalletModal}>
                   Unlock Wallet
                 </button>
               )}
@@ -217,9 +218,9 @@ export default function Home() {
               </p>
             </div>
             <p>
-              <a href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer" className="btn">
+              <ButtonTertiary href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer">
                 Check Analytics
-              </a>
+              </ButtonTertiary>
             </p>
           </GridItem>
           <GridItem className="grid-item grid-banner">
