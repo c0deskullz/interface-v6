@@ -266,9 +266,7 @@ export default function Jacuzzi() {
 
   const apr = useMemo(() => {
     const TOKENS_PER_DAY = 32900
-    console.log('JACUZZI STAKE: ', jacuzziYAYStake)
     if (!jacuzziYAYStake) {
-      console.log('GOING TO ZERO: ', jacuzziYAYStake)
       return 0
     }
 
