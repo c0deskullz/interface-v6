@@ -1,15 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ButtonTertiary } from '../../components/Button'
-import bonnie from '../../assets/svg/home-hero-bonnie.svg'
-import trent from '../../assets/svg/home-hero-trent.svg'
-import iconFarms from '../../assets/svg/grid-item-header-farms-staking.svg'
-import iconStats from '../../assets/svg/grid-item-header-stats.svg'
-import bannerBackground from '../../assets/svg/home-banner-background.svg'
-import bannerPipo from '../../assets/svg/home-banner-pipo.svg'
-import BannerPiñata1 from '../../assets/svg/home-banner-piñata-1.svg'
-import BannerPiñata2 from '../../assets/svg/home-banner-piñata-2.svg'
-import BannerPiñata3 from '../../assets/svg/home-banner-piñata-3.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 import { ChainId, JSBI, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
 import { useTotalYayEarned } from '../../state/stake/hooks'
@@ -23,6 +14,23 @@ import { infoClient } from '../../apollo/client'
 import { GET_FACTORY_DATA } from '../../apollo/queries'
 import { useYayContract } from '../../hooks/useContract'
 import { WithLockedValue } from '../../components/WithLockedValue'
+
+import Bonnie from '../../assets/svg/home-hero-bonnie.svg'
+import Trent from '../../assets/svg/home-hero-trent.svg'
+import FarmsIcon from '../../assets/svg/grid-item-header-farms-staking.svg'
+import StatsIcon from '../../assets/svg/grid-item-header-stats.svg'
+import BannerBackground from '../../assets/svg/home-banner-background.svg'
+import BannerPipo from '../../assets/svg/home-banner-pipo.svg'
+import BannerPiñata1 from '../../assets/svg/home-banner-piñata-1.svg'
+import BannerPiñata2 from '../../assets/svg/home-banner-piñata-2.svg'
+import BannerPiñata3 from '../../assets/svg/home-banner-piñata-3.svg'
+
+import BonnieDark from '../../assets/svg/home-hero-bonnie-dark.svg'
+import TrentDark from '../../assets/svg/home-hero-trent-dark.svg'
+import BannerPipoDark from '../../assets/svg/home-banner-pipo-dark.svg'
+// import BannerPiñataDark1 from '../../assets/svg/home-banner-piñata-dark-1.svg'
+// import BannerPiñataDark2 from '../../assets/svg/home-banner-piñata-dark-2.svg'
+// import BannerPiñataDark3 from '../../assets/svg/home-banner-piñata-dark-3.svg'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -150,16 +158,15 @@ export default function Home() {
           </div>
         </div>
 
-        <img src={isDarkMode ? bonnie : bonnie} alt="Bonnie" className="hero-img hero-img-bonnie" />
-
-        <img src={trent} alt="Trent" className="hero-img hero-img-trent" />
+        <img src={isDarkMode ? BonnieDark : Bonnie} alt="Bonnie" className="hero-img hero-img-bonnie" />
+        <img src={isDarkMode ? TrentDark : Trent} alt="Trent" className="hero-img hero-img-trent" />
       </Hero>
 
       <div className="grid">
         <div className="grid-container">
           <GridItem className="grid-item">
             <div className="grid-item-header">
-              <img src={iconFarms} alt="Farms & Staking icon" />
+              <img src={FarmsIcon} alt="Farms & Staking icon" />
               <div>
                 <h4>Farms & Staking</h4>
                 <p>Gains since the party started.</p>
@@ -195,7 +202,7 @@ export default function Home() {
           </GridItem>
           <GridItem className="grid-item">
             <div className="grid-item-header">
-              <img src={iconStats} alt="Stats and analytics icon" />
+              <img src={StatsIcon} alt="Stats and analytics icon" />
               <div>
                 <h4>Party Stats</h4>
                 <p>Party Analytics in a nutshell.</p>
@@ -228,11 +235,11 @@ export default function Home() {
                 Stake Now!
               </a>
             </div>
-            <img src={bannerBackground} alt="Banner background" className="grid-banner-background" />
-            <img src={bannerPipo} alt="Banner Pipo" className="grid-banner-pipo" />
-            <img src={BannerPiñata1} alt="Banner Piñata" className="grid-banner-1" />
-            <img src={BannerPiñata2} alt="Banner Piñata" className="grid-banner-2" />
-            <img src={BannerPiñata3} alt="Banner Piñata" className="grid-banner-3" />
+            <img src={BannerBackground} alt="Banner background" className="grid-banner-background" />
+            <img src={isDarkMode ? BannerPipoDark : BannerPipo} alt="Banner Pipo" className="grid-banner-pipo" />
+            <img src={isDarkMode ? BannerPiñata1 : BannerPiñata1} alt="Banner Piñata" className="grid-banner-1" />
+            <img src={isDarkMode ? BannerPiñata2 : BannerPiñata2} alt="Banner Piñata" className="grid-banner-2" />
+            <img src={isDarkMode ? BannerPiñata3 : BannerPiñata3} alt="Banner Piñata" className="grid-banner-3" />
           </GridItem>
         </div>
       </div>

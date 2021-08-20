@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import styled from 'styled-components'
+import { useIsDarkMode } from '../../state/user/hooks'
 import { ReactComponent as Logo } from '../../assets/svg/logo.svg'
 import { ReactComponent as IconTwitter } from '../../assets/svg/ico-twitter.svg'
 import { ReactComponent as IconDiscord } from '../../assets/svg/ico-discord.svg'
 import { ReactComponent as IconTelegram } from '../../assets/svg/ico-telegram.svg'
 import { ReactComponent as IconMedium } from '../../assets/svg/ico-medium.svg'
 import { ReactComponent as SupportImage } from '../../assets/svg/footer-support.svg'
+import { ReactComponent as SupportImageDark } from '../../assets/svg/footer-support-dark.svg'
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.surface2};
@@ -21,6 +23,8 @@ const LogoFooter = styled(Logo)`
 `
 
 export default function Footer() {
+  const isDarkMode = useIsDarkMode()
+
   return (
     <>
       <Wrapper className="footer">
@@ -28,7 +32,11 @@ export default function Footer() {
           <div className="footer-section">
             <LogoFooter />
             <p>The most reliable Avalanche swap yet</p>
-            <SupportImage className="footer-section-support" />
+            {isDarkMode ? (
+              <SupportImageDark className="footer-section-support" />
+            ) : (
+              <SupportImage className="footer-section-support" />
+            )}
           </div>
           <div className="footer-section footer-social">
             <h4>Follow Us!</h4>

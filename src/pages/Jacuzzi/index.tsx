@@ -12,7 +12,8 @@ import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { newTransactionsFirst } from '../../components/Web3Status'
 
-import { ReactComponent as JacuzziImg } from '../../assets/svg/jacuzzi-hero.svg'
+import { ReactComponent as JacuzziImage } from '../../assets/svg/jacuzzi-hero.svg'
+import { ReactComponent as JacuzziImageDark } from '../../assets/svg/jacuzzi-hero-dark.svg'
 import { ReactComponent as YAYIcon } from '../../assets/svg/YAY-icon.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
@@ -98,10 +99,6 @@ const ButtonGroup = styled.div`
     margin: auto;
     z-index: 2;
   }
-`
-
-const JacuzziImage = styled(JacuzziImg)`
-  /* display: none; */
 `
 
 const ExtLink = styled(ExternalLinkSVG)`
@@ -302,9 +299,7 @@ export default function Jacuzzi() {
       <div className="jacuzzi">
         {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
         <div className="jacuzzi-container">
-          <div className="jacuzzi-media">
-            <JacuzziImage />
-          </div>
+          <div className="jacuzzi-media">{isDarkMode ? <JacuzziImageDark /> : <JacuzziImage />}</div>
           <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">

@@ -46,6 +46,7 @@ import useENS from '../../hooks/useENS'
 
 import imageLeft from '../../assets/svg/swap-image-left.svg'
 import imageRight from '../../assets/svg/swap-image-right.svg'
+import imageRightDark from '../../assets/svg/swap-image-right-dark.svg'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
@@ -307,7 +308,7 @@ export default function Swap() {
       {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
 
       <img alt="" src={imageLeft} className="swap-image left" />
-      <img alt="" src={imageRight} className="swap-image right" />
+      <img alt="" src={isDarkMode ? imageRightDark : imageRight} className="swap-image right" />
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}
