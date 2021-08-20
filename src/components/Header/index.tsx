@@ -172,7 +172,7 @@ const Burger = ({ open, setOpen, className }: { open: boolean; setOpen: any; cla
 }
 
 const StyledMenu = styled.nav`
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   background: ${({ theme }) => theme.primary1};
@@ -184,6 +184,10 @@ const StyledMenu = styled.nav`
   top: 0;
   left: 0;
   transition: transform 0.3s ease-in-out;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: flex;
+  `};
 
   @media (max-width: 576px) {
     width: 100%;
@@ -400,9 +404,9 @@ const Links = ({ className }: { className?: string }) => {
   )
 }
 
-const DrawerMenu = ({ open }: { open: boolean }) => {
+const DrawerMenu = ({ open, onNavigate }: { open: boolean; onNavigate: () => void }) => {
   return (
-    <StyledMenu open={open}>
+    <StyledMenu open={open} onClick={() => onNavigate()}>
       <Links />
     </StyledMenu>
   )
@@ -424,7 +428,7 @@ export default function Header() {
 
   return (
     <HeaderFrame>
-      <DrawerMenu open={open} />
+      <DrawerMenu open={open} onNavigate={() => setOpen(false)} />
       <Modal isOpen={showPngBalanceModal} onDismiss={() => setShowPngBalanceModal(false)}>
         <YayBalanceContent setShowPngBalanceModal={setShowPngBalanceModal} />
       </Modal>
