@@ -56,8 +56,9 @@ const PageWrapper = styled.div`
   align-items: center;
   position: relative;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   padding-top: 100px;
+  padding-bottom: 100px;
   margin-top: -100px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 2rem 16px 0;
@@ -314,7 +315,7 @@ export default function Swap() {
         onConfirm={handleConfirmTokenWarning}
       />
 
-      <PageWrapper>
+      <>
         <SwapPoolTabs active={'swap'} />
 
         <AppBody>
@@ -522,7 +523,7 @@ export default function Swap() {
             </BottomGrouping>
           </Wrapper>
         </AppBody>
-      </PageWrapper>
+      </>
 
       <AdvancedSwapDetailsDropdown trade={trade} />
     </PageWrapper>

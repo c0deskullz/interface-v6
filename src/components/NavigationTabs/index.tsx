@@ -8,6 +8,7 @@ import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
 
 const Tabs = styled.div`
+  position: relative;
   ${({ theme }) => theme.flexRowNoWrap}
   width: 20rem;
   justify-content: space-evenly;
