@@ -127,7 +127,11 @@ export default function PoolsGridItem({
             </WithLockedValue>
           </div>
           <div>
-            <button className="btn" onClick={() => onClickClaim(stakingInfo)} disabled={!account}>
+            <button
+              className="btn"
+              onClick={() => onClickClaim(stakingInfo)}
+              disabled={!account || !earnedAmount.greaterThan('0')}
+            >
               Claim
             </button>
           </div>
