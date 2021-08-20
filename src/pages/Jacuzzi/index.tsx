@@ -1,7 +1,8 @@
+import React, { useEffect, useMemo, useState, useCallback, useContext } from 'react'
 import { ChainId, JSBI, Token, TokenAmount } from '@partyswap-libs/sdk'
+import { Link } from 'react-router-dom'
 import { ethers } from 'ethers'
-import React, { useEffect, useMemo, useState, useCallback } from 'react'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { JACUZZI_ADDRESS, toFixedTwo, YAY, YAY_DECIMALS_DIVISOR } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -22,6 +23,7 @@ import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-lin
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { TYPE } from '../../theme'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -113,7 +115,22 @@ const BadgeIcon = styled(BadgeSVG)`
   margin-right: 0.125em;
 `
 
+const HelperCard = styled.div`
+  border-radius: 3rem;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    margin-bottom: 1rem;
+  }
+
+  .content {
+    margin-bottom: 1rem;
+  }
+`
+
 export default function Jacuzzi() {
+  const theme = useContext(ThemeContext)
   const { chainId, account } = useActiveWeb3React()
   const [approvalSubmitted, setApprovalSubmitted] = useState(false)
   const [ratio, setRatio] = useState(0)
@@ -348,7 +365,17 @@ export default function Jacuzzi() {
                   <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
                 </ButtonGroup>
               ) : (
-                ''
+                <HelperCard>
+                  <TYPE.mediumHeader color={theme.text1} className="title">
+                    Step 1. Get some YAY tokens (YAY)
+                  </TYPE.mediumHeader>
+                  <TYPE.body color={theme.text1} className="content">
+                    YAY tokens are required. Once Once you've acquired some YAY tokens you can stake them on this page
+                  </TYPE.body>
+                  <Link to="swap">
+                    <ButtonPrimary>Get YAY Tokens</ButtonPrimary>
+                  </Link>
+                </HelperCard>
               )}
             </div>
             <div className="grid-item-details">
