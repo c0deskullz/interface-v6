@@ -1,5 +1,5 @@
 import { ChainId, TokenAmount } from '@partyswap-libs/sdk'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
@@ -108,7 +108,7 @@ const HeaderLinks = styled(Row)`
   }
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 1rem 0 1rem 1rem;
+    padding: 0;
     justify-content: flex-end;
     .drawer{
       display: flex;
@@ -120,13 +120,11 @@ const HeaderLinks = styled(Row)`
 `
 
 const StyledBurger = styled.button`
-  position: absolute;
-  top: 5%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -138,9 +136,9 @@ const StyledBurger = styled.button`
   }
 
   div {
-    width: 2rem;
-    height: 0.25rem;
-    background: ${({ open }: { open: boolean }) => (open ? '#0D0C1D' : '#EFFFFA')};
+    width: 1.5rem;
+    height: 2px;
+    background: ${({ open }: { open: boolean }) => (open ? '#fff' : '#EFFFFA')};
     border-radius: 10px;
     transition: all 0.3s linear;
     position: relative;
@@ -174,16 +172,17 @@ const Burger = ({ open, setOpen, className }: { open: boolean; setOpen: any; cla
 const StyledMenu = styled.nav`
   display: none;
   flex-direction: column;
-  justify-content: center;
-  background: ${({ theme }) => theme.primary1};
+  justify-content: flex-start;
+  background-color: ${({ theme }) => theme.surface1};
   transform: ${({ open }: { open: boolean }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
   height: 100vh;
+  width: 100%;
   text-align: left;
-  padding: 2rem;
+  padding: 15vh 2rem 2rem;
   position: absolute;
   top: 0;
   left: 0;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 200ms ease-out;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     display: flex;
@@ -194,17 +193,16 @@ const StyledMenu = styled.nav`
   }
 
   a {
+    font-family: 'Poppins';
     font-size: 2rem;
-    text-transform: uppercase;
-    padding: 2rem 0;
-    font-weight: bold;
-    letter-spacing: 0.5rem;
-    color: ${({ theme }) => theme.text1};
+    font-weight: 700;
+    color: ${({ theme }) => theme.white};
     text-decoration: none;
-    transition: color 0.3s linear;
+    margin-bottom: 2rem;
+    transition: color 100ms ease;
 
     @media (max-width: 576px) {
-      font-size: 1.5rem;
+      font-size: 2rem;
       text-align: center;
     }
 
@@ -425,6 +423,14 @@ export default function Header() {
 
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [open])
 
   return (
     <HeaderFrame>
