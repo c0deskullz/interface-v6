@@ -89,7 +89,7 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
   const handleUnstake = async () => {
     if (jacuzzi && parsedAmmount) {
       const txReceipt = await jacuzzi.leave(`0x${parsedAmmount?.raw.toString(16)}`)
-      addTransaction(txReceipt, { summary: `Unstake ${typedValue} xYAYs as PARTY to Wallet` })
+      addTransaction(txReceipt, { summary: `Unstake ${typedValue} xPARTYs as PARTY to Wallet` })
       onDismiss()
     }
   }
@@ -102,14 +102,14 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
     const userBalance = await jacuzzi.balanceOf(account)
     const totalSupply = await jacuzzi.totalSupply()
     const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    let stakedYAY
+    let stakedPARTY
     if (partyJacuzziBalance.toString() === '0') {
-      stakedYAY = JSBI.BigInt(0)
+      stakedPARTY = JSBI.BigInt(0)
     } else {
-      stakedYAY = userBalance.mul(partyJacuzziBalance).div(totalSupply)
+      stakedPARTY = userBalance.mul(partyJacuzziBalance).div(totalSupply)
     }
 
-    setPartyBalance(toFixedTwo(stakedYAY.toString()))
+    setPartyBalance(toFixedTwo(stakedPARTY.toString()))
     setBalance(toFixedTwo(userBalance.toString()))
   }, [chainId, account, jacuzzi, party])
 
@@ -131,8 +131,8 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
         <InfoWrapper>
-          <p>Your balance: {balance} xYAYs</p>
-          <p>Worth: {partyBalance} YAYs</p>
+          <p>Your balance: {balance} xPARTYs</p>
+          <p>Worth: {partyBalance} PARTYs</p>
         </InfoWrapper>
         <UnstakeAmount>
           <button onClick={handleSetMax}>MAX</button>

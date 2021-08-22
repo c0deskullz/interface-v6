@@ -3,7 +3,7 @@ import { ChainId, JSBI, Token, TokenAmount } from '@partyswap-libs/sdk'
 import { Link } from 'react-router-dom'
 import { ethers } from 'ethers'
 import styled, { ThemeContext } from 'styled-components'
-import { JACUZZI_ADDRESS, toFixedTwo, PARTY, YAY_DECIMALS_DIVISOR } from '../../constants'
+import { JACUZZI_ADDRESS, toFixedTwo, PARTY, PARTY_DECIMALS_DIVISOR } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useJacuzziContract, usePartyContract } from '../../hooks/useContract'
@@ -15,7 +15,7 @@ import { newTransactionsFirst } from '../../components/Web3Status'
 
 import { ReactComponent as JacuzziImage } from '../../assets/svg/jacuzzi-hero.svg'
 import { ReactComponent as JacuzziImageDark } from '../../assets/svg/jacuzzi-hero-dark.svg'
-import { ReactComponent as YAYIcon } from '../../assets/svg/YAY-icon.svg'
+import { ReactComponent as PARTYIcon } from '../../assets/svg/PARTY-icon.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
@@ -107,7 +107,7 @@ const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
 `
 
-const IconYAY = styled(YAYIcon)`
+const IconPARTY = styled(PARTYIcon)`
   width: 100%;
 `
 
@@ -137,8 +137,8 @@ export default function Jacuzzi() {
   const [, setEarlyLeavePenalty] = useState(0)
   const [earlyLeavePenaltyAfterUnlockDate, setEarlyLeavePenaltyAfterUnlockDate] = useState(0)
   const [, setUnlockDate] = useState(new Date().toLocaleString())
-  const [userYAYBalance, setUserYAYBalance] = useState(0)
-  const [jacuzziYAYStake, setJacuzziYAYStake] = useState(0)
+  const [userPARTYBalance, setUserPARTYBalance] = useState(0)
+  const [jacuzziPARTYStake, setJacuzziPARTYStake] = useState(0)
   const [stakeModalOpen, setStakeModalOpen] = useState(false)
   const [unstakeModalOpen, setUnstakeModalOpen] = useState(false)
 
@@ -164,7 +164,7 @@ export default function Jacuzzi() {
   )
   const parsedCurrentBalance = new TokenAmount(
     PARTY[chainId ? chainId : ChainId.FUJI],
-    JSBI.BigInt(userYAYBalance * YAY_DECIMALS_DIVISOR)
+    JSBI.BigInt(userPARTYBalance * PARTY_DECIMALS_DIVISOR)
   )
 
   const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
@@ -174,18 +174,18 @@ export default function Jacuzzi() {
   const party = usePartyContract()
 
   const userCanStake = useMemo(() => {
-    const userApprovedYAYJacuzzi = account && approval && approval === ApprovalState.APPROVED
-    const userHasYAYs = userYAYBalance > 0
+    const userApprovedPARTYJacuzzi = account && approval && approval === ApprovalState.APPROVED
+    const userHasPARTYs = userPARTYBalance > 0
 
-    return userApprovedYAYJacuzzi && userHasYAYs
-  }, [approval, userYAYBalance, account])
+    return userApprovedPARTYJacuzzi && userHasPARTYs
+  }, [approval, userPARTYBalance, account])
 
   // const userCanLeave = useMemo(() => {
-  //   const userApprovedYAYJacuzzi = account && approval && approval === ApprovalState.APPROVED
-  //   const userHasxYAYs = userxYAYStake > 0
+  //   const userApprovedPARTYJacuzzi = account && approval && approval === ApprovalState.APPROVED
+  //   const userHasxPARTYs = userxPARTYStake > 0
 
-  //   return userApprovedYAYJacuzzi && userHasxYAYs
-  // }, [approval, userxYAYStake, account])
+  //   return userApprovedPARTYJacuzzi && userHasxPARTYs
+  // }, [approval, userxPARTYStake, account])
 
   const getRatio = useCallback(async () => {
     if (!jacuzzi || !party) {
@@ -223,11 +223,11 @@ export default function Jacuzzi() {
     return setEarlyLeavePenalty(percentageFee)
   }, [jacuzzi, party])
 
-  const createYAYTokenInstance = useCallback(() => {
+  const createPARTYTokenInstance = useCallback(() => {
     return new Token(chainId || ChainId.AVALANCHE, PARTY[chainId || ChainId.AVALANCHE].address, 18, 'PARTY', 'PARTY')
   }, [chainId])
 
-  const createxYAYTokenInstance = useCallback(() => {
+  const createxPARTYTokenInstance = useCallback(() => {
     return new Token(
       chainId || ChainId.AVALANCHE,
       JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE] || '',
@@ -246,45 +246,45 @@ export default function Jacuzzi() {
     const userBalance = await party.balanceOf(account)
     const jacuzziBalance = await jacuzzi.balanceOf(account)
 
-    const userXpartyToYAY = +jacuzziBalance?.toString() * ratio
+    const userXpartyToPARTY = +jacuzziBalance?.toString() * ratio
 
-    setUserYAYBalance(toFixedTwo(userBalance.toString()))
+    setUserPARTYBalance(toFixedTwo(userBalance.toString()))
 
     setDisplayUserTotalLiquidity(
-      new TokenAmount(createYAYTokenInstance(), JSBI.BigInt(userXpartyToYAY)).toFixed(2, { groupSeparator: ',' })
+      new TokenAmount(createPARTYTokenInstance(), JSBI.BigInt(userXpartyToPARTY)).toFixed(2, { groupSeparator: ',' })
     )
     setDisplayUserTotalsupply(
-      new TokenAmount(createxYAYTokenInstance(), jacuzziBalance).toFixed(2, { groupSeparator: ',' })
+      new TokenAmount(createxPARTYTokenInstance(), jacuzziBalance).toFixed(2, { groupSeparator: ',' })
     )
-  }, [ratio, jacuzzi, party, account, createYAYTokenInstance, createxYAYTokenInstance])
+  }, [ratio, jacuzzi, party, account, createPARTYTokenInstance, createxPARTYTokenInstance])
 
   const getContractBalances = useCallback(async () => {
     if (!jacuzzi || !party) {
       setDisplayTotalsupply('0')
-      return setJacuzziYAYStake(0)
+      return setJacuzziPARTYStake(0)
     }
 
     const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
-    setJacuzziYAYStake(toFixedTwo(partyJacuzziBalance.toString()))
+    setJacuzziPARTYStake(toFixedTwo(partyJacuzziBalance.toString()))
 
     setDisplayTotalLiquidity(
-      new TokenAmount(createYAYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
+      new TokenAmount(createPARTYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
     )
     setDisplayTotalsupply(
-      new TokenAmount(createxYAYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
+      new TokenAmount(createxPARTYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
     )
-  }, [jacuzzi, party, chainId, createYAYTokenInstance, createxYAYTokenInstance])
+  }, [jacuzzi, party, chainId, createPARTYTokenInstance, createxPARTYTokenInstance])
 
   const apr = useMemo(() => {
     const TOKENS_PER_DAY = 32900
-    if (!jacuzziYAYStake) {
+    if (!jacuzziPARTYStake) {
       return 0
     }
 
-    const roi = TOKENS_PER_DAY / +jacuzziYAYStake?.toString()
+    const roi = TOKENS_PER_DAY / +jacuzziPARTYStake?.toString()
 
     return (roi * 365).toFixed(2)
-  }, [jacuzziYAYStake])
+  }, [jacuzziPARTYStake])
 
   const handleStake = async () => {
     setStakeModalOpen(true)
@@ -320,7 +320,7 @@ export default function Jacuzzi() {
           <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
-                <IconYAY />
+                <IconPARTY />
                 <div>
                   <h4>xPARTY Pool</h4>
                   <div className="poolsGrid-item-header-features">
