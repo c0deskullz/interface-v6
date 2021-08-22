@@ -15,7 +15,7 @@ import { newTransactionsFirst } from '../../components/Web3Status'
 
 import { ReactComponent as JacuzziImage } from '../../assets/svg/jacuzzi-hero.svg'
 import { ReactComponent as JacuzziImageDark } from '../../assets/svg/jacuzzi-hero-dark.svg'
-import { ReactComponent as PARTYIcon } from '../../assets/svg/PARTY-icon.svg'
+import { ReactComponent as PARTYIcon } from '../../assets/svg/YAY-icon.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
