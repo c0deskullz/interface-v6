@@ -16,7 +16,7 @@ import { MouseoverTooltip } from '../Tooltip'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
-import { YAY } from '../../constants'
+import { PARTY } from '../../constants'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CAVAX ? 'AVAX' : ''
@@ -180,8 +180,8 @@ export default function CurrencyList({
       curatedCurrencies.unshift(Currency.CAVAX)
     }
 
-    if (!currencies.some(currency => currency.symbol === YAY[chainId || ChainId.AVALANCHE].symbol)) {
-      curatedCurrencies.unshift(YAY[chainId || ChainId.AVALANCHE])
+    if (!currencies.some(currency => currency.symbol === PARTY[chainId || ChainId.AVALANCHE].symbol)) {
+      curatedCurrencies.unshift(PARTY[chainId || ChainId.AVALANCHE])
     }
 
     return curatedCurrencies

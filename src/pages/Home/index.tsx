@@ -3,16 +3,16 @@ import styled from 'styled-components'
 import { ButtonTertiary } from '../../components/Button'
 import { useIsDarkMode } from '../../state/user/hooks'
 import { ChainId, JSBI, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
-import { useTotalYayEarned } from '../../state/stake/hooks'
+import { useTotalPartyEarned } from '../../state/stake/hooks'
 import { usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
-import { ANALYTICS_PAGE, YAY } from '../../constants'
+import { ANALYTICS_PAGE, PARTY } from '../../constants'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Link } from 'react-router-dom'
 import { infoClient } from '../../apollo/client'
 import { GET_FACTORY_DATA } from '../../apollo/queries'
-import { useYayContract } from '../../hooks/useContract'
+import { usePartyContract } from '../../hooks/useContract'
 import { WithLockedValue } from '../../components/WithLockedValue'
 
 import Bonnie from '../../assets/svg/home-hero-bonnie.svg'
@@ -92,16 +92,16 @@ const useAnalyticsData = () => {
   return { id, pairCount, totalVolumeETH, totalVolumeUSD }
 }
 
-const useYayTotalSupply = () => {
-  const yayContract = useYayContract()
+const usePartyTotalSupply = () => {
+  const partyContract = usePartyContract()
 
   const getTotalSupply = useCallback(
     async (callback: (params: any) => void) => {
-      const totalSupply = await yayContract?.totalSupply()
-      const tokenAmmount = new TokenAmount(YAY[ChainId.AVALANCHE], totalSupply)
+      const totalSupply = await partyContract?.totalSupply()
+      const tokenAmmount = new TokenAmount(PARTY[ChainId.AVALANCHE], totalSupply)
       callback(tokenAmmount)
     },
-    [yayContract]
+    [partyContract]
   )
 
   const [totalSupply, setTotalSupply] = useState<TokenAmount>()
@@ -119,24 +119,26 @@ export default function Home() {
   const toggleWalletModal = useWalletModalToggle()
 
   const isDarkMode = useIsDarkMode()
-  const yay = chainId ? YAY[chainId] : undefined
+  const party = chainId ? PARTY[chainId] : undefined
 
   const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
 
-  const totalSupply = useYayTotalSupply()
-  const yayBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, yay)
-  const yayToClaim: TokenAmount | undefined = useTotalYayEarned()
+  const totalSupply = usePartyTotalSupply()
+  const partyBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, party)
+  const partyToClaim: TokenAmount | undefined = useTotalPartyEarned()
   const oneToken = JSBI.BigInt(1000000000000000000)
-  const [, avaxYayTokenPair] = usePair(wavax, yay)
-  let yayPrice: Number | undefined
-  if (avaxYayTokenPair && yay) {
+  const [, avaxPartyTokenPair] = usePair(wavax, party)
+  let partyPrice: Number | undefined
+  if (avaxPartyTokenPair && party) {
     const reserve =
-      avaxYayTokenPair.reserveOf(yay).raw.toString() === '0' ? JSBI.BigInt(1) : avaxYayTokenPair.reserveOf(yay).raw
-    const avaxYayRatio = JSBI.divide(JSBI.multiply(oneToken, avaxYayTokenPair.reserveOf(wavax).raw), reserve)
-    yayPrice = JSBI.toNumber(avaxYayRatio) / 1000000000000000000
+      avaxPartyTokenPair.reserveOf(party).raw.toString() === '0'
+        ? JSBI.BigInt(1)
+        : avaxPartyTokenPair.reserveOf(party).raw
+    const avaxPartyRatio = JSBI.divide(JSBI.multiply(oneToken, avaxPartyTokenPair.reserveOf(wavax).raw), reserve)
+    partyPrice = JSBI.toNumber(avaxPartyRatio) / 1000000000000000000
   }
-  const avaxInWallet = +(yayBalance?.toFixed(1) || 0) * (yayPrice ? +yayPrice : 0)
-  const avaxToClaim = +(yayToClaim?.toFixed(1) || 0) * (yayPrice ? +yayPrice : 0)
+  const avaxInWallet = +(partyBalance?.toFixed(1) || 0) * (partyPrice ? +partyPrice : 0)
+  const avaxToClaim = +(partyToClaim?.toFixed(1) || 0) * (partyPrice ? +partyPrice : 0)
   const { totalVolumeETH, totalVolumeUSD } = useAnalyticsData()
 
   return (
@@ -147,7 +149,7 @@ export default function Home() {
             <p className="smallText">Welcome to the Party</p>
             <h1>The most reliable Avalanche swap yet</h1>
             {account ? (
-              <Link to="/yay/1">
+              <Link to="/party/1">
                 <button className="btn">Let's Hit Some Piñatas</button>
               </Link>
             ) : (
@@ -174,23 +176,23 @@ export default function Home() {
             </div>
             <div className="grid-item-farms">
               <div>
-                <p>YAY to Claim</p>
+                <p>PARTY to Claim</p>
                 <WithLockedValue>
-                  <p> {yayToClaim?.toFixed(4, { groupSeparator: ',' })} </p>
+                  <p> {partyToClaim?.toFixed(4, { groupSeparator: ',' })} </p>
                   <small>~{avaxToClaim.toFixed(3)} AVAX</small>{' '}
                 </WithLockedValue>
               </div>
               <div>
-                <p>YAY in Wallet</p>
+                <p>PARTY in Wallet</p>
                 <WithLockedValue>
-                  <p>{yayBalance?.toFixed(4, { groupSeparator: ',' })}</p>
+                  <p>{partyBalance?.toFixed(4, { groupSeparator: ',' })}</p>
                   <small>~{avaxInWallet.toFixed(3)} AVAX</small>
                 </WithLockedValue>
               </div>
             </div>
             <p style={{ marginTop: 'auto' }}>
               {account ? (
-                <Link to="/yay/1">
+                <Link to="/party/1">
                   <button className="btn">Claim All</button>
                 </Link>
               ) : (
@@ -210,7 +212,7 @@ export default function Home() {
             </div>
             <div className="grid-item-stats">
               <p>
-                Total YAY Supply <span>$YAY {totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
+                Total PARTY Supply <span>$PARTY {totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
                 Total Volume in AVAX <span>{totalVolumeETH}</span>

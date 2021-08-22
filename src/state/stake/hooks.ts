@@ -12,7 +12,7 @@ import {
   SPORE,
   USDT,
   WBTC,
-  YAY,
+  PARTY,
   // ZERO,
   SNOB,
   AVME,
@@ -46,24 +46,32 @@ export const STAKING_V2: {
   pair: string
 }[] = [
   {
-    tokens: [WAVAX[ChainId.FUJI], YAY[ChainId.FUJI]],
-    stakingRewardAddress: '0xcf3E7F88178Aa7889acAc76F08768E2EF1949Fe7',
-    pair: '0x17dB829157c59202Ae553a633Fd183047d533eEC'
+    tokens: [WAVAX[ChainId.FUJI], PARTY[ChainId.FUJI]],
+    stakingRewardAddress: '0x9BCa2B10aE15C414Fe1FD9066c1D4c2C9B6CC68e',
+    pair: '0x4D2eF43d714308313F15660f91Ab4E4690a12D06'
   },
   {
     tokens: [
       WAVAX[ChainId.FUJI],
       new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
     ],
-    stakingRewardAddress: '0x9376BCCe88d8c6b0DEd85147c8685ED295e030fc',
-    pair: '0xC19f58BDBD64814cBE32b1C305d08bD662A392fF'
+    stakingRewardAddress: '0x4De06B6F04276d733D6e57B0a16D0eceaa67CbeA',
+    pair: '0xb81853e2D8cE364416B6F07866ea3647de3AF7dA'
+  },
+  {
+    tokens: [
+      PARTY[ChainId.FUJI],
+      new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
+    ],
+    stakingRewardAddress: '0x827906e86e2898F8A71F5D76ca69579CfB55a4Eb',
+    pair: '0xa7708CdbEF47656d145528cC90A191Dfdb568444'
   }
   // {
-  //   tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
+  //   tokens: [WAVAX[ChainId.AVALANCHE], PARTY[ChainId.AVALANCHE]],
   //   stakingRewardAddress: '0x6c272EE99E8e7FbCFA59c781E82E9d64a63b9004'
   // },
   // {
-  //   tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+  //   tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   //   stakingRewardAddress: '0x74F17bB07D4A096Bb24481378f27272F21012370'
   // }
 ]
@@ -74,17 +82,17 @@ export const STAKING_V2_AVALANCHE: {
   pair: string
 }[] = [
   {
-    tokens: [WAVAX[ChainId.AVALANCHE], YAY[ChainId.AVALANCHE]],
+    tokens: [WAVAX[ChainId.AVALANCHE], PARTY[ChainId.AVALANCHE]],
     stakingRewardAddress: '0xfC59bbd5f585E183FfA5cCA4B1a34Af681Afb034',
     pair: '0xC8d03a17509Aa21f1AA1f7E04ce0A99e5dB3516E'
   },
   {
-    tokens: [YAY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+    tokens: [PARTY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x4D1B8c4146783Eed90d056e68605D13E0b9674ee',
     pair: '0x7e28A8612baA734CC2745de81baAf43C76aaF127'
   },
   {
-    tokens: [YAY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+    tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x2701641b39142bfCcf6aCfaC8a31eFe5c34F2D50',
     pair: '0xf81d80C6FC672a728a4B7949D9338a6906636f23'
   },
@@ -210,26 +218,29 @@ export interface StakingInfo {
   multiplier?: JSBI
 }
 
-const calculateTotalStakedAmountInAvaxFromYay = function(
+const calculateTotalStakedAmountInAvaxFromParty = function(
   totalSupply: JSBI,
-  avaxYayPairReserveOfYay: JSBI,
-  avaxYayPairReserveOfOtherToken: JSBI,
-  stakingTokenPairReserveOfYay: JSBI,
+  avaxPartyPairReserveOfParty: JSBI,
+  avaxPartyPairReserveOfOtherToken: JSBI,
+  stakingTokenPairReserveOfParty: JSBI,
   totalStakedAmount: TokenAmount
 ): TokenAmount {
   if (JSBI.EQ(totalSupply, JSBI.BigInt(0))) {
     return new TokenAmount(WAVAX[ChainId.FUJI], JSBI.BigInt(0))
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
-  const avaxYayRatio = JSBI.divide(JSBI.multiply(oneToken, avaxYayPairReserveOfOtherToken), avaxYayPairReserveOfYay)
+  const avaxPartyRatio = JSBI.divide(
+    JSBI.multiply(oneToken, avaxPartyPairReserveOfOtherToken),
+    avaxPartyPairReserveOfParty
+  )
 
-  const valueOfYayInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfYay, avaxYayRatio), oneToken)
+  const valueOfPartyInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfParty, avaxPartyRatio), oneToken)
 
   return new TokenAmount(
     WAVAX[ChainId.FUJI],
     JSBI.divide(
       JSBI.multiply(
-        JSBI.multiply(totalStakedAmount.raw, valueOfYayInAvax),
+        JSBI.multiply(totalStakedAmount.raw, valueOfPartyInAvax),
         JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
       ),
       totalSupply
@@ -280,7 +291,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
 
   // console.log('info: ', info)
 
-  const yay = YAY[chainId || ChainId.FUJI]
+  const party = PARTY[chainId || ChainId.FUJI]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
   const pairAddresses = useMemo(() => info.map(({ pair }) => [pair] as MethodArg[]), [info])
@@ -302,7 +313,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     pairAddresses as OptionalMethodInputs[]
   )
   const pairs = usePairs(tokens)
-  const [avaxYayPairState, avaxYayPair] = usePair(WAVAX[chainId || ChainId.FUJI], yay)
+  const [avaxPartyPairState, avaxPartyPair] = usePair(WAVAX[chainId || ChainId.FUJI], party)
 
   // tokens per second, constants
   const rewardRates = useMultipleContractSingleData(
@@ -321,7 +332,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
   )
 
   return useMemo(() => {
-    if (!chainId || !yay) return []
+    if (!chainId || !party) return []
 
     return rewardsAddresses.reduce<StakingInfo[]>((memo, rewardsAddress, index) => {
       // these two are dependent on account
@@ -349,9 +360,9 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
         weight &&
         !weight.loading &&
         pair &&
-        avaxYayPair &&
+        avaxPartyPair &&
         pairState !== PairState.LOADING &&
-        avaxYayPairState !== PairState.LOADING
+        avaxPartyPairState !== PairState.LOADING
       ) {
         if (
           balanceState?.error ||
@@ -362,8 +373,8 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
           weight.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS ||
-          avaxYayPairState === PairState.INVALID ||
-          avaxYayPairState === PairState.NOT_EXISTS
+          avaxPartyPairState === PairState.INVALID ||
+          avaxPartyPairState === PairState.NOT_EXISTS
         ) {
           console.error('Failed to load staking rewards info')
           return memo
@@ -378,15 +389,15 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
         const totalSupply = JSBI.BigInt(totalSupplyState.result?.[0])
         const stakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(balanceState?.result?.[0] ?? 0))
         const totalStakedAmount = new TokenAmount(dummyPair.liquidityToken, totalSupply)
-        const totalRewardRate = new TokenAmount(yay, JSBI.BigInt(rewardRateState.result?.[0]))
+        const totalRewardRate = new TokenAmount(party, JSBI.BigInt(rewardRateState.result?.[0]))
         const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
         const totalStakedInWavax = isAvaxPool
           ? calculteTotalStakedAmountInAvax(totalSupply, pair.reserveOf(wavax).raw, totalStakedAmount)
-          : calculateTotalStakedAmountInAvaxFromYay(
+          : calculateTotalStakedAmountInAvaxFromParty(
               totalSupply,
-              avaxYayPair.reserveOf(yay).raw,
-              avaxYayPair.reserveOf(WAVAX[tokens[1].chainId]).raw,
-              pair.reserveOf(yay).raw,
+              avaxPartyPair.reserveOf(party).raw,
+              avaxPartyPair.reserveOf(WAVAX[tokens[1].chainId]).raw,
+              pair.reserveOf(party).raw,
               totalStakedAmount
             )
         const multiplier = JSBI.divide(JSBI.BigInt(weight.result?.[0]), JSBI.BigInt(100))
@@ -396,7 +407,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
           totalRewardRate: TokenAmount
         ): TokenAmount => {
           return new TokenAmount(
-            yay,
+            party,
             JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
               ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
               : JSBI.BigInt(0)
@@ -411,7 +422,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
           stakingRewardAddress: rewardsAddress,
           tokens: tokens,
           periodFinish: periodFinishMs > 0 ? new Date(periodFinishMs) : undefined,
-          earnedAmount: new TokenAmount(yay, JSBI.BigInt(earnedAmountState?.result?.[0] ?? 0)),
+          earnedAmount: new TokenAmount(party, JSBI.BigInt(earnedAmountState?.result?.[0] ?? 0)),
           rewardRate: individualRewardRate,
           totalRewardRate: totalRewardRate,
           stakedAmount: stakedAmount,
@@ -433,39 +444,39 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     rewardRates,
     rewardsAddresses,
     totalSupplies,
-    avaxYayPairState,
+    avaxPartyPairState,
     pairs,
-    yay,
-    avaxYayPair,
+    party,
+    avaxPartyPair,
     weights
   ])
 }
 
-export function useTotalYayEarned(): TokenAmount | undefined {
+export function useTotalPartyEarned(): TokenAmount | undefined {
   const { chainId } = useActiveWeb3React()
-  const yay = chainId ? YAY[chainId] : undefined
+  const party = chainId ? PARTY[chainId] : undefined
   const stakingInfo1 = useStakingInfo(0)
   const stakingInfo2 = useStakingInfo(1)
 
   let earned1 = useMemo(() => {
-    if (!yay) return undefined
+    if (!party) return undefined
     return (
       stakingInfo1?.reduce(
         (accumulator, stakingInfo) => accumulator.add(stakingInfo.earnedAmount),
-        new TokenAmount(yay, '0')
-      ) ?? new TokenAmount(yay, '0')
+        new TokenAmount(party, '0')
+      ) ?? new TokenAmount(party, '0')
     )
-  }, [stakingInfo1, yay])
+  }, [stakingInfo1, party])
 
   let earned2 = useMemo(() => {
-    if (!yay) return undefined
+    if (!party) return undefined
     return (
       stakingInfo2?.reduce(
         (accumulator, stakingInfo) => accumulator.add(stakingInfo.earnedAmount),
-        new TokenAmount(yay, '0')
-      ) ?? new TokenAmount(yay, '0')
+        new TokenAmount(party, '0')
+      ) ?? new TokenAmount(party, '0')
     )
-  }, [stakingInfo2, yay])
+  }, [stakingInfo2, party])
 
   let total = earned1 ? (earned2 ? earned1.add(earned2) : earned1) : earned2 ? earned2 : undefined
   return total

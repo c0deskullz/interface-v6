@@ -12,7 +12,7 @@ import { Break } from './styled'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import PinataLogo from '../PinataLogo'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
-// import { YAY } from '../../constants'
+// import { PARTY } from '../../constants'
 
 const StatContainer = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ export default function PoolCard({
   // if (avaxPool) {
   //   token = currency0 === CAVAX ? token1 : token0
   // } else {
-  //   token = token0.equals(YAY[token0.chainId]) ? token1 : token0
+  //   token = token0.equals(PARTY[token0.chainId]) ? token1 : token0
   // }
   // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
 
@@ -113,7 +113,7 @@ export default function PoolCard({
           <TYPE.main fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
             {currency0.symbol}-{currency1.symbol}
           </TYPE.main>
-          <StyledInternalLink to={`/yay/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
+          <StyledInternalLink to={`/party/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
             <ButtonPrimary padding="8px" borderRadius="8px">
               {isStaking ? 'Manage' : 'Deposit'}
             </ButtonPrimary>
@@ -133,12 +133,12 @@ export default function PoolCard({
         </RowBetween>
         <RowBetween>
           <TYPE.main> Pool rate </TYPE.main>
-          <TYPE.main>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} YAY / week`}</TYPE.main>
+          <TYPE.main>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} PARTY / week`}</TYPE.main>
         </RowBetween>
         <RowBetween>
           <TYPE.main> Current reward </TYPE.main>
           <TYPE.main>{`${weeklyRewardPerAvax.toFixed(4, { groupSeparator: ',' }) ??
-            '-'} YAY / Week per AVAX`}</TYPE.main>
+            '-'} PARTY / Week per AVAX`}</TYPE.main>
         </RowBetween>
         <RowBetween>
           <TYPE.main> Earn up to (yearly) </TYPE.main>
@@ -162,7 +162,7 @@ export default function PoolCard({
               <span role="img" aria-label="wizard-icon" style={{ marginRight: '0.5rem' }}>
                 ⚡
               </span>
-              {`${rewardRate?.multiply(`${60 * 60 * 24 * 7}`)?.toSignificant(4, { groupSeparator: ',' })} YAY / week`}
+              {`${rewardRate?.multiply(`${60 * 60 * 24 * 7}`)?.toSignificant(4, { groupSeparator: ',' })} PARTY / week`}
             </TYPE.black>
           </BottomSection>
         </>

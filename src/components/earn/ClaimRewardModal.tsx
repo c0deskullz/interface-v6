@@ -47,7 +47,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
         .getReward({ gasLimit: 350000 })
         .then((response: TransactionResponse) => {
           addTransaction(response, {
-            summary: `Claim accumulated YAY rewards`
+            summary: `Claim accumulated PARTY rewards`
           })
           setHash(response.hash)
         })
@@ -79,7 +79,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
               <TYPE.body fontWeight={600} fontSize={36}>
                 {stakingInfo?.earnedAmount?.toSignificant(6)}
               </TYPE.body>
-              <TYPE.body>Unclaimed YAY</TYPE.body>
+              <TYPE.body>Unclaimed PARTY</TYPE.body>
             </AutoColumn>
           )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>
@@ -94,7 +94,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(6)} YAY</TYPE.body>
+            <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(6)} PARTY</TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}
@@ -102,7 +102,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>Claimed YAY!</TYPE.body>
+            <TYPE.body fontSize={20}>Claimed PARTY!</TYPE.body>
           </AutoColumn>
         </SubmittedView>
       )}

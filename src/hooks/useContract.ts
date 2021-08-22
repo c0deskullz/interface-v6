@@ -4,10 +4,9 @@ import { abi as IPartyPairABI } from '@partyswap-libs/party-swap-core/build/IPar
 import { abi as STAKING_REWARDS_ABI } from '@partyswap-libs/party-governance/build/contracts/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
 import { abi as GOVERNANCE_ABI } from '@pangolindex/governance/artifacts/contracts/GovernorAlpha.sol/GovernorAlpha.json'
-import { abi as YAY_ABI } from '@partyswap-libs/party-governance/build/contracts/YAYToken.json'
+import { abi as PARTY_ABI } from 'yay-token/build/contracts/PartyToken.json'
 import { abi as LIQUIDITY_POOL_MANAGER_ABI } from '@partyswap-libs/party-governance/build/contracts/LiquidityPoolManager.json'
-// import YAY_ABI from '@partyswap-libs/party-governance/build/contracts/PUPUToken.json'
-import { abi as JACCUZZI_ABI } from '@partyswap-libs/party-governance/build/contracts/PartyJacuzzis.json'
+import { abi as JACCUZZI_ABI } from '@partyswap-libs/party-jacuzzi/build/contracts/PartyJacuzzi.json'
 import { useMemo } from 'react'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
@@ -19,7 +18,7 @@ import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../consta
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import { AIRDROP_ADDRESS, JACUZZI_ADDRESS, LIQUIDITY_POOL_MANAGER_ADDRESS } from '../constants'
-import { GOVERNANCE_ADDRESS, YAY } from '../constants'
+import { GOVERNANCE_ADDRESS, PARTY } from '../constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -79,9 +78,9 @@ export function useGovernanceContract(): Contract | null {
   return useContract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, true)
 }
 
-export function useYayContract(): Contract | null {
+export function usePartyContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? YAY[chainId].address : undefined, YAY_ABI, true)
+  return useContract(chainId ? PARTY[chainId].address : undefined, PARTY_ABI, true)
 }
 
 export function useStakingContract(stakingAddress?: string, withSignerIfPossible?: boolean): Contract | null {

@@ -1,4 +1,4 @@
-import { YAY } from './../../constants/index'
+import { PARTY } from './../../constants/index'
 import { Currency, CurrencyAmount, CAVAX, JSBI, Token, TokenAmount } from '@partyswap-libs/sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
@@ -7,7 +7,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
-import { useTotalYayEarned } from '../stake/hooks'
+import { useTotalPartyEarned } from '../stake/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -133,14 +133,14 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   return balances ?? {}
 }
 
-// get the total owned and unharvested YAY for account
-export function useAggregateYayBalance(): TokenAmount | undefined {
+// get the total owned and unharvested PARTY for account
+export function useAggregatePartyBalance(): TokenAmount | undefined {
   const { account, chainId } = useActiveWeb3React()
 
-  const png = chainId ? YAY[chainId] : undefined
+  const png = chainId ? PARTY[chainId] : undefined
 
   const pngBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, png)
-  const pngUnHarvested: TokenAmount | undefined = useTotalYayEarned()
+  const pngUnHarvested: TokenAmount | undefined = useTotalPartyEarned()
 
   if (!png) return undefined
 

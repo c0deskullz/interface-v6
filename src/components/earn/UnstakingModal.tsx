@@ -80,7 +80,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo.stakedAmount} />}
               </TYPE.body>
-              <TYPE.body>Deposited xYAY liquidity:</TYPE.body>
+              <TYPE.body>Deposited xPARTY liquidity:</TYPE.body>
             </AutoColumn>
           )}
           {stakingInfo?.earnedAmount && (
@@ -88,12 +88,13 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo?.earnedAmount} />}
               </TYPE.body>
-              <TYPE.body>Unclaimed YAY</TYPE.body>
+              <TYPE.body>Unclaimed PARTY</TYPE.body>
             </AutoColumn>
           )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>
-            When you withdraw, your YAY is claimed and your YAY Liquidity tokens, xYAY, are returned to you. You will no
-            longer earn YAY rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.
+            When you withdraw, your PARTY is claimed and your PARTY Liquidity tokens, xPARTY, are returned to you. You
+            will no longer earn PARTY rewards on this liquidity. Your original token liquidity will remain in its
+            liquidity pool.
           </TYPE.subHeader>
           <GasFeeAlert></GasFeeAlert>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
@@ -104,8 +105,8 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>Withdrawing {stakingInfo?.stakedAmount?.toSignificant(4)} xYAY</TYPE.body>
-            <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(4)} YAY</TYPE.body>
+            <TYPE.body fontSize={20}>Withdrawing {stakingInfo?.stakedAmount?.toSignificant(4)} xPARTY</TYPE.body>
+            <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(4)} PARTY</TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}
@@ -113,8 +114,8 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
         <SubmittedView onDismiss={wrappedOndismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>Withdrew xYAY!</TYPE.body>
-            <TYPE.body fontSize={20}>Claimed YAY!</TYPE.body>
+            <TYPE.body fontSize={20}>Withdrew xPARTY!</TYPE.body>
+            <TYPE.body fontSize={20}>Claimed PARTY!</TYPE.body>
           </AutoColumn>
         </SubmittedView>
       )}

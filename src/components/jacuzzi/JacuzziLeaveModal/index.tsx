@@ -6,8 +6,8 @@ import { RowBetween } from '../../Row'
 import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
-import { useJacuzziContract, useYayContract } from '../../../hooks/useContract'
-import { JACUZZI_ADDRESS, toFixedTwo, YAY } from '../../../constants'
+import { useJacuzziContract, usePartyContract } from '../../../hooks/useContract'
+import { JACUZZI_ADDRESS, toFixedTwo, PARTY } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { ChainId, JSBI } from '@partyswap-libs/sdk'
 import { tryParseAmount } from '../../../state/swap/hooks'
@@ -75,12 +75,12 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
   // track and parse user input
   const [typedValue, setTypedValue] = useState<string>('0')
   const [balance, setBalance] = useState(0)
-  const [yayBalance, setYayBalance] = useState(0)
+  const [partyBalance, setPartyBalance] = useState(0)
   const jacuzzi = useJacuzziContract()
-  const yay = useYayContract()
+  const party = usePartyContract()
   const addTransaction = useTransactionAdder()
 
-  const parsedAmmount = tryParseAmount(typedValue, YAY[chainId || ChainId.FUJI])
+  const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.FUJI])
 
   const handleSetMax = () => {
     setTypedValue(balance.toString())
@@ -89,29 +89,29 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
   const handleUnstake = async () => {
     if (jacuzzi && parsedAmmount) {
       const txReceipt = await jacuzzi.leave(`0x${parsedAmmount?.raw.toString(16)}`)
-      addTransaction(txReceipt, { summary: `Unstake ${typedValue} xYAYs as YAY to Wallet` })
+      addTransaction(txReceipt, { summary: `Unstake ${typedValue} xYAYs as PARTY to Wallet` })
       onDismiss()
     }
   }
 
   const getUserBalance = useCallback(async () => {
-    if (!chainId || !account || !jacuzzi || !yay) {
+    if (!chainId || !account || !jacuzzi || !party) {
       return
     }
 
     const userBalance = await jacuzzi.balanceOf(account)
     const totalSupply = await jacuzzi.totalSupply()
-    const yayJacuzziBalance = await yay.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
+    const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
     let stakedYAY
-    if (yayJacuzziBalance.toString() === '0') {
+    if (partyJacuzziBalance.toString() === '0') {
       stakedYAY = JSBI.BigInt(0)
     } else {
-      stakedYAY = userBalance.mul(yayJacuzziBalance).div(totalSupply)
+      stakedYAY = userBalance.mul(partyJacuzziBalance).div(totalSupply)
     }
 
-    setYayBalance(toFixedTwo(stakedYAY.toString()))
+    setPartyBalance(toFixedTwo(stakedYAY.toString()))
     setBalance(toFixedTwo(userBalance.toString()))
-  }, [chainId, account, jacuzzi, yay])
+  }, [chainId, account, jacuzzi, party])
 
   useEffect(() => {
     if (isOpen) {
@@ -132,7 +132,7 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
         </RowBetween>
         <InfoWrapper>
           <p>Your balance: {balance} xYAYs</p>
-          <p>Worth: {yayBalance} YAYs</p>
+          <p>Worth: {partyBalance} YAYs</p>
         </InfoWrapper>
         <UnstakeAmount>
           <button onClick={handleSetMax}>MAX</button>

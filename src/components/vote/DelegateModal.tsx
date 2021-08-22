@@ -13,7 +13,7 @@ import { isAddress } from 'ethers/lib/utils'
 import useENS from '../../hooks/useENS'
 import { useDelegateCallback } from '../../state/governance/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { YAY } from '../../constants'
+import { PARTY } from '../../constants'
 import { LoadingView, SubmittedView } from '../ModalViews'
 
 const ContentWrapper = styled(AutoColumn)`
@@ -55,7 +55,7 @@ export default function DelegateModal({ isOpen, onDismiss, title }: VoteModalPro
   const { address: parsedAddress } = useENS(activeDelegate)
 
   // get the number of votes available to delegate
-  const pngBalance = useTokenBalance(account ?? undefined, chainId ? YAY[chainId] : undefined)
+  const pngBalance = useTokenBalance(account ?? undefined, chainId ? PARTY[chainId] : undefined)
 
   const delegateCallback = useDelegateCallback()
 
@@ -96,7 +96,7 @@ export default function DelegateModal({ isOpen, onDismiss, title }: VoteModalPro
               <TYPE.mediumHeader fontWeight={500}>{title}</TYPE.mediumHeader>
               <StyledClosed stroke="black" onClick={wrappedOndismiss} />
             </RowBetween>
-            <TYPE.body>Earned YAY tokens represent voting shares in Party governance.</TYPE.body>
+            <TYPE.body>Earned PARTY tokens represent voting shares in Party governance.</TYPE.body>
             <TYPE.body>
               You can either vote on each proposal yourself or delegate your votes to a third party.
             </TYPE.body>

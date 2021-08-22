@@ -17,9 +17,9 @@ import {
   AvaxWbtc,
   AvaxXava,
   AvaxZero,
-  YayAvax,
-  YayDai,
-  YayUsdt
+  PartyAvax,
+  PartyDai,
+  PartyUsdt
 } from '../../assets/images/pinatas'
 
 interface PinataLogoProps {
@@ -29,8 +29,8 @@ interface PinataLogoProps {
 export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
   const pinataLogo = useMemo(() => {
     switch (pinataSymbol) {
-      case 'AVAX-YAY':
-        return YayAvax
+      case 'AVAX-PARTY':
+        return PartyAvax
       case 'AVAX-aaBLOCK':
         return AvaxAaBlock
       case 'AVAX-AVME':
@@ -65,10 +65,10 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxSherpa
       case 'AVAX-YAK':
         return AvaxYak
-      case 'YAY-DAI':
-        return YayDai
+      case 'PARTY-DAI':
+        return PartyDai
       default:
-        return YayUsdt
+        return PartyUsdt
     }
   }, [pinataSymbol])
   return <img src={pinataLogo} alt="a  pinata logo" />

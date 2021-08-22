@@ -4,7 +4,7 @@ import { useAirdropContract } from '../../hooks/useContract'
 import { calculateGasMargin } from '../../utils'
 import { useTransactionAdder } from '../transactions/hooks'
 import { TokenAmount, JSBI } from '@partyswap-libs/sdk'
-import { YAY } from './../../constants/index'
+import { PARTY } from './../../constants/index'
 import { useSingleCallResult } from '../multicall/hooks'
 
 export function useAirdropIsClaimingAllowed(): boolean {
@@ -35,12 +35,12 @@ export function useUserUnclaimedAmount(account: string | null | undefined): Toke
   const airdropContract = useAirdropContract()
   const withdrawAmountResult = useSingleCallResult(airdropContract, 'withdrawAmount', [account ? account : undefined])
 
-  const yay = chainId ? YAY[chainId] : undefined
-  if (!yay) return undefined
+  const party = chainId ? PARTY[chainId] : undefined
+  if (!party) return undefined
   if (!canClaim) {
-    return new TokenAmount(yay, JSBI.BigInt(0))
+    return new TokenAmount(party, JSBI.BigInt(0))
   }
-  return new TokenAmount(yay, JSBI.BigInt(withdrawAmountResult.result?.[0]))
+  return new TokenAmount(party, JSBI.BigInt(withdrawAmountResult.result?.[0]))
 }
 
 export function useClaimCallback(
@@ -61,7 +61,7 @@ export function useClaimCallback(
         .claim({ value: null, gasLimit: calculateGasMargin(estimatedGasLimit) })
         .then((response: TransactionResponse) => {
           addTransaction(response, {
-            summary: `Claimed YAY`,
+            summary: `Claimed PARTY`,
             claim: { recipient: account }
           })
           return response.hash

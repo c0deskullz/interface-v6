@@ -11,7 +11,7 @@ import Logo from '../../assets/svg/icon.svg'
 import LogoDark from '../../assets/svg/icon.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances, useAggregateYayBalance } from '../../state/wallet/hooks'
+import { useETHBalances, useAggregatePartyBalance } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
 import { TYPE } from '../../theme'
@@ -23,7 +23,7 @@ import Menu from '../Menu'
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
 import Modal from '../Modal'
-import YayBalanceContent from './YayBalanceContent'
+import PartyBalanceContent from './PartyBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
 // import { ANALYTICS_PAGE } from '../../constants'
 
@@ -392,7 +392,7 @@ const Links = ({ className }: { className?: string }) => {
       >
         Liquidity
       </StyledNavLink>
-      <StyledNavLink id={`stake-nav-link`} to={'/yay/1'}>
+      <StyledNavLink id={`stake-nav-link`} to={'/party/1'}>
         Piñatas
       </StyledNavLink>
       <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>
@@ -416,7 +416,7 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
 
-  const aggregateBalance: TokenAmount | undefined = useAggregateYayBalance()
+  const aggregateBalance: TokenAmount | undefined = useAggregatePartyBalance()
 
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
   const [open, setOpen] = useState(false)
@@ -436,7 +436,7 @@ export default function Header() {
     <HeaderFrame>
       <DrawerMenu open={open} onNavigate={() => setOpen(false)} />
       <Modal isOpen={showPngBalanceModal} onDismiss={() => setShowPngBalanceModal(false)}>
-        <YayBalanceContent setShowPngBalanceModal={setShowPngBalanceModal} />
+        <PartyBalanceContent setShowPngBalanceModal={setShowPngBalanceModal} />
       </Modal>
       <HeaderRow>
         <Title href=".">
@@ -475,7 +475,7 @@ export default function Header() {
                     </TYPE.white>
                   </HideSmall>
                 )}
-                YAY
+                PARTY
               </PNGAmount>
               <CardNoise />
             </PNGWrapper>

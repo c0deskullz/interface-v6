@@ -121,12 +121,12 @@ export default function PoolsGridItem({
             APR: <span>{apr}%</span>
           </p>
           <p>
-            Earn: <span>YAY</span>
+            Earn: <span>PARTY</span>
           </p>
         </div>
         <div className="poolsGrid-item-grid">
           <div>
-            <p>YAY earned</p>
+            <p>PARTY earned</p>
             <WithLockedValue>
               <p>{earnedAmount.toFixed(0, { groupSeparator: ',' })}</p>
             </WithLockedValue>
@@ -142,7 +142,7 @@ export default function PoolsGridItem({
           </div>
         </div>
         {account ? (
-          <StyledInternalLink to={`/yay/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
+          <StyledInternalLink to={`/party/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
             <button className="btn btn-secondary">{isStaking ? 'Manage' : 'Deposit'}</button>
           </StyledInternalLink>
         ) : (

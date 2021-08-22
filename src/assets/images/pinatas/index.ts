@@ -13,9 +13,9 @@ import AvaxSpore from './AVAX-Spore.png'
 import AvaxWbtc from './AVAX-WBTC.png'
 import AvaxXava from './AVAX-XAVA.png'
 import AvaxZero from './AVAX-ZERO.png'
-import YayAvax from './YAY-AVAX.png'
-import YayDai from './YAY-DAI.png'
-import YayUsdt from './YAY-USDT.png'
+import PartyAvax from './YAY-AVAX.png'
+import PartyDai from './YAY-DAI.png'
+import PartyUsdt from './YAY-USDT.png'
 import AvaxYak from './AVAX-YAK.png'
 import AvaxSherpa from './AVAX-SHERPA.png'
 
@@ -37,7 +37,7 @@ export {
   AvaxWbtc,
   AvaxXava,
   AvaxZero,
-  YayAvax,
-  YayDai,
-  YayUsdt
+  PartyAvax,
+  PartyDai,
+  PartyUsdt
 }

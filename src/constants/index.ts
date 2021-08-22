@@ -7,7 +7,7 @@ export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
   [ChainId.AVALANCHE]: '0xC74eCA6CcD55f8859CC513CED47A4B56af330d35',
-  [ChainId.FUJI]: '0xdb5931C6cEc0fF464e44c9ff414225b6171911Dc'
+  [ChainId.FUJI]: '0x3705aBF712ccD4fc56Ee76f0BD3009FD4013ad75'
 }
 
 export const LANDING_PAGE = 'https://partyswap.io/'
@@ -22,9 +22,9 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const YAY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xEbD7fF328bC30087720e427CB8f11E9Bd8aF7d8A', 18, 'YAY', 'YAY'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', 18, 'YAY', 'YAY')
+export const PARTY: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xb68Dd903198339f1818Fb3710AB4Ea2Ff85231B8', 18, 'PARTY', 'PARTY'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', 18, 'PARTY', 'PARTY')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
@@ -243,7 +243,7 @@ export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } =
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xc3175E89cE175f6C752D152Deec6F682e873636c',
+  [ChainId.FUJI]: '0xc7cB695Df67aa3f96B5380B2C5B14419Ac4EAE9B',
   [ChainId.AVALANCHE]: '0x68583A0a7e763400B8B0904095133F76922657ae'
 }
 

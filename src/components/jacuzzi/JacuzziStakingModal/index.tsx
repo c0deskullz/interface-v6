@@ -6,8 +6,8 @@ import { RowBetween } from '../../Row'
 import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
-import { useJacuzziContract, useYayContract } from '../../../hooks/useContract'
-import { toFixedTwo, YAY } from '../../../constants'
+import { useJacuzziContract, usePartyContract } from '../../../hooks/useContract'
+import { toFixedTwo, PARTY } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { tryParseAmount } from '../../../state/swap/hooks'
 import { ChainId } from '@partyswap-libs/sdk'
@@ -66,11 +66,11 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   // track and parse user input
   const [typedValue, setTypedValue] = useState<string>('0')
   const [balance, setBalance] = useState(0)
-  const yay = useYayContract()
+  const party = usePartyContract()
   const jacuzzi = useJacuzziContract()
   const addTransaction = useTransactionAdder()
 
-  const parsedAmmount = tryParseAmount(typedValue, YAY[chainId || ChainId.FUJI])
+  const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.FUJI])
 
   const handleSetMax = () => {
     setTypedValue(balance.toString())
@@ -80,19 +80,19 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
     if (jacuzzi && parsedAmmount) {
       const txReceipt = await jacuzzi.enter(`0x${parsedAmmount?.raw.toString(16)}`)
 
-      addTransaction(txReceipt, { summary: `Stake ${typedValue} YAY to Jacuzzi` })
+      addTransaction(txReceipt, { summary: `Stake ${typedValue} PARTY to Jacuzzi` })
       onDismiss()
     }
   }
 
   const getUserBalance = useCallback(async () => {
-    if (!chainId || !account || !yay) {
+    if (!chainId || !account || !party) {
       return
     }
 
-    const userBalance = await yay.balanceOf(account)
+    const userBalance = await party.balanceOf(account)
     setBalance(toFixedTwo(userBalance.toString()))
-  }, [chainId, account, yay])
+  }, [chainId, account, party])
 
   useEffect(() => {
     if (isOpen) {
@@ -111,7 +111,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
           <TYPE.largeHeader>Stake</TYPE.largeHeader>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
-        <RowBetween>Your balance: {balance} YAY</RowBetween>
+        <RowBetween>Your balance: {balance} PARTY</RowBetween>
         <StakeAmount>
           <button onClick={handleSetMax}>MAX</button>
 

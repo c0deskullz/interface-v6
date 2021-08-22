@@ -28,7 +28,7 @@ import { useTotalSupply } from '../../data/TotalSupply'
 import { usePair } from '../../data/Reserves'
 import usePrevious from '../../hooks/usePrevious'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
-import { BIG_INT_ZERO, YAY } from '../../constants'
+import { BIG_INT_ZERO, PARTY } from '../../constants'
 
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
@@ -179,7 +179,7 @@ export default function Manage({
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
-  const [, avaxYayTokenPair] = usePair(CAVAX, YAY[chainId ? chainId : 43114])
+  const [, avaxPartyTokenPair] = usePair(CAVAX, PARTY[chainId ? chainId : 43114])
   // let usdToken: Token | undefined
   if (avaxPool) {
     token = currencyA === CAVAX ? tokenB : tokenA
@@ -188,51 +188,56 @@ export default function Manage({
     // let returnOverMonth: Percent = new Percent('0')
     if (totalSupplyOfStakingToken && stakingTokenPair && wavax) {
       // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
-      valueOfTotalStakedAmountInWavax = new TokenAmount(
-        wavax,
-        JSBI.divide(
-          JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(wavax).raw),
-            JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-          ),
-          totalSupplyOfStakingToken.raw
-        )
-      )
+      valueOfTotalStakedAmountInWavax = totalSupplyOfStakingToken?.greaterThan('0')
+        ? new TokenAmount(
+            wavax,
+            JSBI.divide(
+              JSBI.multiply(
+                JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(wavax).raw),
+                JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
+              ),
+              totalSupplyOfStakingToken.raw
+            )
+          )
+        : new TokenAmount(wavax, JSBI.BigInt(0))
     }
 
     // get the USD value of staked wavax
     // usdToken = wavax
   } else {
-    var yay
-    if (tokenA && tokenA.equals(YAY[tokenA.chainId])) {
+    var party
+    if (tokenA && tokenA.equals(PARTY[tokenA.chainId])) {
       token = tokenB
-      yay = tokenA
+      party = tokenA
     } else {
       token = tokenA
-      yay = tokenB
+      party = tokenB
     }
 
-    if (totalSupplyOfStakingToken && stakingTokenPair && avaxYayTokenPair && tokenB && yay) {
+    if (totalSupplyOfStakingToken && stakingTokenPair && avaxPartyTokenPair && tokenB && party) {
       const oneToken = JSBI.BigInt(1000000000000000000)
-      const avaxYayRatio = JSBI.divide(
-        JSBI.multiply(oneToken, avaxYayTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
-        avaxYayTokenPair.reserveOf(yay).raw
+      const avaxPartyRatio = JSBI.divide(
+        JSBI.multiply(oneToken, avaxPartyTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
+        avaxPartyTokenPair.reserveOf(party).raw
       )
 
-      const valueOfYayInAvax = JSBI.divide(JSBI.multiply(stakingTokenPair.reserveOf(yay).raw, avaxYayRatio), oneToken)
+      const valueOfPartyInAvax = JSBI.divide(
+        JSBI.multiply(stakingTokenPair.reserveOf(party).raw, avaxPartyRatio),
+        oneToken
+      )
 
       valueOfTotalStakedAmountInWavax = new TokenAmount(
         WAVAX[tokenB.chainId],
         JSBI.divide(
           JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfYayInAvax),
+            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPartyInAvax),
             JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
           ),
           totalSupplyOfStakingToken.raw
         )
       )
     }
-    // usdToken = yay
+    // usdToken = party
   }
 
   // get the color of the token
@@ -312,15 +317,15 @@ export default function Manage({
                 {stakingInfo?.totalRewardRate
                   ?.multiply((60 * 60 * 24 * 7).toString())
                   ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
-                {' YAY / week'}
+                {' PARTY / week'}
               </span>
             </p>
           </div>
 
           {showAddLiquidityButton && (
             <div className="grid-item-accent">
-              <p>Step 1. Get Party Liquidity tokens (xYAY)</p>
-              <p>{`xYAY tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}</p>
+              <p>Step 1. Get Party Liquidity tokens (xPARTY)</p>
+              <p>{`xPARTY tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}</p>
               <ButtonPrimary
                 padding="0.75rem"
                 width={'fit-content'}
@@ -341,13 +346,13 @@ export default function Manage({
                     {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
                   </TYPE.largeHeader>
                   <p>
-                    xYAY {currencyA?.symbol}-{currencyB?.symbol}
+                    xPARTY {currencyA?.symbol}-{currencyB?.symbol}
                   </p>
                 </AutoColumn>
               </StyledDataCard>
               <StyledBottomCard dim={stakingInfo?.stakedAmount?.equalTo(JSBI.BigInt(0))}>
                 <AutoColumn gap="md">
-                  <TYPE.black className="accent">Your unclaimed YAY</TYPE.black>
+                  <TYPE.black className="accent">Your unclaimed PARTY</TYPE.black>
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
                       key={countUpAmount}
@@ -366,7 +371,7 @@ export default function Manage({
                     {stakingInfo?.rewardRate
                       ?.multiply((60 * 60 * 24 * 7).toString())
                       ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
-                    {' YAY / week'}
+                    {' PARTY / week'}
                   </TYPE.black>
                   {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                     <ButtonEmpty padding="0.75rem" width="10rem" onClick={() => setShowClaimRewardModal(true)}>
@@ -381,13 +386,13 @@ export default function Manage({
               <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
                 ⭐️
               </span>
-              When you withdraw, the contract will automagically claim YAY on your behalf!
+              When you withdraw, the contract will automagically claim PARTY on your behalf!
             </TYPE.main>
 
             {!showAddLiquidityButton && (
               <RowBetween>
                 <ButtonPrimary width="48%" onClick={handleDepositClick}>
-                  {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit xYAY Tokens'}
+                  {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit xPARTY Tokens'}
                 </ButtonPrimary>
 
                 {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
@@ -400,7 +405,7 @@ export default function Manage({
               </RowBetween>
             )}
             {!userLiquidityUnstaked ? null : userLiquidityUnstaked.equalTo('0') ? null : (
-              <TYPE.subHeader>{userLiquidityUnstaked.toSignificant(6)} xYAY tokens available</TYPE.subHeader>
+              <TYPE.subHeader>{userLiquidityUnstaked.toSignificant(6)} xPARTY tokens available</TYPE.subHeader>
             )}
           </PositionInfo>
         </div>

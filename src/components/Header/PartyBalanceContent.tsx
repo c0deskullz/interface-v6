@@ -2,12 +2,12 @@ import { ChainId, TokenAmount, WAVAX, JSBI } from '@partyswap-libs/sdk'
 import React, { useMemo } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
-import { YAY } from '../../constants'
+import { PARTY } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
-import { useTotalYayEarned } from '../../state/stake/hooks'
-import { useAggregateYayBalance, useTokenBalance } from '../../state/wallet/hooks'
+import { useTotalPartyEarned } from '../../state/stake/hooks'
+import { useAggregatePartyBalance, useTokenBalance } from '../../state/wallet/hooks'
 import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
 import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
@@ -38,33 +38,35 @@ const StyledClose = styled(X)`
 /**
  * Content for balance stats modal
  */
-export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowPngBalanceModal: any }) {
+export default function PartyBalanceContent({ setShowPngBalanceModal }: { setShowPngBalanceModal: any }) {
   const { account, chainId } = useActiveWeb3React()
-  const yay = chainId ? YAY[chainId] : undefined
+  const party = chainId ? PARTY[chainId] : undefined
 
-  const total = useAggregateYayBalance()
-  const yayBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, yay)
-  const yayToClaim: TokenAmount | undefined = useTotalYayEarned()
+  const total = useAggregatePartyBalance()
+  const partyBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, party)
+  const partyToClaim: TokenAmount | undefined = useTotalPartyEarned()
 
-  const totalSupply: TokenAmount | undefined = useTotalSupply(yay)
+  const totalSupply: TokenAmount | undefined = useTotalSupply(party)
 
-  // Determine YAY price in AVAX
+  // Determine PARTY price in AVAX
   const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
-  const [, avaxYayTokenPair] = usePair(wavax, yay)
+  const [, avaxPartyTokenPair] = usePair(wavax, party)
   const oneToken = JSBI.BigInt(1000000000000000000)
-  let yayPrice: Number | undefined
-  if (avaxYayTokenPair && yay) {
+  let partyPrice: Number | undefined
+  if (avaxPartyTokenPair && party) {
     const reserve =
-      avaxYayTokenPair.reserveOf(yay).raw.toString() === '0' ? JSBI.BigInt(1) : avaxYayTokenPair.reserveOf(yay).raw
-    const avaxYayRatio = JSBI.divide(JSBI.multiply(oneToken, avaxYayTokenPair.reserveOf(wavax).raw), reserve)
-    yayPrice = JSBI.toNumber(avaxYayRatio) / 1000000000000000000
+      avaxPartyTokenPair.reserveOf(party).raw.toString() === '0'
+        ? JSBI.BigInt(1)
+        : avaxPartyTokenPair.reserveOf(party).raw
+    const avaxPartyRatio = JSBI.divide(JSBI.multiply(oneToken, avaxPartyTokenPair.reserveOf(wavax).raw), reserve)
+    partyPrice = JSBI.toNumber(avaxPartyRatio) / 1000000000000000000
   }
 
   const blockTimestamp = useCurrentBlockTimestamp()
   const circulation: TokenAmount | undefined = useMemo(
     () =>
-      blockTimestamp && yay && chainId === ChainId.FUJI ? computePngCirculation(yay, blockTimestamp) : totalSupply,
-    [blockTimestamp, chainId, totalSupply, yay]
+      blockTimestamp && party && chainId === ChainId.FUJI ? computePngCirculation(party, blockTimestamp) : totalSupply,
+    [blockTimestamp, chainId, totalSupply, party]
   )
 
   return (
@@ -74,7 +76,7 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
         <CardNoise />
         <CardSection gap="md">
           <RowBetween>
-            <TYPE.white color="white">Your YAY Breakdown</TYPE.white>
+            <TYPE.white color="white">Your PARTY Breakdown</TYPE.white>
             <StyledClose stroke="white" onClick={() => setShowPngBalanceModal(false)} />
           </RowBetween>
         </CardSection>
@@ -94,14 +96,14 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
               <AutoColumn gap="md">
                 <RowBetween>
                   <TYPE.white color="white">Balance:</TYPE.white>
-                  <TYPE.white color="white">{yayBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
+                  <TYPE.white color="white">{partyBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
                 </RowBetween>
                 <RowBetween>
                   <TYPE.white color="white">Unclaimed:</TYPE.white>
                   <TYPE.white color="white">
-                    {yayToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
-                    {yayToClaim && yayToClaim.greaterThan('0') && (
-                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/yay/1">
+                    {partyToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
+                    {partyToClaim && partyToClaim.greaterThan('0') && (
+                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/party/1">
                         (claim)
                       </StyledInternalLink>
                     )}
@@ -115,11 +117,11 @@ export default function YayBalanceContent({ setShowPngBalanceModal }: { setShowP
         <CardSection gap="sm">
           <AutoColumn gap="md">
             <RowBetween>
-              <TYPE.white color="white">YAY price:</TYPE.white>
-              <TYPE.white color="white">{yayPrice?.toFixed(5) ?? '-'} AVAX</TYPE.white>
+              <TYPE.white color="white">PARTY price:</TYPE.white>
+              <TYPE.white color="white">{partyPrice?.toFixed(5) ?? '-'} AVAX</TYPE.white>
             </RowBetween>
             <RowBetween>
-              <TYPE.white color="white">YAY in circulation:</TYPE.white>
+              <TYPE.white color="white">PARTY in circulation:</TYPE.white>
               <TYPE.white color="white">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
             </RowBetween>
             <RowBetween>
