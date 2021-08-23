@@ -37,15 +37,19 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxAvme
       case 'AVAX-BAG':
         return AvaxBag
-      case 'AVAX-DOGE':
+      case 'AVAX-renDOGE':
         return AvaxDoge
       case 'AVAX-ETH':
+        return AvaxEth
+      case 'AVAX-WETH.e':
         return AvaxEth
       case 'AVAX-ELK':
         return AvaxElk
       case 'AVAX-FRAX':
         return AvaxFraxi
       case 'AVAX-LINK':
+        return AvaxLink
+      case 'AVAX-LINK.e':
         return AvaxLink
       case 'AVAX-PEFI':
         return AvaxPefi
@@ -57,6 +61,8 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxSpore
       case 'AVAX-WBTC':
         return AvaxWbtc
+      case 'AVAX-WBTC.e':
+        return AvaxWbtc
       case 'AVAX-XAVA':
         return AvaxXava
       case 'AVAX-ZERO':
@@ -66,6 +72,8 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
       case 'AVAX-YAK':
         return AvaxYak
       case 'PARTY-DAI':
+        return PartyDai
+      case 'PARTY-DAI.e':
         return PartyDai
       default:
         return PartyUsdt

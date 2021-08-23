@@ -120,6 +120,7 @@ export default function Earn({
       setPoolCards(results)
       setPoolsLength(results.length)
     }
+
     fetchPoolAprs(chainId, stakingInfos, updatePoolCards, {
       onClickClaim: stakingInfo => {
         setCurrentStakingPool(stakingInfo)

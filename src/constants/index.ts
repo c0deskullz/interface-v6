@@ -6,7 +6,7 @@ import { injected } from '../connectors'
 export const GAS_PRICE = 225
 
 export const ROUTER_ADDRESS = {
-  [ChainId.AVALANCHE]: '0xC74eCA6CcD55f8859CC513CED47A4B56af330d35',
+  [ChainId.AVALANCHE]: '0xff164Ede3E7C375E8764E9e3a22D3E35F780EEBC',
   [ChainId.FUJI]: '0x3705aBF712ccD4fc56Ee76f0BD3009FD4013ad75'
 }
 
@@ -24,7 +24,7 @@ type ChainTokenList = {
 
 export const PARTY: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0xb68Dd903198339f1818Fb3710AB4Ea2Ff85231B8', 18, 'PARTY', 'PARTY'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', 18, 'PARTY', 'PARTY')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x69A61f38Df59CBB51962E69C54D39184E21C27Ec', 18, 'PARTY', 'PARTY')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
@@ -34,16 +34,16 @@ export const PNG: { [chainId in ChainId]: Token } = {
 
 export const ETH: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ETH', 'Ether'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15', 18, 'ETH', 'Ether')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB', 18, 'WETH.e', 'Ether')
 }
 
 export const USDT: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDT', 'Tether USD'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
-    '0xde3A24028580884448a5397872046a019649b084',
+    '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
     6,
-    'USDT',
+    'USDT.e',
     'Tether USD'
   )
 }
@@ -52,9 +52,9 @@ export const WBTC: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 8, 'WBTC', 'Wrapped Bitcoin'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
-    '0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB',
+    '0x50b7545627a5162F82A992c33b87aDc75187B218',
     8,
-    'WBTC',
+    'WBTC.e',
     'Wrapped Bitcoin'
   )
 }
@@ -63,9 +63,9 @@ export const LINK: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LINK', 'ChainLink Token'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
-    '0xB3fe5374F67D7a22886A0eE082b2E2f9d2651651',
+    '0x5947BB275c521040051D82396192181b413227A3',
     18,
-    'LINK',
+    'LINK.e',
     'ChainLink Token'
   )
 }
@@ -74,9 +74,9 @@ export const DAI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x01a38eCc037DCf490045f6E4D74296F212331B99', 18, 'DAI', 'Dai Stablecoin'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
-    '0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a',
+    '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
     18,
-    'DAI',
+    'DAI.e',
     'Dai Stablecoin'
   )
 }
@@ -96,7 +96,7 @@ export const aaBLOCK: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 8, 'aaBLOCK', 'Blocknet'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
-    '0xC931f61B1534EB21D8c11B24f3f5Ab2471d4aB50',
+    '0xc931f61b1534eb21d8c11b24f3f5ab2471d4ab50',
     8,
     'aaBLOCK',
     'Blocknet'
@@ -166,6 +166,17 @@ export const AVME: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x1ecd47ff4d9598f89721a2866bfeb99505a413ed', 18, 'AVME', 'AVME')
 }
 
+export const RENDOGE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 8, 'renDOGE', 'renDOGE'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xcE829A89d4A55a63418bcC43F00145adef0eDB8E',
+    8,
+    'renDOGE',
+    'renDOGE'
+  )
+}
+
 export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf39f9671906d8630812f9d9863bBEf5D523c84Ab', 18, 'UNI', 'Uniswap')
@@ -213,6 +224,11 @@ export const YAK: { [chainId in ChainId]: Token } = {
     'YAK',
     'Yak Token'
   )
+}
+
+export const QI: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'QI', 'BENQI'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5', 18, 'QI', 'BENQI')
 }
 
 export const YFI: { [chainId in ChainId]: Token } = {

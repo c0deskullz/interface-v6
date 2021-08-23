@@ -3381,10 +3381,10 @@
   dependencies:
     "@partyswap-libs/party-swap-core" "^0.1.2"
 
-"@partyswap-libs/sdk@1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.10.tgz#709b23a6a9948722dd78915536b9aab352d36151"
-  integrity sha512-CEGggyj8IbhZjoLQz68+uNswBGX6MWbq4WNxmdvVHzUholbePPbfbtQCC3dcf4smcPYYfNiG+A5H7gINjzA8fw==
+"@partyswap-libs/sdk@1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@partyswap-libs/sdk/-/sdk-1.0.12.tgz#3f3b0f96879eaa6f930d546f64be7dd230846cb9"
+  integrity sha512-Xapp5FtPERda6GLnbOxnnNB7TTlZhP9v+Fwi1HNvs1P0uuXUiofavjpBYwbSSSvr3j8ToIOXHMIxxtMkRlF22A==
   dependencies:
     "@partyswap-libs/party-swap-core" "^0.1.2"
     big.js "^5.2.2"
