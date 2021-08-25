@@ -81,6 +81,8 @@ export default function PopupItem({
     const {
       listUpdate: { listUrl, oldList, newList, auto }
     } = content
+    console.log(listUrl, newList)
+
     popupContent = <ListUpdatePopup popKey={popKey} listUrl={listUrl} oldList={oldList} newList={newList} auto={auto} />
   }
 
