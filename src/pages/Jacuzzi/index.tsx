@@ -15,7 +15,6 @@ import { newTransactionsFirst } from '../../components/Web3Status'
 
 import { ReactComponent as JacuzziImage } from '../../assets/svg/jacuzzi-hero.svg'
 import { ReactComponent as JacuzziImageDark } from '../../assets/svg/jacuzzi-hero-dark.svg'
-import { ReactComponent as PARTYIcon } from '../../assets/svg/YAY-icon.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
@@ -24,6 +23,9 @@ import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
+
+import TokenVideo from '../../assets/video/party-icon-3d.mp4'
+import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -107,7 +109,7 @@ const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
 `
 
-const IconPARTY = styled(PARTYIcon)`
+const PartyTokenVideo = styled.video`
   width: 100%;
 `
 
@@ -320,7 +322,13 @@ export default function Jacuzzi() {
           <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
-                <IconPARTY />
+                <PartyTokenVideo autoPlay loop muted playsInline>
+                  {isDarkMode ? (
+                    <source src={TokenVideoDark} type="video/mp4" />
+                  ) : (
+                    <source src={TokenVideo} type="video/mp4" />
+                  )}
+                </PartyTokenVideo>
                 <div>
                   <h4>xPARTY Pool</h4>
                   <div className="poolsGrid-item-header-features">
