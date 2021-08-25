@@ -150,7 +150,7 @@ export default function Home() {
             <h1>The most reliable Avalanche swap yet</h1>
             {account ? (
               <Link to="/party/1">
-                <button className="btn">Let's Hit Some Piñatas</button>
+                <button className="btn">Let's hit some piñatas</button>
               </Link>
             ) : (
               <button className="btn hero-btn" onClick={toggleWalletModal}>
