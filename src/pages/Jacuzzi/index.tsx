@@ -326,13 +326,17 @@ export default function Jacuzzi() {
           <Item className="poolsGrid-item">
             <div className="poolsGrid-item-content">
               <div className="poolsGrid-item-header">
-                <PartyTokenVideo autoPlay loop muted playsInline>
-                  {isDarkMode ? (
-                    <source src={TokenVideoDark} type="video/mp4" />
-                  ) : (
+                {isDarkMode ? (
+                  <div>
+                    <PartyTokenVideo autoPlay loop muted playsInline className="dark-mode">
+                      <source src={TokenVideoDark} type="video/mp4" />
+                    </PartyTokenVideo>
+                  </div>
+                ) : (
+                  <PartyTokenVideo autoPlay loop muted playsInline>
                     <source src={TokenVideo} type="video/mp4" />
-                  )}
-                </PartyTokenVideo>
+                  </PartyTokenVideo>
+                )}
                 <div>
                   <h4>xPARTY Pool</h4>
                   <div className="poolsGrid-item-header-features">
