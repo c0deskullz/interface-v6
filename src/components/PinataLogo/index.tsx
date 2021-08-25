@@ -17,6 +17,7 @@ import {
   AvaxWbtc,
   AvaxXava,
   AvaxZero,
+  AvaxBenqi,
   PartyAvax,
   PartyDai,
   PartyUsdt
@@ -71,6 +72,8 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxSherpa
       case 'AVAX-YAK':
         return AvaxYak
+      case 'AVAX-BENQUI':
+        return AvaxBenqi
       case 'PARTY-DAI':
         return PartyDai
       case 'PARTY-DAI.e':

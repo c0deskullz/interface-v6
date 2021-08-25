@@ -254,9 +254,9 @@ export const VSO: { [chainId in ChainId]: Token } = {
 }
 
 export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0x4c80a41c7E7F30778230110dCE0D84EC60edB323',
-  [ChainId.AVALANCHE]: '0x72798DaA24590643B0A4E36a6919989d1Aa5cb37'
-}
+         [ChainId.FUJI]: '0xd040e0A2268389f7110E194197F1eD97F586ebBF',
+         [ChainId.AVALANCHE]: '0x5a04d600B6a5B2D89946e839A9Af2f8BE11A1955'
+       }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: '0xc7cB695Df67aa3f96B5380B2C5B14419Ac4EAE9B',

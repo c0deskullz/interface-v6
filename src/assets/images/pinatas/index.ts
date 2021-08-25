@@ -18,6 +18,7 @@ import PartyDai from './YAY-DAI.png'
 import PartyUsdt from './YAY-USDT.png'
 import AvaxYak from './AVAX-YAK.png'
 import AvaxSherpa from './AVAX-SHERPA.png'
+import AvaxBenqi from './AVAX-BENQI.png'
 
 export {
   AvaxYak,
@@ -37,6 +38,7 @@ export {
   AvaxWbtc,
   AvaxXava,
   AvaxZero,
+  AvaxBenqi,
   PartyAvax,
   PartyDai,
   PartyUsdt

@@ -301,20 +301,14 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     [chainId, pairToFilterBy, version]
   )
 
-  // console.log('info: ', info)
-
   const party = PARTY[chainId || ChainId.FUJI]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
   const pairAddresses = useMemo(() => info.map(({ pair }) => [pair] as MethodArg[]), [info])
 
-  // console.log('reward addresses: ', rewardsAddresses)
-
   const accountArg = useMemo(() => [account ?? undefined], [account])
 
-  // get all the info from the staking rewards contracts
   const tokens = useMemo(() => info.map(({ tokens }) => tokens), [info])
-  // console.log('tokens: ', tokens)
   const balances = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'balanceOf', accountArg)
   const earnedAmounts = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'earned', accountArg)
   const totalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'totalSupply')
