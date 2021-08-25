@@ -95,8 +95,8 @@ export const STAKING_V2_AVALANCHE: {
   },
   {
     tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x361a67a6F9996Ce8eDfc23850692752FB8CC2F68',
-    pair: '0xA07d9248d0A63910F75b6003B35f896a5E067397'
+    stakingRewardAddress: '0x5A4f44127ec4bd4164B09Db623A9d65523D53434',
+    pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44'
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],

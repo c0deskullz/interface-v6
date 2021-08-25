@@ -99,15 +99,21 @@ export default function PoolsGridItem({
   const isStaking = Boolean(stakedAmount.greaterThan('0'))
   const toggleWalletModal = useWalletModalToggle()
 
+  const pinataCalculatedSymbol = useMemo(() => {
+    if (currency0.symbol && currency0.symbol === 'AVAX' && currency1.symbol && currency1.symbol === 'PARTY') {
+      return `PARTY/AVAX`
+    }
+
+    return `${currency0.symbol}/${currency1.symbol}`
+  }, [currency0, currency1])
+
   return (
     <Item className="poolsGrid-item">
       <div className="poolsGrid-item-content">
         <div className="poolsGrid-item-header">
           <PinataLogo pinataSymbol={`${currency0.symbol}-${currency1.symbol}`} />
           <div>
-            <h4>
-              <span>{currency0.symbol}</span>/<span>{currency1.symbol}</span>
-            </h4>
+            <h4>{pinataCalculatedSymbol}</h4>
             <div className="poolsGrid-item-header-features">
               <span>
                 <BadgeIcon /> Core
