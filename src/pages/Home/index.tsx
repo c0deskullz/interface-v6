@@ -28,9 +28,9 @@ import BannerPiñata3 from '../../assets/svg/home-banner-piñata-3.svg'
 import BonnieDark from '../../assets/svg/home-hero-bonnie-dark.svg'
 import TrentDark from '../../assets/svg/home-hero-trent-dark.svg'
 import BannerPipoDark from '../../assets/svg/home-banner-pipo-dark.svg'
-// import BannerPiñataDark1 from '../../assets/svg/home-banner-piñata-dark-1.svg'
-// import BannerPiñataDark2 from '../../assets/svg/home-banner-piñata-dark-2.svg'
-// import BannerPiñataDark3 from '../../assets/svg/home-banner-piñata-dark-3.svg'
+import BannerPiñataDark1 from '../../assets/svg/home-banner-piñata-dark-1.svg'
+import BannerPiñataDark2 from '../../assets/svg/home-banner-piñata-dark-2.svg'
+import BannerPiñataDark3 from '../../assets/svg/home-banner-piñata-dark-3.svg'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -239,9 +239,9 @@ export default function Home() {
             </div>
             <img src={BannerBackground} alt="Banner background" className="grid-banner-background" />
             <img src={isDarkMode ? BannerPipoDark : BannerPipo} alt="Banner Pipo" className="grid-banner-pipo" />
-            <img src={isDarkMode ? BannerPiñata1 : BannerPiñata1} alt="Banner Piñata" className="grid-banner-1" />
-            <img src={isDarkMode ? BannerPiñata2 : BannerPiñata2} alt="Banner Piñata" className="grid-banner-2" />
-            <img src={isDarkMode ? BannerPiñata3 : BannerPiñata3} alt="Banner Piñata" className="grid-banner-3" />
+            <img src={isDarkMode ? BannerPiñataDark1 : BannerPiñata1} alt="Banner Piñata" className="grid-banner-1" />
+            <img src={isDarkMode ? BannerPiñataDark2 : BannerPiñata2} alt="Banner Piñata" className="grid-banner-2" />
+            <img src={isDarkMode ? BannerPiñataDark3 : BannerPiñata3} alt="Banner Piñata" className="grid-banner-3" />
           </GridItem>
         </div>
       </div>

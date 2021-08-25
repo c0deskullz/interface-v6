@@ -6,6 +6,9 @@
   width: 100%;
   @include module();
 }
+.hero h1 {
+  color: $color-text-heading;
+}
 .hero-container {
   position: relative;
   z-index: 10;
