@@ -12,7 +12,7 @@ import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
 import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
-import { Break, CardBGImage, CardNoise, CardSection, DataCard } from '../earn/styled'
+import { Break, CardNoise, CardSection, DataCard } from '../earn/styled'
 import { usePair } from '../../data/Reserves'
 
 const ContentWrapper = styled(AutoColumn)`
@@ -21,7 +21,8 @@ const ContentWrapper = styled(AutoColumn)`
 
 const ModalUpper = styled(DataCard)`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #f97316 0%, #e84142 100%);
+  background-color: ${({ theme }) => theme.surface1};
+  background: ${({ theme }) => theme.surface1};
   padding: 0.5rem;
 `
 
@@ -72,7 +73,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
   return (
     <ContentWrapper gap="lg">
       <ModalUpper>
-        <CardBGImage />
+        {/* <CardBGImage /> */}
         <CardNoise />
         <CardSection gap="md">
           <RowBetween>
