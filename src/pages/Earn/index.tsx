@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback, useRef, useState, ReactNode } from 'react'
-// import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 // import PoolCard from '../../components/earn/PoolCard'
@@ -13,7 +12,10 @@ import { ChainId, JSBI } from '@partyswap-libs/sdk'
 
 import imageLeft from '../../assets/svg/pools-hero-left.svg'
 import imageRight from '../../assets/svg/pools-hero-right.svg'
+import imageLeftDark from '../../assets/svg/pools-hero-left-dark.svg'
+import imageRightDark from '../../assets/svg/pools-hero-right-dark.svg'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
+import { useIsDarkMode } from '../../state/user/hooks'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -136,6 +138,8 @@ export default function Earn({
 
   const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
 
+  const isDarkMode = useIsDarkMode()
+
   return (
     <Wrapper>
       {currentStakingPool && (
@@ -158,8 +162,16 @@ export default function Earn({
             </a>
           </div>
         </div>
-        <img src={imageLeft} alt="Doggo and Penguin chasing a Piñata" className="hero-img hero-img-left" />
-        <img src={imageRight} alt="A piñata running from Doggo and Penguin" className="hero-img hero-img-right" />
+        <img
+          src={isDarkMode ? imageLeftDark : imageLeft}
+          alt="Doggo and Penguin chasing a Piñata"
+          className="hero-img hero-img-left"
+        />
+        <img
+          src={isDarkMode ? imageRightDark : imageRight}
+          alt="A piñata running from Doggo and Penguin"
+          className="hero-img hero-img-right"
+        />
       </Hero>
 
       {stakingRewardsExist && poolCards?.current.length === 0 ? (
