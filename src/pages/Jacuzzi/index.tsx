@@ -129,6 +129,10 @@ const HelperCard = styled.div`
   .content {
     margin-bottom: 1rem;
   }
+
+  a:hover {
+    text-decoration: none;
+  }
 `
 
 export default function Jacuzzi() {

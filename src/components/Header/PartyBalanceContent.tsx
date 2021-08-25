@@ -73,7 +73,6 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
   return (
     <ContentWrapper gap="lg">
       <ModalUpper>
-        {/* <CardBGImage /> */}
         <CardNoise />
         <CardSection gap="md">
           <RowBetween>

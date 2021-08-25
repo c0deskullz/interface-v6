@@ -17,6 +17,7 @@ const Item = styled.div`
   background-color: ${({ theme }) => theme.surface4};
   [class*='-item-header'] h4 {
     color: ${({ theme }) => theme.text1};
+    word-break: break-all;
     span {
       display: inline-block;
     }
@@ -29,6 +30,12 @@ const Item = styled.div`
     color: ${({ theme }) => theme.primaryText2};
     border-color: ${({ theme }) => theme.primaryText2};
     background-color: transparent;
+  }
+  .poolsGrid-item-content a:hover {
+    text-decoration: none;
+  }
+  .poolsGrid-item-grid {
+    grid-template-columns: 1fr;
   }
   .poolsGrid-item-grid p:nth-child(1) {
     color: ${({ theme }) => theme.text6};
@@ -104,7 +111,11 @@ export default function PoolsGridItem({
       return `PARTY/AVAX`
     }
 
-    return `${currency0.symbol}/${currency1.symbol}`
+    return (
+      <>
+        <span>{currency0.symbol}</span>/<span>{currency1.symbol}</span>
+      </>
+    )
   }, [currency0, currency1])
 
   return (
@@ -137,7 +148,7 @@ export default function PoolsGridItem({
               <p>{earnedAmount.toFixed(0, { groupSeparator: ',' })}</p>
             </WithLockedValue>
           </div>
-          <div>
+          {/* <div>
             <button
               className="btn"
               onClick={() => onClickClaim(stakingInfo)}
@@ -145,7 +156,7 @@ export default function PoolsGridItem({
             >
               Claim
             </button>
-          </div>
+          </div> */}
         </div>
         {account ? (
           <StyledInternalLink to={`/party/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
