@@ -216,10 +216,13 @@ export default function Manage({
 
     if (totalSupplyOfStakingToken && stakingTokenPair && avaxPartyTokenPair && tokenB && party) {
       const oneToken = JSBI.BigInt(1000000000000000000)
-      const avaxPartyRatio = JSBI.divide(
-        JSBI.multiply(oneToken, avaxPartyTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
-        avaxPartyTokenPair.reserveOf(party).raw
-      )
+      const avaxPartyRatio =
+        avaxPartyTokenPair.reserveOf(party).raw.toString() === '0'
+          ? JSBI.BigInt(0)
+          : JSBI.divide(
+              JSBI.multiply(oneToken, avaxPartyTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
+              avaxPartyTokenPair.reserveOf(party).raw
+            )
 
       const valueOfPartyInAvax = JSBI.divide(
         JSBI.multiply(stakingTokenPair.reserveOf(party).raw, avaxPartyRatio),
@@ -228,13 +231,15 @@ export default function Manage({
 
       valueOfTotalStakedAmountInWavax = new TokenAmount(
         WAVAX[tokenB.chainId],
-        JSBI.divide(
-          JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPartyInAvax),
-            JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-          ),
-          totalSupplyOfStakingToken.raw
-        )
+        totalSupplyOfStakingToken.raw.toString() === '0'
+          ? JSBI.BigInt(0)
+          : JSBI.divide(
+              JSBI.multiply(
+                JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPartyInAvax),
+                JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
+              ),
+              totalSupplyOfStakingToken.raw
+            )
       )
     }
     // usdToken = party
