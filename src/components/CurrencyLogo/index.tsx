@@ -9,8 +9,8 @@ import Logo from '../Logo'
 
 const getTokenLogoURL = (address: string, usePartyUrl: boolean = false) =>
   usePartyUrl
-    ? `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${address}/logo.png`
-    : `https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/${address}/logo.png`
+    ? `https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/${address}/logo.png`
+    : `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${address}/logo.png`
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
