@@ -72,7 +72,7 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxSherpa
       case 'AVAX-YAK':
         return AvaxYak
-      case 'AVAX-BENQUI':
+      case 'AVAX-QI':
         return AvaxBenqi
       case 'PARTY-DAI':
         return PartyDai
