@@ -27,6 +27,11 @@ const LoaderWrapper = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
+  padding: 1.5rem 0;
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
 `
 
 const fetchPoolAprs = async (

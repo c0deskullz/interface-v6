@@ -87,7 +87,7 @@ p.small {
   font-size: $font-size-small;
 }
 strong {
-  color: $color-text-body;
+  // color: $color-text-body;
   font-weight: 600;
 }
 strike {
@@ -160,7 +160,7 @@ h4, .h4 { font-size: 1.25rem; }
 /* Basic Links
 --------------------------------------------*/
 a {
-  color: $color-text-body;
+  // color: $color-text-body;
   text-decoration: underline;
   text-decoration-color: $color-brand;
 }

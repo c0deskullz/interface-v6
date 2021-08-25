@@ -28,6 +28,7 @@ import { PaddedColumn, SearchInput, Separator, SeparatorDark } from './styleds'
 const UnpaddedLinkStyledButton = styled(LinkStyledButton)`
   padding: 0;
   font-size: 1rem;
+  font-family: 'Nunito Sans';
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
 `
 
