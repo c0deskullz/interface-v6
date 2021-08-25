@@ -36,6 +36,9 @@ export interface Colors {
   primary5: Color
   primary6: Color
   primary7: Color
+  primary8: Color
+  primary9: Color
+  primary10: Color
 
   primaryText1: Color
   primaryText2: Color

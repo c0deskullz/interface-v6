@@ -12,7 +12,6 @@ import LogoDark from '../../assets/svg/icon.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregatePartyBalance } from '../../state/wallet/hooks'
-import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
 import { TYPE } from '../../theme'
 
@@ -28,9 +27,7 @@ import usePrevious from '../../hooks/usePrevious'
 // import { ANALYTICS_PAGE } from '../../constants'
 
 const HeaderFrame = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 120px;
-  align-items: center;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
@@ -68,7 +65,6 @@ const HeaderControls = styled.div`
     position: fixed;
     bottom: 0px;
     left: 0px;
-    width: 100%;
     z-index: 99;
     height: 72px;
     border-radius: 12px 12px 0 0;
@@ -95,18 +91,28 @@ const HeaderElementWrap = styled.div`
 const HeaderRow = styled(RowFixed)`
   ${({ theme }) => theme.mediaWidth.upToLarge`
    width: 100%;
+   justify-content: space-between;
   `};
 `
 
 const HeaderLinks = styled(Row)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   justify-content: center;
+  width: fit-content;
   .drawer {
     display: none;
   }
   .spread {
     display: flex;
   }
-
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    position: relative;
+    margin: 0;
+  `};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 0;
     justify-content: flex-end;
@@ -216,8 +222,10 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
-  border-radius: 12px;
+  background-color: ${({ theme, active }) => (!active ? theme.primary8 : theme.primary10)};
+  border: ${({ theme, active }) => (!active ? '' : `1px solid ${theme.primary8}`)};
+  border-radius: 0.75rem;
+  color: white;
   white-space: nowrap;
   width: 100%;
   cursor: pointer;
@@ -226,29 +234,26 @@ const AccountElement = styled.div<{ active: boolean }>`
     border: 1px solid blue;
   }
   :hover {
-    background-color: ${({ theme, active }) => (!active ? theme.bg2 : theme.bg4)};
+    background-color: ${({ theme, active }) => (!active ? theme.primary8 : theme.primary10)};
   }
 `
 
 const PNGAmount = styled(AccountElement)`
   color: white;
   padding: 8px 12px;
-  /* height: 36px; */
   font-weight: 500;
-  background-color: ${({ theme }) => theme.primary1};
-  /* background: radial-gradient(174.47% 188.91% at 1.84% 0%, #f97316 0%, #e84142 100%), #edeef2; */
+  background-color: ${({ theme }) => theme.primary8};
+  border: none;
+
+  :hover {
+    background-color: ${({ theme }) => theme.primary9};
+  }
 `
 
 const PNGWrapper = styled.span`
   width: fit-content;
   position: relative;
   cursor: pointer;
-  :hover {
-    opacity: 0.8;
-  }
-  :active {
-    opacity: 0.9;
-  }
 `
 
 const HideSmall = styled.span`
@@ -258,6 +263,7 @@ const HideSmall = styled.span`
 `
 
 const NetworkCard = styled(RedCard)`
+  display: none;
   border-radius: 12px;
   padding: 8px 12px;
   background-color: ${({ theme }) => theme.primary1};
@@ -285,24 +291,12 @@ const Title = styled.a`
   justify-self: flex-start;
   margin-right: 12px;
   img {
-    height: 3rem;
+    height: 2rem;
   }
-  ${({ theme }) => theme.mediaWidth.upToMedium`    
-    img {
-      height: 2rem;
-    }
-  `};
   :hover {
     cursor: pointer;
   }
 `
-
-// const PngIcon = styled.div`
-//   transition: transform 0.3s ease;
-//   :hover {
-//     transform: rotate(-5deg);
-//   }
-// `
 
 const activeClassName = 'ACTIVE'
 
@@ -310,61 +304,39 @@ const StyledNavLink = styled(NavLink).attrs({
   activeClassName
 })`
   ${({ theme }) => theme.flexRowNoWrap}
+  align-items: center;
+  font-family: 'Poppins';
   align-items: left;
-  border-radius: 3rem;
+  border-radius: 1.25rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.white};
   font-size: 1rem;
   width: fit-content;
-  margin: 0 12px;
   font-weight: 500;
-
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 700;
-    color: ${({ theme }) => theme.white};
-  }
 
   :hover,
   :focus {
     color: ${({ theme }) => darken(0.1, theme.white)};
     text-decoration: none;
   }
+
+  @media (min-width: 960px) {
+    padding: 0.5rem 1rem;
+    margin: 0 2px;
+
+    &.${activeClassName} {
+      background-color: ${({ theme }) => theme.primary1};
+    }
+
+    :hover,
+    :focus {
+      color: ${({ theme }) => theme.white};
+      background-color: ${({ theme }) => theme.primary1};
+    }
+  }
 `
-
-// const StyledExternalLink = styled(ExternalLink).attrs({
-//   activeClassName
-// })<{ isActive?: boolean }>`
-//   ${({ theme }) => theme.flexRowNoWrap}
-//   align-items: left;
-//   border-radius: 3rem;
-//   outline: none;
-//   cursor: pointer;
-//   text-decoration: none;
-//   color: ${({ theme }) => theme.text2};
-//   font-size: 1rem;
-//   width: fit-content;
-//   margin: 0 12px;
-//   font-weight: 500;
-
-//   &.${activeClassName} {
-//     border-radius: 12px;
-//     font-weight: 600;
-//     color: ${({ theme }) => theme.text1};
-//   }
-
-//   :hover,
-//   :focus {
-//     text-decoration: none;
-//     color: ${({ theme }) => darken(0.1, theme.text1)};
-//   }
-
-//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-//       display: none;
-// `}
-// `
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',
@@ -477,13 +449,12 @@ export default function Header() {
                 )}
                 PARTY
               </PNGAmount>
-              <CardNoise />
             </PNGWrapper>
           )}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} AVAX
+                {userEthBalance?.toSignificant(3)} AVAX
               </BalanceText>
             ) : null}
             <Web3Status />
