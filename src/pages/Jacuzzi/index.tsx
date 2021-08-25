@@ -374,9 +374,9 @@ export default function Jacuzzi() {
                 </ButtonGroup>
               ) : (
                 <HelperCard>
-                  <TYPE.mediumHeader color={theme.text1} className="title">
-                    Step 1. Get some PARTY tokens (PARTY)
-                  </TYPE.mediumHeader>
+                  <TYPE.largeHeader fontSize="20px" color={theme.text1} className="title">
+                    Get some PARTY tokens (PARTY)
+                  </TYPE.largeHeader>
                   <TYPE.body color={theme.text1} className="content">
                     PARTY tokens are required. Once Once you've acquired some PARTY tokens you can stake them on this
                     page
