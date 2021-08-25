@@ -92,6 +92,7 @@ const HeaderRow = styled(RowFixed)`
   ${({ theme }) => theme.mediaWidth.upToLarge`
    width: 100%;
    justify-content: space-between;
+   z-index: 100;
   `};
 `
 
@@ -412,7 +413,7 @@ export default function Header() {
       </Modal>
       <HeaderRow>
         <Title href=".">
-          <img width={'100%'} src={isDark ? LogoDark : Logo} alt="logo" />
+          <img src={isDark ? LogoDark : Logo} alt="logo" />
         </Title>
         <HeaderLinks>
           <Burger className="drawer" open={open} setOpen={setOpen} />
