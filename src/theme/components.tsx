@@ -104,7 +104,13 @@ const StyledLink = styled.a`
   }
 `
 
+const scaleImage = keyframes`
+  0%   {transform: scale(1);}
+  100% {transform: scale(1.2);}
+`
+
 export const PngTokenAnimated = styled.img`
+  animation: ${scaleImage} 1s alternate infinite ease-in;
   padding: 2rem 0 0 0;
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.15));
 `

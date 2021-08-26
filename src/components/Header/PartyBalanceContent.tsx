@@ -8,15 +8,17 @@ import { useActiveWeb3React } from '../../hooks'
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
 import { useTotalPartyEarned } from '../../state/stake/hooks'
 import { useAggregatePartyBalance, useTokenBalance } from '../../state/wallet/hooks'
-import { StyledInternalLink, TYPE } from '../../theme'
+import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
 import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { Break, CardSection, DataCard } from '../earn/styled'
 import { usePair } from '../../data/Reserves'
 
-import TokenVideo from '../../assets/video/party-icon-3d.mp4'
-import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
+// import TokenVideo from '../../assets/video/party-icon-3d.mp4'
+// import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
+import pattern from '../../assets/svg/swap-pattern.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 
 const ContentWrapper = styled(AutoColumn)`
@@ -30,9 +32,23 @@ const ModalUpper = styled(DataCard)`
   padding: 0.5rem;
 `
 
-const PartyTokenVideo = styled.video`
-  width: 5rem;
+const BackgroundImage = styled.div`
+  position: absolute;
+  background-color: #f6f6ff;
+  background-image: url(${pattern});
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  &.darkMode {
+    background-color: #1a1a37;
+    background-image: url(${patternDarkMode});
+  }
 `
+
+// const PartyTokenVideo = styled.video`
+//   width: 5rem;
+// `
 
 const StyledClose = styled(X)`
   position: absolute;
@@ -89,6 +105,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
   return (
     <ContentWrapper gap="lg">
       <ModalUpper>
+        {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
         <CardSection gap="md">
           <RowBetween>
             <TYPE.mediumHeader fontFamily="Poppins" fontWeight="700">
@@ -102,11 +119,11 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
           <>
             <CardSection gap="sm">
               <AutoColumn gap="md" justify="center">
-                {/* <PngTokenAnimated
-                  width="48px"
+                <PngTokenAnimated
+                  width="64px"
                   src="https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/0x15957be9802B50c6D66f58a99A2a3d73F5aaf615/logo.png"
-                />{' '} */}
-                {isDarkMode ? (
+                />{' '}
+                {/* {isDarkMode ? (
                   <div>
                     <PartyTokenVideo autoPlay loop muted playsInline className="dark-mode">
                       <source src={TokenVideoDark} type="video/mp4" />
@@ -116,7 +133,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
                   <PartyTokenVideo autoPlay loop muted playsInline>
                     <source src={TokenVideo} type="video/mp4" />
                   </PartyTokenVideo>
-                )}
+                )} */}
                 <TYPE.body fontSize={48} fontWeight={600}>
                   {total?.toFixed(2, { groupSeparator: ',' })}
                 </TYPE.body>
