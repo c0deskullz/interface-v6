@@ -212,7 +212,7 @@ export default function Home() {
             </div>
             <div className="grid-item-stats">
               <p>
-                Total PARTY Supply <span>$PARTY {totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
+                Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
                 Total Volume in AVAX <span>{totalVolumeETH}</span>
@@ -230,10 +230,10 @@ export default function Home() {
           <GridItem className="grid-item grid-banner">
             <div className="grid-banner-content">
               <p className="smallText">Stake and earn</p>
-              <h2 className="h1">
-                Earn up to 300% <br /> APR in piñatas
+              <h2>
+                Start earning $PARTY <br /> in our piñatas section!
               </h2>
-              <a href="#pool" className="btn">
+              <a href="#party/1" className="btn">
                 Stake Now!
               </a>
             </div>

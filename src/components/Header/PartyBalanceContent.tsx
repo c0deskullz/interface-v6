@@ -8,12 +8,16 @@ import { useActiveWeb3React } from '../../hooks'
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
 import { useTotalPartyEarned } from '../../state/stake/hooks'
 import { useAggregatePartyBalance, useTokenBalance } from '../../state/wallet/hooks'
-import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
+import { StyledInternalLink, TYPE } from '../../theme'
 import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
-import { Break, CardNoise, CardSection, DataCard } from '../earn/styled'
+import { Break, CardSection, DataCard } from '../earn/styled'
 import { usePair } from '../../data/Reserves'
+
+import TokenVideo from '../../assets/video/party-icon-3d.mp4'
+import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
+import { useIsDarkMode } from '../../state/user/hooks'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -21,9 +25,13 @@ const ContentWrapper = styled(AutoColumn)`
 
 const ModalUpper = styled(DataCard)`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: ${({ theme }) => theme.surface1};
-  background: ${({ theme }) => theme.surface1};
+  background-color: ${({ theme }) => theme.surface3};
+  background: ${({ theme }) => theme.surface3};
   padding: 0.5rem;
+`
+
+const PartyTokenVideo = styled.video`
+  width: 5rem;
 `
 
 const StyledClose = styled(X)`
@@ -34,6 +42,12 @@ const StyledClose = styled(X)`
   :hover {
     cursor: pointer;
   }
+`
+
+const Divider = styled(Break)`
+  background-color: ${({ theme }) => theme.text1};
+  opacity: 0.2;
+  display: none;
 `
 
 /**
@@ -70,63 +84,77 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
     [blockTimestamp, chainId, totalSupply, party]
   )
 
+  const isDarkMode = useIsDarkMode()
+
   return (
     <ContentWrapper gap="lg">
       <ModalUpper>
-        <CardNoise />
         <CardSection gap="md">
           <RowBetween>
-            <TYPE.white color="white">Your PARTY Breakdown</TYPE.white>
-            <StyledClose stroke="white" onClick={() => setShowPngBalanceModal(false)} />
+            <TYPE.mediumHeader fontFamily="Poppins" fontWeight="700">
+              Your PARTY Breakdown
+            </TYPE.mediumHeader>
+            <StyledClose onClick={() => setShowPngBalanceModal(false)} />
           </RowBetween>
         </CardSection>
-        <Break />
+        <Divider />
         {account && (
           <>
             <CardSection gap="sm">
               <AutoColumn gap="md" justify="center">
-                <PngTokenAnimated
+                {/* <PngTokenAnimated
                   width="48px"
                   src="https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/0x15957be9802B50c6D66f58a99A2a3d73F5aaf615/logo.png"
-                />{' '}
-                <TYPE.white fontSize={48} fontWeight={600} color="white">
+                />{' '} */}
+                {isDarkMode ? (
+                  <div>
+                    <PartyTokenVideo autoPlay loop muted playsInline className="dark-mode">
+                      <source src={TokenVideoDark} type="video/mp4" />
+                    </PartyTokenVideo>
+                  </div>
+                ) : (
+                  <PartyTokenVideo autoPlay loop muted playsInline>
+                    <source src={TokenVideo} type="video/mp4" />
+                  </PartyTokenVideo>
+                )}
+                <TYPE.body fontSize={48} fontWeight={600}>
                   {total?.toFixed(2, { groupSeparator: ',' })}
-                </TYPE.white>
+                </TYPE.body>
               </AutoColumn>
               <AutoColumn gap="md">
                 <RowBetween>
-                  <TYPE.white color="white">Balance:</TYPE.white>
-                  <TYPE.white color="white">{partyBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
+                  <TYPE.body>Balance:</TYPE.body>
+                  <TYPE.body fontWeight="700">{partyBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.body>
                 </RowBetween>
                 <RowBetween>
-                  <TYPE.white color="white">Unclaimed:</TYPE.white>
-                  <TYPE.white color="white">
+                  <TYPE.body>Unclaimed:</TYPE.body>
+                  <TYPE.body fontWeight="700">
                     {partyToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
                     {partyToClaim && partyToClaim.greaterThan('0') && (
                       <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/party/1">
                         (claim)
                       </StyledInternalLink>
                     )}
-                  </TYPE.white>
+                  </TYPE.body>
                 </RowBetween>
               </AutoColumn>
             </CardSection>
-            <Break />
+            <Divider />
           </>
         )}
         <CardSection gap="sm">
           <AutoColumn gap="md">
             <RowBetween>
-              <TYPE.white color="white">PARTY price:</TYPE.white>
-              <TYPE.white color="white">{partyPrice?.toFixed(5) ?? '-'} AVAX</TYPE.white>
+              <TYPE.body>PARTY price:</TYPE.body>
+              <TYPE.body fontWeight="700">{partyPrice?.toFixed(5) ?? '-'} AVAX</TYPE.body>
             </RowBetween>
             <RowBetween>
-              <TYPE.white color="white">PARTY in circulation:</TYPE.white>
-              <TYPE.white color="white">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
+              <TYPE.body>PARTY in circulation:</TYPE.body>
+              <TYPE.body fontWeight="700">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.body>
             </RowBetween>
             <RowBetween>
-              <TYPE.white color="white">Total Supply</TYPE.white>
-              <TYPE.white color="white">{totalSupply?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
+              <TYPE.body>Total Supply</TYPE.body>
+              <TYPE.body fontWeight="700">{totalSupply?.toFixed(0, { groupSeparator: ',' })}</TYPE.body>
             </RowBetween>
           </AutoColumn>
         </CardSection>

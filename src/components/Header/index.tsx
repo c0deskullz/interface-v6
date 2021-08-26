@@ -97,11 +97,6 @@ const HeaderRow = styled(RowFixed)`
 `
 
 const HeaderLinks = styled(Row)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
   justify-content: center;
   width: fit-content;
   .drawer {
@@ -109,6 +104,13 @@ const HeaderLinks = styled(Row)`
   }
   .spread {
     display: flex;
+  }
+  @media (min-width: 1450px) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
   ${({ theme }) => theme.mediaWidth.upToLarge`
     position: relative;
@@ -230,6 +232,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   white-space: nowrap;
   width: 100%;
   cursor: pointer;
+  font-size: 1rem;
 
   :focus {
     border: 1px solid blue;
@@ -245,6 +248,7 @@ const PNGAmount = styled(AccountElement)`
   font-weight: 500;
   background-color: ${({ theme }) => theme.primary8};
   border: none;
+  font-size: 1rem;
 
   :hover {
     background-color: ${({ theme }) => theme.primary9};
@@ -313,7 +317,7 @@ const StyledNavLink = styled(NavLink).attrs({
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.white};
-  font-size: 1rem;
+  font-size: 0.9375rem;
   width: fit-content;
   font-weight: 500;
 
@@ -350,7 +354,7 @@ const Links = ({ className }: { className?: string }) => {
   return (
     <div className={className}>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
-        {t('swap')}
+        {t('Swap')}
       </StyledNavLink>
       <StyledNavLink
         id={`pool-nav-link`}
