@@ -238,7 +238,7 @@ export default function AccountDetails({
           <Identicon />
         </IconWrapper>
       )
-    } 
+    }
     return null
   }
 

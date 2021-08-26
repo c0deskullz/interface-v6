@@ -58,6 +58,12 @@ const GridItem = styled.div`
     background-color: ${({ theme }) => theme.surface4};
     background: ${({ theme }) => theme.gradient2};
   }
+  @media (max-width: 768px) {
+    .grid-item-farms {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
 `
 
 const queryAnalyticsData = async (callback: (params: any) => void) => {
