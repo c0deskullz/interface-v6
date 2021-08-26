@@ -30,16 +30,19 @@ const ModalUpper = styled(DataCard)`
   background-color: ${({ theme }) => theme.surface3};
   background: ${({ theme }) => theme.surface3};
   padding: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid ${({ theme }) => theme.bg7};
 `
 
 const BackgroundImage = styled.div`
   position: absolute;
-  background-color: #f6f6ff;
+  background-color: #fff;
   background-image: url(${pattern});
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
+  border-radius: 20px;
   &.darkMode {
     background-color: #1a1a37;
     background-image: url(${patternDarkMode});
@@ -109,7 +112,10 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
         <CardSection gap="md">
           <RowBetween>
             <TYPE.mediumHeader fontFamily="Poppins" fontWeight="700">
-              Your PARTY Breakdown
+              <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
+                🎉
+              </span>
+              PARTY Breakdown
             </TYPE.mediumHeader>
             <StyledClose onClick={() => setShowPngBalanceModal(false)} />
           </RowBetween>
@@ -134,7 +140,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
                     <source src={TokenVideo} type="video/mp4" />
                   </PartyTokenVideo>
                 )} */}
-                <TYPE.body fontSize={48} fontWeight={600}>
+                <TYPE.body fontSize={32} fontWeight={600}>
                   {total?.toFixed(2, { groupSeparator: ',' })}
                 </TYPE.body>
               </AutoColumn>
