@@ -64,7 +64,7 @@ export default function ListUpdatePopup({
                 An update is available for the token list &quot;{oldList.name}&quot; (
                 {listVersionLabel(oldList.version)} to {listVersionLabel(newList.version)}).
               </Text>
-              <ul style={{ maxHeight: '20rem', overflowY: 'scroll', paddingRight: '0.5rem' }}>
+              <ul style={{ maxHeight: '20rem', overflowY: 'scroll', paddingRight: '0.5rem', fontSize: '1rem' }}>
                 {tokensAdded.length > 0 ? (
                   <li>
                     {tokensAdded.map((token, i) => (
