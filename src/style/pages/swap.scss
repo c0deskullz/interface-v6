@@ -1,6 +1,7 @@
 /* Swap
 ------------------------------------------------------------- */
 .swap-image {
+  display: none;
   position: absolute;
 }
 .swap-image.left {
@@ -10,4 +11,9 @@
 .swap-image.right {
   right: 0;
   top: 0;
+}
+@media (min-width: 650px) {
+  .swap-image {
+    display: block;
+  }
 }

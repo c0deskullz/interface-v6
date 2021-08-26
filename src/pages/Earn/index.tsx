@@ -160,7 +160,7 @@ export default function Earn({
         <div className="hero-container">
           <div className="hero-content">
             <p className="smallText">Stake & Earn</p>
-            <h1>We Offer the Best APY in the Market</h1>
+            <h1>Choose your piñata and start earning!</h1>
             <a className="btn hero-btn" href="https://partyswap.gitbook.io/partyswap/pinatas" target="blank">
               Learn More
             </a>

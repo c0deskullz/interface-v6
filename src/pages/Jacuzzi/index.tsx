@@ -386,8 +386,7 @@ export default function Jacuzzi() {
                     Get some PARTY tokens (PARTY)
                   </TYPE.largeHeader>
                   <TYPE.body color={theme.text1} className="content">
-                    PARTY tokens are required. Once Once you've acquired some PARTY tokens you can stake them on this
-                    page
+                    PARTY tokens are required. Once you've acquired some PARTY tokens you can stake them in the jacuzzi
                   </TYPE.body>
                   <Link to="swap">
                     <ButtonPrimary>Get PARTY Tokens</ButtonPrimary>

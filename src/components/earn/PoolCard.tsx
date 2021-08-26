@@ -160,7 +160,7 @@ export default function PoolCard({
 
             <TYPE.black style={{ textAlign: 'right' }} color={'white'} fontWeight={500}>
               <span role="img" aria-label="wizard-icon" style={{ marginRight: '0.5rem' }}>
-                ⚡
+                🎉
               </span>
               {`${rewardRate?.multiply(`${60 * 60 * 24 * 7}`)?.toSignificant(4, { groupSeparator: ',' })} PARTY / week`}
             </TYPE.black>

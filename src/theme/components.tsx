@@ -35,7 +35,7 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   }
 `
 
-export const CloseIcon = styled(X) <{ onClick: () => void }>`
+export const CloseIcon = styled(X)<{ onClick: () => void }>`
   cursor: pointer;
 `
 
@@ -46,7 +46,7 @@ export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
   background: none;
 
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-  color: ${({ theme, disabled }) => (disabled ? theme.text2 : theme.primary1)};
+  color: ${({ theme, disabled }) => (disabled ? theme.text2 : theme.primaryText2)};
   font-weight: 500;
 
   :hover {
@@ -67,7 +67,7 @@ export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
 export const StyledInternalLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.text6};
+  color: ${({ theme }) => theme.primaryText2};
   font-weight: 500;
 
   :hover {
@@ -104,18 +104,13 @@ const StyledLink = styled.a`
   }
 `
 
-const rotateImg = keyframes`
-  0% {
-    transform: perspective(1000px) rotateY(0deg);
-  }
-
-  100% {
-    transform: perspective(1000px) rotateY(360deg);
-  }
+const scaleImage = keyframes`
+  0%   {transform: scale(1);}
+  100% {transform: scale(1.2);}
 `
 
 export const PngTokenAnimated = styled.img`
-  animation: ${rotateImg} 5s cubic-bezier(0.83, 0, 0.17, 1) infinite;
+  animation: ${scaleImage} 1s alternate infinite ease-in;
   padding: 2rem 0 0 0;
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.15));
 `
@@ -175,7 +170,7 @@ export function BackArrow({ to }: { to: string }) {
   )
 }
 
-export const CustomLightSpinner = styled(Spinner) <{ size: string }>`
+export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
   height: ${({ size }) => size};
   width: ${({ size }) => size};
 `

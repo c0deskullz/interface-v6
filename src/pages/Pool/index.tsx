@@ -23,6 +23,7 @@ import { ANALYTICS_PAGE } from '../../constants'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
 
 const PageWrapper = styled.div`
   position: relative;
@@ -89,13 +90,42 @@ const ResponsiveButtonSecondary = styled(ButtonSecondary)`
 `
 
 const EmptyProposals = styled.div`
-  border: 1px solid ${({ theme }) => theme.text4};
-  padding: 16px 12px;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: ${({ theme }) => theme.surface5};
+  border: 1px solid ${({ theme }) => theme.bg7};
+  padding: 2.5rem;
+
+  border-radius: 12px;
+  background-color: ${({ theme }) => theme.surface4};
+  border: 1px solid ${({ theme }) => theme.bg6};
+`
+
+const ViewStakedLiquidity = styled(ExternalLink)`
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.25rem;
+  font-family: 'Poppins';
+  font-weight: 500;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text1};
+  cursor: pointer;
+  margin-left: auto;
+  svg {
+    color: ${({ theme }) => theme.primaryText3};
+  }
+
+  :hover {
+    text-decoration-color: ${({ theme }) => theme.primaryText3};
+  }
+`
+
+const ExtLink = styled(ExternalLinkSVG)`
+  margin-left: 0.125em;
 `
 
 export default function Pool() {
@@ -148,21 +178,20 @@ export default function Pool() {
 
         <PageContent>
           <SwapPoolTabs active={'pool'} />
-          <ExternalLink
-            style={{ marginTop: '1.5rem', color: 'black', textDecoration: 'underline' }}
-            target="_blank"
-            href={AccountAnalytics}
-          >
-            <TYPE.black fontSize={18}>View your staked liquidity</TYPE.black>
-          </ExternalLink>
 
           <AutoColumn gap="lg" justify="center">
             <AutoColumn gap="lg" style={{ width: '100%' }}>
-              <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
+              <TitleRow padding={'0'} style={{ marginTop: '2rem' }}>
                 <HideSmall>
-                  <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
+                  {/* <TYPE.mediumHeader fontFamily="Poppins" style={{ justifySelf: 'flex-start' }}>
                     Your liquidity
-                  </TYPE.mediumHeader>
+                    <ExtLink />
+                  </TYPE.mediumHeader> */}
+
+                  <ViewStakedLiquidity target="_blank" href={AccountAnalytics}>
+                    Your Liquidity
+                    <ExtLink />
+                  </ViewStakedLiquidity>
                 </HideSmall>
                 <ButtonRow>
                   <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/AVAX">

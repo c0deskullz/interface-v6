@@ -76,7 +76,7 @@ const PageContent = styled(AutoColumn)`
   }
   .grid-item-accent {
     background-color: ${({ theme }) => theme.surface5};
-    border: 2px solid ${({ theme }) => theme.bg7};
+    border: 1px solid ${({ theme }) => theme.bg7};
     border-radius: 1.25rem;
     padding: 1rem;
   }
@@ -371,7 +371,7 @@ export default function Manage({
                   </TYPE.largeHeader>
                   <TYPE.black fontWeight={500}>
                     <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
-                      ⚡
+                      🎉
                     </span>
                     {stakingInfo?.rewardRate
                       ?.multiply((60 * 60 * 24 * 7).toString())
@@ -388,9 +388,9 @@ export default function Manage({
             </BottomSection>
 
             <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
-              <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
-                ⭐️
-              </span>
+              {/* <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
+                🎉
+              </span> */}
               When you withdraw, the contract will automagically claim PARTY on your behalf!
             </TYPE.main>
 
