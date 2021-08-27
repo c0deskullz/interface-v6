@@ -23,7 +23,6 @@ import { ANALYTICS_PAGE } from '../../constants'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
-import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
 
 const PageWrapper = styled.div`
   position: relative;
@@ -109,23 +108,22 @@ const ViewStakedLiquidity = styled(ExternalLink)`
   flex-direction: row;
   align-items: center;
   font-size: 1.25rem;
-  font-family: 'Poppins';
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-weight: 500;
   text-decoration: none;
   color: ${({ theme }) => theme.text1};
   cursor: pointer;
   margin-left: auto;
-  svg {
+
+  span {
     color: ${({ theme }) => theme.primaryText3};
+    margin-left: 0.25em;
   }
 
   :hover {
     text-decoration-color: ${({ theme }) => theme.primaryText3};
   }
-`
-
-const ExtLink = styled(ExternalLinkSVG)`
-  margin-left: 0.125em;
 `
 
 export default function Pool() {
@@ -183,14 +181,8 @@ export default function Pool() {
             <AutoColumn gap="lg" style={{ width: '100%' }}>
               <TitleRow padding={'0'} style={{ marginTop: '2rem' }}>
                 <HideSmall>
-                  {/* <TYPE.mediumHeader fontFamily="Poppins" style={{ justifySelf: 'flex-start' }}>
-                    Your liquidity
-                    <ExtLink />
-                  </TYPE.mediumHeader> */}
-
                   <ViewStakedLiquidity target="_blank" href={AccountAnalytics}>
-                    Your Liquidity
-                    <ExtLink />
+                    Your Liquidity<span>↗</span>
                   </ViewStakedLiquidity>
                 </HideSmall>
                 <ButtonRow>

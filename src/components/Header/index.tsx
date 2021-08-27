@@ -202,7 +202,8 @@ const StyledMenu = styled.nav`
   }
 
   a {
-    font-family: 'Poppins';
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+      sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     font-size: 2rem;
     font-weight: 700;
     color: ${({ theme }) => theme.white};
@@ -310,7 +311,8 @@ const StyledNavLink = styled(NavLink).attrs({
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  font-family: 'Poppins';
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   align-items: left;
   border-radius: 1.25rem;
   outline: none;

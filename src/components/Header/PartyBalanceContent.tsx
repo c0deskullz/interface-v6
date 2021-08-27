@@ -14,6 +14,7 @@ import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { Break, CardSection, DataCard } from '../earn/styled'
 import { usePair } from '../../data/Reserves'
+import { AddParty } from '../AddParty'
 
 // import TokenVideo from '../../assets/video/party-icon-3d.mp4'
 // import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
@@ -178,6 +179,9 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
             <RowBetween>
               <TYPE.body>Total Supply</TYPE.body>
               <TYPE.body fontWeight="700">{totalSupply?.toFixed(0, { groupSeparator: ',' })}</TYPE.body>
+            </RowBetween>
+            <RowBetween>
+              <AddParty />
             </RowBetween>
           </AutoColumn>
         </CardSection>
