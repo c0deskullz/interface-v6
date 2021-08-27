@@ -396,9 +396,17 @@ export default function Manage({
 
             {!showAddLiquidityButton && (
               <RowBetween>
-                <ButtonPrimary width="48%" onClick={handleDepositClick}>
-                  {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit xPARTY Tokens'}
-                </ButtonPrimary>
+                <>
+                  {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? (
+                    <ButtonPrimary width="48%" onClick={handleDepositClick}>
+                      Deposit
+                    </ButtonPrimary>
+                  ) : (
+                    <ButtonPrimary width="100%" onClick={handleDepositClick}>
+                      Deposit xPARTY Tokens
+                    </ButtonPrimary>
+                  )}
+                </>
 
                 {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
                   <>

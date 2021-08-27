@@ -82,12 +82,12 @@ const BackgroundImage = styled.div`
   }
 `
 
-const Banner = styled.a`
-  display: block;
+const Banner = styled.a<{ show: boolean }>`
+  display: ${({ show }) => (show ? 'none' : 'block')};
   max-width: 26.25rem;
   width: 100%;
-  margin-top: 1.5rem;
   z-index: 1;
+  margin-top: 0.5rem;
 
   svg {
     border-radius: 1rem;
@@ -537,12 +537,13 @@ export default function Swap() {
             </BottomGrouping>
           </Wrapper>
         </AppBody>
-        <Banner href="#/party/1">
-          <BannerImage />
-        </Banner>
       </>
 
       <AdvancedSwapDetailsDropdown trade={trade} />
+
+      <Banner href="#/party/1" show={Boolean(trade)}>
+        <BannerImage />
+      </Banner>
     </PageWrapper>
   )
 }
