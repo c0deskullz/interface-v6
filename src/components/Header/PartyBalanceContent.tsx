@@ -14,6 +14,7 @@ import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { Break, CardNoise, CardSection, DataCard } from '../earn/styled'
 import { usePair } from '../../data/Reserves'
+import { AddParty } from '../AddParty'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -127,6 +128,9 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
             <RowBetween>
               <TYPE.white color="white">Total Supply</TYPE.white>
               <TYPE.white color="white">{totalSupply?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
+            </RowBetween>
+            <RowBetween>
+              <AddParty />
             </RowBetween>
           </AutoColumn>
         </CardSection>
