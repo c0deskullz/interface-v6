@@ -32,5 +32,5 @@ export const AddParty = () => {
     }
   }
 
-  return <Button onClick={handleAddParty}>Add Party</Button>
+  return <Button onClick={handleAddParty}>Add to Metamask</Button>
 }
