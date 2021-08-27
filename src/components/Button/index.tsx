@@ -15,7 +15,8 @@ const Base = styled(RebassButton)<{
   padding: ${({ padding }) => (padding ? padding : '18px')};
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
-  font-family: 'Poppins';
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   text-align: center;
   border-radius: 12px;
   border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5rem')};
@@ -45,7 +46,8 @@ const Base = styled(RebassButton)<{
 export const ButtonPrimary = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
   font-weight: 500;
-  font-family: 'Poppins';
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-size: 1rem;
   color: white;
   &:focus {
@@ -226,13 +228,13 @@ export const ButtonEmpty = styled(Base)`
   align-items: center;
 
   &:focus {
-    text-decoration: underline;
+    /* text-decoration: underline; */
   }
   &:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
   }
   &:active {
-    text-decoration: underline;
+    /* text-decoration: underline; */
   }
   &:disabled {
     opacity: 50%;
