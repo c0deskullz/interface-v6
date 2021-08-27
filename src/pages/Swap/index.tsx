@@ -45,10 +45,12 @@ import Loader from '../../components/Loader'
 import useENS from '../../hooks/useENS'
 
 import imageLeft from '../../assets/svg/swap-image-left.svg'
+import imageLeftDark from '../../assets/svg/swap-image-left-dark.svg'
 import imageRight from '../../assets/svg/swap-image-right.svg'
 import imageRightDark from '../../assets/svg/swap-image-right-dark.svg'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { ReactComponent as BannerImage } from '../../assets/svg/swap-banner.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 
 const PageWrapper = styled.div`
@@ -77,6 +79,18 @@ const BackgroundImage = styled.div`
   &.darkMode {
     background-color: #1a1a37;
     background-image: url(${patternDarkMode});
+  }
+`
+
+const Banner = styled.a`
+  display: block;
+  max-width: 26.25rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  z-index: 1;
+
+  svg {
+    border-radius: 1rem;
   }
 `
 
@@ -307,7 +321,7 @@ export default function Swap() {
     <PageWrapper>
       {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
 
-      <img alt="" src={imageLeft} className="swap-image left" />
+      <img alt="" src={isDarkMode ? imageLeftDark : imageLeft} className="swap-image left" />
       <img alt="" src={isDarkMode ? imageRightDark : imageRight} className="swap-image right" />
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
@@ -523,6 +537,9 @@ export default function Swap() {
             </BottomGrouping>
           </Wrapper>
         </AppBody>
+        <Banner href="#/party/1">
+          <BannerImage />
+        </Banner>
       </>
 
       <AdvancedSwapDetailsDropdown trade={trade} />
