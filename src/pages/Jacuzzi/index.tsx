@@ -47,7 +47,7 @@ const BackgroundImage = styled.div`
 `
 
 const Item = styled.div`
-  background-color: ${({ theme }) => theme.surface4};
+  background-color: ${({ theme }) => theme.surface6};
   [class*='-item-header'] h4 {
     color: ${({ theme }) => theme.text1};
   }
@@ -111,6 +111,7 @@ const ExtLink = styled(ExternalLinkSVG)`
 
 const PartyTokenVideo = styled.video`
   width: 100%;
+  border-radius: 50%;
 `
 
 const BadgeIcon = styled(BadgeSVG)`
