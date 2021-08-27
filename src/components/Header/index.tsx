@@ -105,7 +105,7 @@ const HeaderLinks = styled(Row)`
   .spread {
     display: flex;
   }
-  @media (min-width: 1450px) {
+  @media (min-width: 1400px) {
     position: absolute;
     left: 0;
     right: 0;

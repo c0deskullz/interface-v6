@@ -12,12 +12,10 @@ import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
 import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
-import { Break, CardSection, DataCard } from '../earn/styled'
+import { CardSection, DataCard } from '../earn/styled'
 import { usePair } from '../../data/Reserves'
 import { AddParty } from '../AddParty'
 
-// import TokenVideo from '../../assets/video/party-icon-3d.mp4'
-// import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
@@ -50,10 +48,6 @@ const BackgroundImage = styled.div`
   }
 `
 
-// const PartyTokenVideo = styled.video`
-//   width: 5rem;
-// `
-
 const StyledClose = styled(X)`
   position: absolute;
   right: 16px;
@@ -62,12 +56,6 @@ const StyledClose = styled(X)`
   :hover {
     cursor: pointer;
   }
-`
-
-const Divider = styled(Break)`
-  background-color: ${({ theme }) => theme.text1};
-  opacity: 0.2;
-  display: none;
 `
 
 /**
@@ -121,7 +109,6 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
             <StyledClose onClick={() => setShowPngBalanceModal(false)} />
           </RowBetween>
         </CardSection>
-        <Divider />
         {account && (
           <>
             <CardSection gap="sm">
@@ -163,7 +150,6 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
                 </RowBetween>
               </AutoColumn>
             </CardSection>
-            <Divider />
           </>
         )}
         <CardSection gap="sm">

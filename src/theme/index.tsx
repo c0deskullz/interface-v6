@@ -95,6 +95,7 @@ export function colors(darkMode: boolean): Colors {
     surface3: darkMode ? '#1A1A37' : '#ffffff',
     surface4: darkMode ? '#1F1F41' : '#ffffff',
     surface5: darkMode ? '#262652' : '#f6f6ff',
+    surface6: darkMode ? '#25224b' : '#ffffff',
 
     // other
     red1: '#FF6871',

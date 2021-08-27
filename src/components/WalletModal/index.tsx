@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { injected } from '../../connectors'
-import { LANDING_PAGE, SUPPORTED_WALLETS, AVALANCHE_CHAIN_PARAMS } from '../../constants'
+import { SUPPORTED_WALLETS, AVALANCHE_CHAIN_PARAMS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -21,7 +21,7 @@ import Option from './Option'
 import PendingView from './PendingView'
 import { ChainId } from '@partyswap-libs/sdk'
 
-const WALLET_TUTORIAL = LANDING_PAGE + 'tutorials/getting-started/#set-up-metamask'
+const WALLET_TUTORIAL = 'https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche'
 
 const CloseIcon = styled.div`
   position: absolute;
