@@ -228,9 +228,9 @@ export default function Home() {
               </p>
             </div>
             <p>
-              <ButtonTertiary href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer">
-                Check Analytics
-              </ButtonTertiary>
+              <a href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer">
+                <ButtonTertiary>Check Analytics</ButtonTertiary>
+              </a>
             </p>
           </GridItem>
           <GridItem className="grid-item grid-banner">
