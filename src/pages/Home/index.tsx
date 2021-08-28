@@ -43,6 +43,13 @@ const Hero = styled.div`
 
 const GridItem = styled.div`
   background-color: ${({ theme }) => theme.surface4};
+
+  a,
+  a:hover {
+    display: block;
+    width: fit-content;
+    text-decoration: none;
+  }
   .grid-item-header h4,
   .grid-item-header p {
     color: ${({ theme }) => theme.text1};
@@ -54,6 +61,7 @@ const GridItem = styled.div`
   .grid-item-farms p:nth-child(1) {
     color: ${({ theme }) => theme.text6};
   }
+
   &.grid-banner {
     background-color: ${({ theme }) => theme.surface4};
     background: ${({ theme }) => theme.gradient2};
