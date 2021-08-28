@@ -7,6 +7,7 @@ import { ReactComponent as IconTwitter } from '../../assets/svg/ico-twitter.svg'
 import { ReactComponent as IconDiscord } from '../../assets/svg/ico-discord.svg'
 import { ReactComponent as IconTelegram } from '../../assets/svg/ico-telegram.svg'
 import { ReactComponent as IconMedium } from '../../assets/svg/ico-medium.svg'
+import { ReactComponent as IconCoinMarketCap } from '../../assets/svg/ico-coinmarketcap.svg'
 import { ReactComponent as SupportImage } from '../../assets/svg/footer-support.svg'
 import { ReactComponent as SupportImageDark } from '../../assets/svg/footer-support-dark.svg'
 
@@ -38,6 +39,7 @@ export default function Footer() {
               <SupportImage className="footer-section-support" />
             )}
           </div>
+
           <div className="footer-section footer-social">
             <h4>Follow Us!</h4>
             <div className="footer-social-container">
@@ -53,33 +55,54 @@ export default function Footer() {
               <a href="https://partyswap-ex.medium.com/" target="_blank" rel="noopener noreferrer">
                 <IconMedium className="socialIcon medium" />
               </a>
+              <a href="https://coinmarketcap.com/currencies/party/" target="_blank" rel="noopener noreferrer">
+                <IconCoinMarketCap className="socialIcon CoinMarketCap" />
+              </a>
             </div>
           </div>
+
           <div className="footer-section">
-            <h4>Connect</h4>
+            <h4>Resources</h4>
             <ul>
-              <li>
-                <a href="https://partyswap.io/" target="_blank" rel="noopener noreferrer">
-                  About
-                </a>
-              </li>
               <li>
                 <a href="https://github.com/PartySwapDEX" target="_blank" rel="noopener noreferrer">
                   GitHub
                 </a>
               </li>
               <li>
-                <a
-                  href="https://partyswap.io/downloads/Litepaper%20V1%20-%20PartySwap.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://partyswap.io/downloads/litepaper-v1.pdf" target="_blank" rel="noopener noreferrer">
                   Litepaper
                 </a>
               </li>
               <li>
                 <a href="https://partyswap.gitbook.io/partyswap/" target="_blank" rel="noopener noreferrer">
                   Documentation
+                </a>
+              </li>
+              <li>
+                <a href="https://partyswap.io/downloads/branding-pack.zip" target="_blank" rel="noopener noreferrer">
+                  Branding Pack
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li>
+                <a href="https://partyswap.io/" target="_blank" rel="noopener noreferrer">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="https://partyswap.io/news/discover-our-brand!/" target="_blank" rel="noopener noreferrer">
+                  Our Brand
+                </a>
+              </li>
+              <li>
+                <a href="https://partyswap.io/news/roadmap-analysis/" target="_blank" rel="noopener noreferrer">
+                  Roadmap
                 </a>
               </li>
               <li>
