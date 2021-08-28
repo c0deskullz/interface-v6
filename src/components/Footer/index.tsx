@@ -32,7 +32,7 @@ export default function Footer() {
         <div className="footer-container">
           <div className="footer-section">
             <LogoFooter />
-            <p>The most reliable Avalanche swap yet</p>
+            <p style={{ marginBottom: '0' }}>The most reliable Avalanche swap yet</p>
             <a href="https://t.me/partyswap" target="_blank" rel="noopener noreferrer">
               {isDarkMode ? (
                 <SupportImageDark className="footer-section-support" />
