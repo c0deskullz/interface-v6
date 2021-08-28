@@ -6,7 +6,6 @@ import { ReactComponent as Logo } from '../../assets/svg/logo.svg'
 import { ReactComponent as IconTwitter } from '../../assets/svg/ico-twitter.svg'
 import { ReactComponent as IconDiscord } from '../../assets/svg/ico-discord.svg'
 import { ReactComponent as IconTelegram } from '../../assets/svg/ico-telegram.svg'
-import { ReactComponent as IconMedium } from '../../assets/svg/ico-medium.svg'
 import { ReactComponent as IconCoinMarketCap } from '../../assets/svg/ico-coinmarketcap.svg'
 import { ReactComponent as SupportImage } from '../../assets/svg/footer-support.svg'
 import { ReactComponent as SupportImageDark } from '../../assets/svg/footer-support-dark.svg'
@@ -54,9 +53,6 @@ export default function Footer() {
               <a href="https://t.me/partyswap" target="_blank" rel="noopener noreferrer">
                 <IconTelegram className="socialIcon telegram" />
               </a>
-              <a href="https://partyswap-ex.medium.com/" target="_blank" rel="noopener noreferrer">
-                <IconMedium className="socialIcon medium" />
-              </a>
               <a href="https://coinmarketcap.com/currencies/party/" target="_blank" rel="noopener noreferrer">
                 <IconCoinMarketCap className="socialIcon CoinMarketCap" />
               </a>
@@ -86,6 +82,11 @@ export default function Footer() {
                   Branding Pack
                 </a>
               </li>
+              <li>
+                <a href="https://partyswap.io/" target="_blank" rel="noopener noreferrer">
+                  Audit ↗
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -95,6 +96,11 @@ export default function Footer() {
               <li>
                 <a href="https://partyswap.io/" target="_blank" rel="noopener noreferrer">
                   Home
+                </a>
+              </li>
+              <li>
+                <a href="https://partyswap.io/news/" target="_blank" rel="noopener noreferrer">
+                  News
                 </a>
               </li>
               <li>
