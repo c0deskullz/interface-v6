@@ -79,23 +79,30 @@ const queryAnalyticsData = async (callback: (params: any) => void) => {
 }
 
 const useAnalyticsData = () => {
-  const [{ id, pairCount, totalVolumeETH, totalVolumeUSD }, setAnalyticsData] = useState<{
+  const [
+    { id, pairCount, totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD },
+    setAnalyticsData
+  ] = useState<{
     id: string
     pairCount: number
     totalVolumeUSD: number
     totalVolumeETH: string
+    totalLiquidityUSD: number
+    totalLiquidityETH: string
   }>({
     id: '',
     pairCount: 0,
     totalVolumeETH: '0',
-    totalVolumeUSD: 0
+    totalVolumeUSD: 0,
+    totalLiquidityETH: '0',
+    totalLiquidityUSD: 0
   })
 
   useEffect(() => {
     queryAnalyticsData(setAnalyticsData)
   }, [])
 
-  return { id, pairCount, totalVolumeETH, totalVolumeUSD }
+  return { id, pairCount, totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD }
 }
 
 const usePartyTotalSupply = () => {
@@ -145,7 +152,7 @@ export default function Home() {
   }
   const avaxInWallet = +(partyBalance?.toFixed(1) || 0) * (partyPrice ? +partyPrice : 0)
   const avaxToClaim = +(partyToClaim?.toFixed(1) || 0) * (partyPrice ? +partyPrice : 0)
-  const { totalVolumeETH, totalVolumeUSD } = useAnalyticsData()
+  const { totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD } = useAnalyticsData()
 
   return (
     <Wrapper>
@@ -221,10 +228,16 @@ export default function Home() {
                 Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
-                Total Volume in AVAX <span>{totalVolumeETH}</span>
+                Total Volume in AVAX (24h) <span>{totalVolumeETH}</span>
               </p>
               <p>
-                Total Volume in USD <span>{totalVolumeUSD}</span>
+                Total Volume in USD (24h) <span>{totalVolumeUSD}</span>
+              </p>
+              <p>
+                Total Liquidity in AVAX <span>{(+totalLiquidityETH).toFixed(2)}</span>
+              </p>
+              <p>
+                Total Liquidity in USD <span>{(+totalLiquidityUSD).toFixed(2)}</span>
               </p>
             </div>
             <p>
