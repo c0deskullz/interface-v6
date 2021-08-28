@@ -67,6 +67,11 @@
   bottom: 0;
   z-index: 3;
 }
+@media (max-width: 767px) {
+  .grid-banner-content br {
+    display: none;
+  }
+}
 @media (min-width: 768px) {
   .grid-banner-1,
   .grid-banner-2,

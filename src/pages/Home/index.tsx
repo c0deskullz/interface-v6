@@ -44,12 +44,6 @@ const Hero = styled.div`
 const GridItem = styled.div`
   background-color: ${({ theme }) => theme.surface4};
 
-  a,
-  a:hover {
-    display: block;
-    width: fit-content;
-    text-decoration: none;
-  }
   .grid-item-header h4,
   .grid-item-header p {
     color: ${({ theme }) => theme.text1};
@@ -71,6 +65,15 @@ const GridItem = styled.div`
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
+  }
+`
+
+const ButtonWrapper = styled.a`
+  &,
+  &:hover {
+    display: block;
+    width: fit-content;
+    text-decoration: none;
   }
 `
 
@@ -236,9 +239,9 @@ export default function Home() {
               </p>
             </div>
             <p>
-              <a href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer">
+              <ButtonWrapper href={ANALYTICS_PAGE} target="_blank" rel="noopener noreferrer">
                 <ButtonTertiary>Check Analytics</ButtonTertiary>
-              </a>
+              </ButtonWrapper>
             </p>
           </GridItem>
           <GridItem className="grid-item grid-banner">
