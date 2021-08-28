@@ -22,6 +22,8 @@ export const GET_FACTORY_DATA = gql`
       pairCount
       totalVolumeUSD
       totalVolumeETH
+      totalLiquidityETH
+      totalLiquidityUSD
     }
   }
 `
