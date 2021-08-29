@@ -5,7 +5,7 @@ import {
   BAG,
   DAI,
   ETH,
-  FRAX,
+  // FRAX,
   LINK,
   PEFI,
   PNG,
@@ -99,6 +99,11 @@ export const STAKING_V2_AVALANCHE: {
     pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44'
   },
   {
+    tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x1d948BA1D22cD8091a56D45Cd01c92B3d5327452',
+    pair: '0xF83575ddC6744c07Ca49a33f89E9581B9b20653E'
+  },
+  {
     tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x9201908b21115fEE17dB08ceA775c5D05851a6CA',
     pair: '0xA9E3904Bd06A9E4ec01Df8606d335804aa557B9E'
@@ -143,11 +148,11 @@ export const STAKING_V2_AVALANCHE: {
     stakingRewardAddress: '0x6665a74B3BBe312d01d8Ffa9D2a078798a216c87',
     pair: '0x8151C05Ae3c733284855f841a27E756c10610cCe'
   },
-  {
-    tokens: [WAVAX[ChainId.AVALANCHE], FRAX[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x83B90d01E40ACC8F19d3FE6374AcC99c56db19C7',
-    pair: '0xF95901c0131197864db5834836Eb91C5D66A2189'
-  },
+  // {
+  //   tokens: [WAVAX[ChainId.AVALANCHE], FRAX[ChainId.AVALANCHE]],
+  //   stakingRewardAddress: '0x83B90d01E40ACC8F19d3FE6374AcC99c56db19C7',
+  //   pair: '0xF95901c0131197864db5834836Eb91C5D66A2189'
+  // },
   //  {
   //    tokens: [WAVAX[ChainId.AVALANCHE], ZERO[ChainId.AVALANCHE]],
   //    stakingRewardAddress: '0x3b9b4502A9980be3C46BefcFa637ec9Ed0be2485',
