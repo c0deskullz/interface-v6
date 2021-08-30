@@ -239,10 +239,10 @@ export default function Home() {
                 Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
-                Total Volume in AVAX (24h) <span>{totalVolumeETH}</span>
+                Total Volume in AVAX (24h) <span>{(+totalVolumeETH).toFixed(2)}</span>
               </p>
               <p>
-                Total Volume in USD (24h) <span>{totalVolumeUSD}</span>
+                Total Volume in USD (24h) <span>{(+totalVolumeUSD).toFixed(2)}</span>
               </p>
               <p>
                 Total Liquidity in AVAX <span>{(+totalLiquidityETH).toFixed(2)}</span>
