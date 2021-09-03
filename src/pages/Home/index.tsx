@@ -163,7 +163,11 @@ export default function Home() {
   }
   const avaxInWallet = +(partyBalance?.toFixed(1) || 0) * (partyPrice ? +partyPrice : 0)
   const avaxToClaim = +(partyToClaim?.toFixed(1) || 0) * (partyPrice ? +partyPrice : 0)
-  const { totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD } = useAnalyticsData()
+  const {
+    // totalVolumeETH, totalVolumeUSD,
+    totalLiquidityETH,
+    totalLiquidityUSD
+  } = useAnalyticsData()
 
   return (
     <Wrapper>
@@ -238,12 +242,12 @@ export default function Home() {
               <p>
                 Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
-              <p>
+              {/* <p>
                 Total Volume in AVAX (24h) <span>{(+totalVolumeETH).toFixed(2)}</span>
               </p>
               <p>
                 Total Volume in USD (24h) <span>{(+totalVolumeUSD).toFixed(2)}</span>
-              </p>
+              </p> */}
               <p>
                 Total Liquidity in AVAX <span>{(+totalLiquidityETH).toFixed(2)}</span>
               </p>

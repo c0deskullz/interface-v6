@@ -87,7 +87,7 @@ const Banner = styled.a<{ show: boolean }>`
   max-width: 26.25rem;
   width: 100%;
   z-index: 1;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
 
   svg {
     border-radius: 1rem;
