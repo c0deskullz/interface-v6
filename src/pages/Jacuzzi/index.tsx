@@ -339,7 +339,7 @@ export default function Jacuzzi() {
                   </PartyTokenVideo>
                 )}
                 <div>
-                  <h4>xPARTY Pool</h4>
+                  <h4>PARTY Pool</h4>
                   <div className="poolsGrid-item-header-features">
                     <span>
                       <BadgeIcon /> Core

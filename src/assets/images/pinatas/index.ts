@@ -19,8 +19,10 @@ import PartyUsdt from './YAY-USDT.png'
 import AvaxYak from './AVAX-YAK.png'
 import AvaxSherpa from './AVAX-SHERPA.png'
 import AvaxBenqi from './AVAX-BENQI.png'
+import AvaxUsdt from './AVAX-USDT.png'
 
 export {
+  AvaxUsdt,
   AvaxYak,
   AvaxSherpa,
   AvaxAaBlock,
