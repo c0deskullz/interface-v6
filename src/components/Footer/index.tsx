@@ -83,7 +83,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://partyswap.io/" target="_blank" rel="noopener noreferrer">
+                <a href="https://solidity.finance/audits/PartySwap/" target="_blank" rel="noopener noreferrer">
                   Audit ↗
                 </a>
               </li>
