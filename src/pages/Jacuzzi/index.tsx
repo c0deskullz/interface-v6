@@ -145,6 +145,7 @@ export default function Jacuzzi() {
   const [earlyLeavePenaltyAfterUnlockDate, setEarlyLeavePenaltyAfterUnlockDate] = useState(0)
   const [, setUnlockDate] = useState(new Date().toLocaleString())
   const [userPARTYBalance, setUserPARTYBalance] = useState(0)
+  const [userxPARTYStake, setUserxPARTYStake] = useState(0)
   const [jacuzziPARTYStake, setJacuzziPARTYStake] = useState(0)
   const [stakeModalOpen, setStakeModalOpen] = useState(false)
   const [unstakeModalOpen, setUnstakeModalOpen] = useState(false)
@@ -187,12 +188,12 @@ export default function Jacuzzi() {
     return userApprovedPARTYJacuzzi && userHasPARTYs
   }, [approval, userPARTYBalance, account])
 
-  // const userCanLeave = useMemo(() => {
-  //   const userApprovedPARTYJacuzzi = account && approval && approval === ApprovalState.APPROVED
-  //   const userHasxPARTYs = userxPARTYStake > 0
+  const userCanUnstake = useMemo(() => {
+    const userApprovedPARTYJacuzzi = account && approval && approval === ApprovalState.APPROVED
+    const userHasxPARTYs = userxPARTYStake > 0
 
-  //   return userApprovedPARTYJacuzzi && userHasxPARTYs
-  // }, [approval, userxPARTYStake, account])
+    return userApprovedPARTYJacuzzi && userHasxPARTYs
+  }, [approval, userxPARTYStake, account])
 
   const getRatio = useCallback(async () => {
     if (!jacuzzi || !party) {
@@ -256,6 +257,7 @@ export default function Jacuzzi() {
     const userXpartyToPARTY = +jacuzziBalance?.toString() * ratio
 
     setUserPARTYBalance(toFixedTwo(userBalance.toString()))
+    setUserxPARTYStake(toFixedTwo(jacuzziBalance.toString()))
 
     setDisplayUserTotalLiquidity(
       new TokenAmount(createPARTYTokenInstance(), JSBI.BigInt(userXpartyToPARTY)).toFixed(2, { groupSeparator: ',' })
@@ -314,6 +316,8 @@ export default function Jacuzzi() {
   }, [approval])
 
   const isDarkMode = useIsDarkMode()
+
+  console.log(userCanUnstake)
 
   return (
     <Wrapper>
@@ -376,10 +380,14 @@ export default function Jacuzzi() {
                   )}
                 </>
               )}
-              {userCanStake ? (
+              {userCanStake || userCanUnstake ? (
                 <ButtonGroup>
-                  <ButtonPrimary onClick={handleStake}>Add</ButtonPrimary>
-                  <ButtonPrimary onClick={handleLeave}>Remove</ButtonPrimary>
+                  <ButtonPrimary onClick={handleStake} disabled={!userCanStake}>
+                    Add
+                  </ButtonPrimary>
+                  <ButtonPrimary onClick={handleLeave} disabled={!userCanUnstake}>
+                    Remove
+                  </ButtonPrimary>
                 </ButtonGroup>
               ) : (
                 <HelperCard>
