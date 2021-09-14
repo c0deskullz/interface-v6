@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useRef, useState, ReactNode } from 'react'
 import styled from 'styled-components'
 import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
-// import PoolCard from '../../components/earn/PoolCard'
 import { RouteComponentProps } from 'react-router-dom'
 import PoolsGrid from '../../components/PoolsGrid'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
@@ -118,27 +117,32 @@ export default function Earn({
       apr: string
     }[]
   >([])
+
   const setPoolCards = useCallback(results => {
     poolCards.current = results
   }, [])
-  const [, setPoolsLength] = useState<number>(0)
+  const [poolsLength, setPoolsLength] = useState<number>(0)
 
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
   const [currentStakingPool, setCurrentStakingPool] = useState<StakingInfo | undefined>()
 
   useEffect(() => {
-    const updatePoolCards = (results: ReactNode[]) => {
-      setPoolCards(results)
-      setPoolsLength(results.length)
+    if (stakingInfos.length && poolsLength !== stakingInfos.length) {
+      const updatePoolCards = (results: ReactNode[]) => {
+        setPoolCards(results)
+        setPoolsLength(results.length)
+      }
+      fetchPoolAprs(chainId, stakingInfos, updatePoolCards, {
+        onClickClaim: stakingInfo => {
+          setCurrentStakingPool(stakingInfo)
+          setShowClaimRewardModal(true)
+        }
+      })
     }
 
-    fetchPoolAprs(chainId, stakingInfos, updatePoolCards, {
-      onClickClaim: stakingInfo => {
-        setCurrentStakingPool(stakingInfo)
-        setShowClaimRewardModal(true)
-      }
-    })
-  }, [stakingInfos, setPoolCards, chainId])
+    console.log('staking infos: ', stakingInfos.length, poolsLength)
+    console.log('chainId: ', chainId)
+  }, [stakingInfos, setPoolCards, chainId, poolsLength])
 
   const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
 
