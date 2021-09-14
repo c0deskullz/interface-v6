@@ -139,9 +139,6 @@ export default function Earn({
         }
       })
     }
-
-    console.log('staking infos: ', stakingInfos.length, poolsLength)
-    console.log('chainId: ', chainId)
   }, [stakingInfos, setPoolCards, chainId, poolsLength])
 
   const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
