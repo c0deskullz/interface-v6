@@ -3324,6 +3324,11 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
+"@pangolindex/token-lists@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@pangolindex/token-lists/-/token-lists-1.0.1.tgz#922f6e9de22a71b5d4a7ec4dc8ad183afa8f6cb1"
+  integrity sha512-01MOB0lA5/Chc/g2fzzFPJVHzPAe1dNjBkD9XU6UFDupIAdwEUn9WB4ZqU0p6mAG0ASBdTB2pGEt7cWNBybyXw==
+
 "@pangolindex/web3-react-injected-connector@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@pangolindex/web3-react-injected-connector/-/web3-react-injected-connector-1.0.1.tgz#ab24ec51d276ae1f723393f0c4a45aa1280b8633"

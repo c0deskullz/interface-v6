@@ -122,6 +122,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@pangolindex/token-lists": "^1.0.1",
     "@partyswap-libs/party-governance": "1.0.4",
     "@partyswap-libs/party-jacuzzi": "^1.0.0",
     "@partyswap-libs/party-swap-core": "^0.1.3",
