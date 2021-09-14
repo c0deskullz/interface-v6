@@ -317,8 +317,6 @@ export default function Jacuzzi() {
 
   const isDarkMode = useIsDarkMode()
 
-  console.log(userCanUnstake)
-
   return (
     <Wrapper>
       <JacuzziStakingModal isOpen={stakeModalOpen} onDismiss={() => setStakeModalOpen(false)} />
