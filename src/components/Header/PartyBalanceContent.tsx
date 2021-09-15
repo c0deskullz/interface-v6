@@ -1,15 +1,13 @@
 import { ChainId, TokenAmount, WAVAX, JSBI } from '@partyswap-libs/sdk'
-import React, { useMemo } from 'react'
 import { X } from 'react-feather'
+import React from 'react'
 import styled from 'styled-components'
 import { PARTY } from '../../constants'
-import { useTotalSupply } from '../../data/TotalSupply'
+import { usePartyCirculation, useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
-import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
 import { useTotalPartyEarned } from '../../state/stake/hooks'
 import { useAggregatePartyBalance, useTokenBalance } from '../../state/wallet/hooks'
 import { StyledInternalLink, TYPE, PngTokenAnimated } from '../../theme'
-import { computePngCirculation } from '../../utils/computePngCirculation'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { CardSection, DataCard } from '../earn/styled'
@@ -85,12 +83,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
     partyPrice = JSBI.toNumber(avaxPartyRatio) / 1000000000000000000
   }
 
-  const blockTimestamp = useCurrentBlockTimestamp()
-  const circulation: TokenAmount | undefined = useMemo(
-    () =>
-      blockTimestamp && party && chainId === ChainId.FUJI ? computePngCirculation(party, blockTimestamp) : totalSupply,
-    [blockTimestamp, chainId, totalSupply, party]
-  )
+  const circulation: TokenAmount | undefined = usePartyCirculation()
 
   const isDarkMode = useIsDarkMode()
 
