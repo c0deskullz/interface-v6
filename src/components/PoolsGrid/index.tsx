@@ -42,7 +42,7 @@ const Warning = styled.div`
 export default function PoolsGrid({ pools }: { pools: ReactNode[] }) {
   return (
     <PoolsGridItems className="poolsGrid">
-      <Warning>
+      {/* <Warning>
         <span role="img" aria-label="warning-icon">
           ⚠️
         </span>
@@ -51,7 +51,7 @@ export default function PoolsGrid({ pools }: { pools: ReactNode[] }) {
           the current APR calculation is incorrect; please don't take into account while adding liquidity into any of
           these pairs.
         </p>
-      </Warning>
+      </Warning> */}
       {pools}
     </PoolsGridItems>
   )

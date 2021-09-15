@@ -135,7 +135,7 @@ export default function PoolsGridItem({
         </div>
         <div className="poolsGrid-item-table">
           <p>
-            APR: <span style={{ textDecoration: 'line-through' }}>{apr}%</span>
+            APR: <span>{apr}%</span>
           </p>
           <p>
             Earn: <span>PARTY</span>
