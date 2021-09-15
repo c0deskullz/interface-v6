@@ -43,7 +43,9 @@ export default function PoolsGrid({ pools }: { pools: ReactNode[] }) {
   return (
     <PoolsGridItems className="poolsGrid">
       <Warning>
-        <span>⚠️</span>
+        <span role="img" aria-label="warning-icon">
+          ⚠️
+        </span>
         <p>
           <strong>Note: </strong>
           the current APR calculation is incorrect; please don't take into account while adding liquidity into any of
