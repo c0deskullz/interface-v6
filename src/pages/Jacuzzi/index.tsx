@@ -416,7 +416,11 @@ export default function Jacuzzi() {
                   <p>
                     Total xPARTY Supply: <span>{displayTotalSupply}</span>
                   </p>
-                  <a href="https://cchain.explorer.avax.network/address/0x68583A0a7e763400B8B0904095133F76922657ae/transactions">
+                  <a
+                    href="https://cchain.explorer.avax.network/tokens/0x99c904CC0E919867404B49a804d30473E8344b1C/token-transfers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     See Token Info <ExtLink />
                   </a>
                   <a href="https://partyswap.gitbook.io/partyswap/jacuzzis">
