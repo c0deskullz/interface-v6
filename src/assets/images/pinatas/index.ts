@@ -20,9 +20,13 @@ import AvaxYak from './AVAX-YAK.png'
 import AvaxSherpa from './AVAX-SHERPA.png'
 import AvaxBenqi from './AVAX-BENQI.png'
 import AvaxUsdt from './AVAX-USDT.png'
+import AvaxDai from './AVAX-DAI.png'
+import AvaxGb from './AVAX-GB.png'
 
 export {
   AvaxUsdt,
+  AvaxDai,
+  AvaxGb,
   AvaxYak,
   AvaxSherpa,
   AvaxAaBlock,

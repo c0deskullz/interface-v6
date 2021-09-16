@@ -253,6 +253,17 @@ export const VSO: { [chainId in ChainId]: Token } = {
   )
 }
 
+export const GB: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'GB', 'GoodBridging'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x90842eb834cFD2A1DB0b1512B254a18E4D396215',
+    18,
+    'GB',
+    'GoodBridging'
+  )
+}
+
 export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: '0xd040e0A2268389f7110E194197F1eD97F586ebBF',
   [ChainId.AVALANCHE]: '0x5a04d600B6a5B2D89946e839A9Af2f8BE11A1955'
