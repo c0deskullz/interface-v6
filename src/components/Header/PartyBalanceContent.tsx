@@ -70,7 +70,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
   const totalSupply: TokenAmount | undefined = useTotalSupply(party)
 
   // Determine PARTY price in AVAX
-  const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
+  const wavax = WAVAX[chainId ? chainId : ChainId.AVALANCHE]
   const [, avaxPartyTokenPair] = usePair(wavax, party)
   const oneToken = JSBI.BigInt(1000000000000000000)
   let partyPrice: Number | undefined

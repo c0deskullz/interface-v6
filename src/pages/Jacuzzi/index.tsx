@@ -167,16 +167,16 @@ export default function Jacuzzi() {
   ])
 
   const parsedMaxAmount = new TokenAmount(
-    PARTY[chainId ? chainId : ChainId.FUJI],
+    PARTY[chainId ? chainId : ChainId.AVALANCHE],
     JSBI.BigInt(ethers.constants.MaxUint256)
   )
   const parsedCurrentBalance = new TokenAmount(
-    PARTY[chainId ? chainId : ChainId.FUJI],
+    PARTY[chainId ? chainId : ChainId.AVALANCHE],
     JSBI.BigInt(userPARTYBalance * PARTY_DECIMALS_DIVISOR)
   )
 
-  const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
-  const [approval] = useApproveCallback(parsedCurrentBalance, JACUZZI_ADDRESS[chainId ? chainId : ChainId.FUJI])
+  const [, handleAprove] = useApproveCallback(parsedMaxAmount, JACUZZI_ADDRESS[chainId ? chainId : ChainId.AVALANCHE])
+  const [approval] = useApproveCallback(parsedCurrentBalance, JACUZZI_ADDRESS[chainId ? chainId : ChainId.AVALANCHE])
 
   const jacuzzi = useJacuzziContract()
   const party = usePartyContract()
@@ -273,15 +273,16 @@ export default function Jacuzzi() {
       return setJacuzziPARTYStake(0)
     }
 
-    const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
+    const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE])
     setJacuzziPARTYStake(toFixedTwo(partyJacuzziBalance.toString()))
+
+    const supply = await jacuzzi.totalSupply()
+    console.log(supply.toString())
 
     setDisplayTotalLiquidity(
       new TokenAmount(createPARTYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
     )
-    setDisplayTotalsupply(
-      new TokenAmount(createxPARTYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
-    )
+    setDisplayTotalsupply(new TokenAmount(createxPARTYTokenInstance(), supply).toFixed(2, { groupSeparator: ',' }))
   }, [jacuzzi, party, chainId, createPARTYTokenInstance, createxPARTYTokenInstance])
 
   const apr = useMemo(() => {

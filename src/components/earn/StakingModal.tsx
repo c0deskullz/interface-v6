@@ -72,7 +72,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const dummyPair = new Pair(
     new TokenAmount(stakingInfo.tokens[0], '0'),
     new TokenAmount(stakingInfo.tokens[1], '0'),
-    chainId ? chainId : ChainId.FUJI
+    chainId ? chainId : ChainId.AVALANCHE
   )
   const pairContract = usePairContract(dummyPair.liquidityToken.address)
 

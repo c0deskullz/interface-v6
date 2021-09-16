@@ -145,7 +145,7 @@ export default function Home() {
   const isDarkMode = useIsDarkMode()
   const party = chainId ? PARTY[chainId] : undefined
 
-  const wavax = WAVAX[chainId ? chainId : ChainId.FUJI]
+  const wavax = WAVAX[chainId ? chainId : ChainId.AVALANCHE]
 
   const totalSupply = usePartyTotalSupply()
   const partyBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, party)
