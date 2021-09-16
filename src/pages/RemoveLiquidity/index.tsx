@@ -43,7 +43,6 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@partyswap-libs/sdk'
-import GasFeeAlert from '../../components/GasFeeAlert'
 
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
@@ -441,7 +440,6 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <GasFeeAlert></GasFeeAlert>
         <ButtonPrimary disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
           <Text fontWeight={500} fontSize={20}>
             Confirm
