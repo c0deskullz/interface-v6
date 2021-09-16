@@ -12,11 +12,11 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import FormattedCurrencyAmount from '../FormattedCurrencyAmount'
 import { useActiveWeb3React } from '../../hooks'
-import GasFeeAlert from '../GasFeeAlert'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
+  overflow-y: scroll;
 `
 
 interface StakingModalProps {
@@ -96,7 +96,6 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
             will no longer earn PARTY rewards on this liquidity. Your original token liquidity will remain in its
             liquidity pool.
           </TYPE.subHeader>
-          <GasFeeAlert></GasFeeAlert>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
             {error ?? 'Withdraw & Claim'}
           </ButtonError>

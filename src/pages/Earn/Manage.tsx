@@ -12,7 +12,7 @@ import { TYPE } from '../../theme'
 
 import { RowBetween } from '../../components/Row'
 import { DataCard } from '../../components/earn/styled'
-import { ButtonPrimary, ButtonEmpty } from '../../components/Button'
+import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModal'
 import { useStakingInfo } from '../../state/stake/hooks'
 import UnstakingModal from '../../components/earn/UnstakingModal'
@@ -379,9 +379,9 @@ export default function Manage({
                     {' PARTY / week'}
                   </TYPE.black>
                   {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
-                    <ButtonEmpty padding="0.75rem" width="10rem" onClick={() => setShowClaimRewardModal(true)}>
+                    <ButtonPrimary padding="0.75rem" width="10rem" onClick={() => setShowClaimRewardModal(true)}>
                       Claim
-                    </ButtonEmpty>
+                    </ButtonPrimary>
                   )}
                 </AutoColumn>
               </StyledBottomCard>

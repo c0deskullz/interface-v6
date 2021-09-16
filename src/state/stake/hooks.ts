@@ -16,7 +16,7 @@ import {
   // ZERO,
   SNOB,
   AVME,
-  ELK,
+  // ELK,
   XAVA,
   SHERPA,
   YAK,
@@ -169,11 +169,11 @@ export const STAKING_V2_AVALANCHE: {
     stakingRewardAddress: '0x1a70d0AcC5EBA0c8515911301a8B0EE5F5070c66',
     pair: '0x3e9fd00bc0D0324c841975e4dd5a74c5b9E71cCA'
   },
-  {
-    tokens: [WAVAX[ChainId.AVALANCHE], ELK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xb247F29BeD505052bbEbe911D4691e93485Aaf83',
-    pair: '0x94372494206132850768Cdb43C91530FEAC7A0f6'
-  },
+  // {
+  //   tokens: [WAVAX[ChainId.AVALANCHE], ELK[ChainId.AVALANCHE]],
+  //   stakingRewardAddress: '0xb247F29BeD505052bbEbe911D4691e93485Aaf83',
+  //   pair: '0x94372494206132850768Cdb43C91530FEAC7A0f6'
+  // },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
     stakingRewardAddress: '0xB7517d0f70A6c884239345B0AC8AaFD436227Aa8',
