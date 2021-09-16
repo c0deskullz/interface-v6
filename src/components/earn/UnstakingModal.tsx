@@ -17,6 +17,7 @@ import GasFeeAlert from '../GasFeeAlert'
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
+  overflow-y: scroll;
 `
 
 interface StakingModalProps {
