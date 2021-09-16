@@ -23,8 +23,8 @@ export default function GasFeeAlert() {
 			<RowFixed>
 				<AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
 				<Column>
-					<TYPE.main color={theme.text7} >!!! Gas Fee Reduction !!!<br/></TYPE.main>
-					<TYPE.main color={theme.text7}>Transactions will not be accepted unless the gas fee is set to {GAS_PRICE} gwei.</TYPE.main>
+					<TYPE.body color={theme.text7} >Gas Fee Reduction!!!<br/></TYPE.body>
+					<TYPE.body color={theme.text7}>Transactions will not be accepted unless the gas fee is set to {GAS_PRICE} gwei.</TYPE.body>
 				</Column>
 			</RowFixed>
 		</GasFee>
