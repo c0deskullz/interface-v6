@@ -21,7 +21,9 @@ import {
   PartyAvax,
   PartyDai,
   PartyUsdt,
-  AvaxUsdt
+  AvaxUsdt,
+  AvaxGb,
+  AvaxDai
 } from '../../assets/images/pinatas'
 
 interface PinataLogoProps {
@@ -81,6 +83,10 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return PartyDai
       case 'PARTY-DAI.e':
         return PartyDai
+      case 'AVAX-GB':
+        return AvaxGb
+      case 'AVAX-DAI.e':
+        return AvaxDai
       default:
         return PartyUsdt
     }

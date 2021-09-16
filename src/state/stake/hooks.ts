@@ -9,7 +9,7 @@ import {
   LINK,
   PEFI,
   PNG,
-  SPORE,
+  // SPORE,
   USDT,
   WBTC,
   PARTY,
@@ -21,7 +21,8 @@ import {
   SHERPA,
   YAK,
   RENDOGE,
-  QI
+  QI,
+  GB
 } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
@@ -104,6 +105,11 @@ export const STAKING_V2_AVALANCHE: {
     pair: '0xF83575ddC6744c07Ca49a33f89E9581B9b20653E'
   },
   {
+    tokens: [WAVAX[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0xc8dfff529d1ff649422905db9df05c8c3ddc04a7',
+    pair: '0x872b1d0be81d1f1959930fb47905ef5bc60c86b3'
+  },
+  {
     tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x9201908b21115fEE17dB08ceA775c5D05851a6CA',
     pair: '0xA9E3904Bd06A9E4ec01Df8606d335804aa557B9E'
@@ -128,11 +134,11 @@ export const STAKING_V2_AVALANCHE: {
     stakingRewardAddress: '0xf9ac26A28b5dA299E8Ff51F2f8eaB9CBa911668b',
     pair: '0x04fF7cb0c1bd7f350Ec2495989c654218992AE40'
   },
-  {
-    tokens: [WAVAX[ChainId.AVALANCHE], SPORE[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x1fA07d1481e264F4FFE857C918CE27e841Ba427b',
-    pair: '0x293fCF9131e1491971c5bC234018fA6440238cA0'
-  },
+  // {
+  //   tokens: [WAVAX[ChainId.AVALANCHE], SPORE[ChainId.AVALANCHE]],
+  //   stakingRewardAddress: '0x1fA07d1481e264F4FFE857C918CE27e841Ba427b',
+  //   pair: '0x293fCF9131e1491971c5bC234018fA6440238cA0'
+  // },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x8AdC76373B7c8fD9154528beD63E6ff30411cEb4',
@@ -192,6 +198,11 @@ export const STAKING_V2_AVALANCHE: {
     tokens: [WAVAX[ChainId.AVALANCHE], QI[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x30Ac2b14320112a4922D5D3B926dcdcb19c502a8',
     pair: '0xA09bAb7c83b8D3246484E7b822DD3f7002e5D5F1'
+  },
+  {
+    tokens: [WAVAX[ChainId.AVALANCHE], GB[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x4a2ba12a8c13575d5dea30944f8d9bd78ef2e190',
+    pair: '0x77eb05e7f557fe8003047fb3be690dc429c511ba'
   }
 ]
 
