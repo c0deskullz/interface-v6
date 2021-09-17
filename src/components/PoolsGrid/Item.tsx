@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import styled from 'styled-components'
+import React, { useMemo, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
@@ -7,11 +7,14 @@ import { StakingInfo } from '../../state/stake/hooks'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ChainId, Fraction, JSBI } from '@partyswap-libs/sdk'
 import PinataLogo from '../PinataLogo'
-import { StyledInternalLink } from '../../theme'
+import { StyledInternalLink, TYPE } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { WithLockedValue } from '../WithLockedValue'
+import { AlertTriangle } from 'react-feather'
+import { RowFixed } from '../Row'
+import Column from '../Column'
 
 const Item = styled.div`
   background-color: ${({ theme }) => theme.surface4};
@@ -56,6 +59,32 @@ const Item = styled.div`
     color: ${({ theme }) => theme.primaryText3};
   }
 `
+
+const StyledWarning = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+`
+
+const Warning = () => {
+  const theme = useContext(ThemeContext)
+
+  return (
+    <StyledWarning>
+      <RowFixed>
+        <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
+        <Column>
+          <TYPE.body color={theme.text7}>
+            This pair is currently not generating rewards. Therefore, we recommend removing liquidity and add it to
+            another pair that is distributing $PARTY!
+            <br />
+          </TYPE.body>
+        </Column>
+      </RowFixed>
+    </StyledWarning>
+  )
+}
 
 const ExtLink = styled(ExternalLinkSVG)`
   margin-left: 0.125em;
@@ -120,6 +149,7 @@ export default function PoolsGridItem({
 
   return (
     <Item className="poolsGrid-item">
+      {multiplier?.toString() === '0' && <Warning />}
       <div className="poolsGrid-item-content">
         <div className="poolsGrid-item-header">
           <PinataLogo pinataSymbol={`${currency0.symbol}-${currency1.symbol}`} />
