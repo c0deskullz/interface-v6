@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
@@ -172,6 +172,21 @@ export default function Manage({
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
 
+  const rewardRate = useMemo(() => {
+    if (stakingInfo) {
+      if (stakingInfo.multiplier?.toString() === '0') {
+        return '0'
+      }
+
+      return (
+        stakingInfo?.totalRewardRate?.multiply((60 * 60 * 24 * 7).toString())?.toFixed(0, { groupSeparator: ',' }) ??
+        '-'
+      )
+    }
+
+    return '-'
+  }, [stakingInfo])
+
   const avaxPool = currencyA === CAVAX || currencyB === CAVAX
 
   let valueOfTotalStakedAmountInWavax: TokenAmount | undefined
@@ -319,9 +334,7 @@ export default function Manage({
             <p>
               Pool Rate:
               <span>
-                {stakingInfo?.totalRewardRate
-                  ?.multiply((60 * 60 * 24 * 7).toString())
-                  ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
+                {rewardRate}
                 {' PARTY / week'}
               </span>
             </p>
