@@ -287,13 +287,24 @@ export default function Jacuzzi() {
 
   const apr = useMemo(() => {
     const TOKENS_PER_DAY = 32900
+    const HALVING_CYCLE_DAYS = 182.5
+
     if (!jacuzziPARTYStake) {
       return 0
     }
 
-    const roi = TOKENS_PER_DAY / +jacuzziPARTYStake?.toString()
+    const today = Date.now()
+    const firstHalvingDay = Date.UTC(2021, 9 - 1, 0)
+    const passedHalvingCycles = (today - firstHalvingDay) / (HALVING_CYCLE_DAYS * 24 * 60 * 60 * 1000)
+    let roi = 0
 
-    return (roi * 365).toFixed(2)
+    for (let i = 0; i < 365; i++) {
+      const passedHalvingCyclesInYear = i / HALVING_CYCLE_DAYS
+      const totalHalvingCycles = Math.floor(passedHalvingCyclesInYear + passedHalvingCycles)
+      roi = roi + TOKENS_PER_DAY / (jacuzziPARTYStake * Math.pow(2, totalHalvingCycles))
+    }
+
+    return (roi * 100).toFixed(2)
   }, [jacuzziPARTYStake])
 
   const handleStake = async () => {
