@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react'
-import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
+import React, { useCallback, useState, useMemo, useContext } from 'react'
+import Column, { AutoColumn } from '../../components/Column'
+import styled, { ThemeContext } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import { JSBI, TokenAmount, CAVAX, Token, WAVAX } from '@partyswap-libs/sdk'
@@ -10,7 +10,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
 
-import { RowBetween } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 import { DataCard } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModal'
@@ -33,6 +33,7 @@ import { BIG_INT_ZERO, PARTY } from '../../constants'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { AlertTriangle } from 'react-feather'
 
 const PageWrapper = styled.div`
   position: relative;
@@ -156,6 +157,31 @@ const StyledBottomCard = styled(DataCard)<{ dim: any }>`
   border-radius: 1.25rem;
   padding: 1rem;
 `
+const StyledWarning = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+`
+
+const Warning = () => {
+  const theme = useContext(ThemeContext)
+
+  return (
+    <StyledWarning>
+      <RowFixed>
+        <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
+        <Column>
+          <TYPE.body color={theme.text7}>
+            This pair is currently not generating rewards. Therefore, we recommend removing liquidity and add it to
+            another pair that is distributing $PARTY!
+            <br />
+          </TYPE.body>
+        </Column>
+      </RowFixed>
+    </StyledWarning>
+  )
+}
 
 export default function Manage({
   match: {
@@ -171,6 +197,21 @@ export default function Manage({
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
+
+  const rewardRate = useMemo(() => {
+    if (stakingInfo) {
+      if (stakingInfo.multiplier?.toString() === '0') {
+        return '0'
+      }
+
+      return (
+        stakingInfo?.totalRewardRate?.multiply((60 * 60 * 24 * 7).toString())?.toFixed(0, { groupSeparator: ',' }) ??
+        '-'
+      )
+    }
+
+    return '-'
+  }, [stakingInfo])
 
   const avaxPool = currencyA === CAVAX || currencyB === CAVAX
 
@@ -299,6 +340,7 @@ export default function Manage({
   return (
     <PageWrapper>
       {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
+      {rewardRate === '0' && <Warning />}
 
       <PageContent gap="lg" className="poolsGrid-item">
         <div className="poolsGrid-item-content">
@@ -319,9 +361,7 @@ export default function Manage({
             <p>
               Pool Rate:
               <span>
-                {stakingInfo?.totalRewardRate
-                  ?.multiply((60 * 60 * 24 * 7).toString())
-                  ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
+                {rewardRate}
                 {' PARTY / week'}
               </span>
             </p>
