@@ -1,31 +1,31 @@
-import React, { useEffect, useMemo, useState, useCallback, useContext } from 'react'
 import { ChainId, JSBI, Token, TokenAmount } from '@partyswap-libs/sdk'
-import { Link } from 'react-router-dom'
 import { ethers } from 'ethers'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Box } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
-import { JACUZZI_ADDRESS, toFixedTwo, PARTY, PARTY_DECIMALS_DIVISOR } from '../../constants'
-import { useActiveWeb3React } from '../../hooks'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { useJacuzziContract, usePartyContract } from '../../hooks/useContract'
-import { ButtonPrimary } from '../../components/Button'
-import JacuzziStakingModal from '../../components/jacuzzi/JacuzziStakingModal'
-import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
-import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
-import { newTransactionsFirst } from '../../components/Web3Status'
-
-import { ReactComponent as JacuzziImage } from '../../assets/svg/jacuzzi-hero.svg'
-import { ReactComponent as JacuzziImageDark } from '../../assets/svg/jacuzzi-hero-dark.svg'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
-
-import pattern from '../../assets/svg/swap-pattern.svg'
+import { ReactComponent as JacuzziImageDark } from '../../assets/svg/jacuzzi-hero-dark.svg'
+import { ReactComponent as JacuzziImage } from '../../assets/svg/jacuzzi-hero.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import pattern from '../../assets/svg/swap-pattern.svg'
+import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
+import TokenVideo from '../../assets/video/party-icon-3d.mp4'
+import { ButtonPrimary } from '../../components/Button'
+import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
+import JacuzziStakingModal from '../../components/jacuzzi/JacuzziStakingModal'
+import QuestionHelper from '../../components/QuestionHelper'
+import { RowBetween } from '../../components/Row'
+import { newTransactionsFirst } from '../../components/Web3Status'
+import { JACUZZI_ADDRESS, PARTY, PARTY_DECIMALS_DIVISOR, toFixedTwo } from '../../constants'
+import { useActiveWeb3React } from '../../hooks'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { useJacuzziContract, usePartyContract } from '../../hooks/useContract'
+import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { useIsDarkMode } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
-
-import TokenVideo from '../../assets/video/party-icon-3d.mp4'
-import TokenVideoDark from '../../assets/video/party-icon-3d-dark.mp4'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -77,6 +77,9 @@ const Item = styled.div`
   }
   .grid-item-details .poolsGrid-item-table a {
     color: ${({ theme }) => theme.primaryText3};
+  }
+  .poolsGrid-item-table a div {
+    cursor: pointer;
   }
 `
 
@@ -287,13 +290,24 @@ export default function Jacuzzi() {
 
   const apr = useMemo(() => {
     const TOKENS_PER_DAY = 32900
+    const HALVING_CYCLE_DAYS = 182.5
+
     if (!jacuzziPARTYStake) {
       return 0
     }
 
-    const roi = TOKENS_PER_DAY / +jacuzziPARTYStake?.toString()
+    const today = Date.now()
+    const firstHalvingDay = Date.UTC(2021, 9 - 1, 0)
+    const passedHalvingCycles = (today - firstHalvingDay) / (HALVING_CYCLE_DAYS * 24 * 60 * 60 * 1000)
+    let roi = 0
 
-    return (roi * 365).toFixed(2)
+    for (let i = 0; i < 365; i++) {
+      const passedHalvingCyclesInYear = i / HALVING_CYCLE_DAYS
+      const totalHalvingCycles = Math.floor(passedHalvingCyclesInYear + passedHalvingCycles)
+      roi = roi + TOKENS_PER_DAY / (jacuzziPARTYStake * Math.pow(2, totalHalvingCycles))
+    }
+
+    return (roi * 100).toFixed(2)
   }, [jacuzziPARTYStake])
 
   const handleStake = async () => {
@@ -352,9 +366,19 @@ export default function Jacuzzi() {
                 </div>
               </div>
               <div className="poolsGrid-item-table">
-                <p>
-                  APR: <span>{apr}%</span>
-                </p>
+                <RowBetween mb="0.5rem">
+                  <Box>APR:</Box>
+                  <Box>
+                    <span>{apr}%</span>
+                    <a
+                      target="_blank"
+                      href="https://partyswap.gitbook.io/partyswap/jacuzzis/apr-calculation"
+                      rel="noopener noreferrer"
+                    >
+                      <QuestionHelper text="Click on the icon to learn how we get this value." />
+                    </a>
+                  </Box>
+                </RowBetween>
                 <p>
                   xPARTY to PARTY: <span>{ratio}</span>
                 </p>
