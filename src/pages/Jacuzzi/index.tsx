@@ -424,7 +424,7 @@ export default function Jacuzzi() {
                   >
                     See Token Info <ExtLink />
                   </a>
-                  <a href="https://partyswap.gitbook.io/partyswap/jacuzzis">
+                  <a href="https://partyswap.gitbook.io/partyswap/jacuzzis" target="_blank" rel="noopener noreferrer">
                     How it works <ExtLink />
                   </a>
                 </div>

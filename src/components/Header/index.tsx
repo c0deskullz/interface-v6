@@ -13,7 +13,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregatePartyBalance } from '../../state/wallet/hooks'
 import { CountUp } from 'use-count-up'
-import { TYPE } from '../../theme'
+import { TYPE, ExternalLink } from '../../theme'
 
 import { RedCard } from '../Card'
 import Settings from '../Settings'
@@ -24,7 +24,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import PartyBalanceContent from './PartyBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-// import { ANALYTICS_PAGE } from '../../constants'
+import { ANALYTICS_PAGE } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -344,6 +344,40 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName
+})`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: center;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  align-items: left;
+  border-radius: 1.25rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.white};
+  font-size: 0.9375rem;
+  width: fit-content;
+  font-weight: 500;
+
+  :hover,
+  :focus {
+    color: ${({ theme }) => darken(0.1, theme.white)};
+    text-decoration: none;
+  }
+
+  @media (min-width: 960px) {
+    padding: 0.5rem 1rem;
+    margin: 0 2px;
+
+    :hover,
+    :focus {
+      color: ${({ theme }) => theme.white};
+      background-color: ${({ theme }) => theme.primary1};
+    }
+  }
+`
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',
   [ChainId.AVALANCHE]: 'Avalanche'
@@ -376,6 +410,7 @@ const Links = ({ className }: { className?: string }) => {
       <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>
         Jacuzzis
       </StyledNavLink>
+      <StyledExternalLink href={ANALYTICS_PAGE}>Charts</StyledExternalLink>
     </div>
   )
 }
