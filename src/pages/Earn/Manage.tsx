@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useMemo, useContext } from 'react'
-import Column, { AutoColumn } from '../../components/Column'
+import { AutoColumn } from '../../components/Column'
 import styled, { ThemeContext } from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
 
-import { RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween } from '../../components/Row'
 import { DataCard } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModal'
@@ -158,27 +158,24 @@ const StyledBottomCard = styled(DataCard)<{ dim: any }>`
   padding: 1rem;
 `
 const StyledWarning = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
+  display: grid;
+  gap: 1rem;
+  @media (min-width: 768px) {
+    gap: 1.5rem;
+    grid-template-columns: 24px auto;
+  }
 `
 
 const Warning = () => {
   const theme = useContext(ThemeContext)
 
   return (
-    <StyledWarning>
-      <RowFixed>
-        <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
-        <Column>
-          <TYPE.body color={theme.text7}>
-            This pair is currently not generating rewards. Therefore, we recommend removing liquidity and add it to
-            another pair that is distributing $PARTY!
-            <br />
-          </TYPE.body>
-        </Column>
-      </RowFixed>
+    <StyledWarning className="grid-item-accent">
+      <AlertTriangle size={24} style={{ marginRight: '8px', minWidth: 24 }} color={theme.primaryText2} />
+      <TYPE.body color={theme.text7}>
+        This pair is currently not generating rewards. Therefore, we recommend removing liquidity and add it to another
+        pair that is distributing $PARTY!
+      </TYPE.body>
     </StyledWarning>
   )
 }
@@ -340,10 +337,10 @@ export default function Manage({
   return (
     <PageWrapper>
       {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
-      {rewardRate === '0' && <Warning />}
 
       <PageContent gap="lg" className="poolsGrid-item">
         <div className="poolsGrid-item-content">
+          {rewardRate === '0' && <Warning />}
           <div className="poolsGrid-item-header">
             <div>
               <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={48} />
