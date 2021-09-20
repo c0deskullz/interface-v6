@@ -1,36 +1,34 @@
+import { ChainId, JSBI, Token, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { ButtonTertiary } from '../../components/Button'
-import { useIsDarkMode } from '../../state/user/hooks'
-import { ChainId, JSBI, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
-import { useTotalPartyEarned } from '../../state/stake/hooks'
-import { usePair } from '../../data/Reserves'
-import { useActiveWeb3React } from '../../hooks'
-import { ANALYTICS_PAGE, PARTY } from '../../constants'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { useWalletModalToggle } from '../../state/application/hooks'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 import { infoClient } from '../../apollo/client'
-import { GET_FACTORY_DATA } from '../../apollo/queries'
-import { usePartyContract } from '../../hooks/useContract'
-import { WithLockedValue } from '../../components/WithLockedValue'
-
-import Bonnie from '../../assets/svg/home-hero-bonnie.svg'
-import Trent from '../../assets/svg/home-hero-trent.svg'
+import { GET_BUNDLE_DATA, GET_FACTORY_DATA, GET_TOKEN_DATA } from '../../apollo/queries'
 import FarmsIcon from '../../assets/svg/grid-item-header-farms-staking.svg'
 import StatsIcon from '../../assets/svg/grid-item-header-stats.svg'
 import BannerBackground from '../../assets/svg/home-banner-background.svg'
+import BannerPipoDark from '../../assets/svg/home-banner-pipo-dark.svg'
 import BannerPipo from '../../assets/svg/home-banner-pipo.svg'
 import BannerPiñata1 from '../../assets/svg/home-banner-piñata-1.svg'
 import BannerPiñata2 from '../../assets/svg/home-banner-piñata-2.svg'
 import BannerPiñata3 from '../../assets/svg/home-banner-piñata-3.svg'
-
-import BonnieDark from '../../assets/svg/home-hero-bonnie-dark.svg'
-import TrentDark from '../../assets/svg/home-hero-trent-dark.svg'
-import BannerPipoDark from '../../assets/svg/home-banner-pipo-dark.svg'
 import BannerPiñataDark1 from '../../assets/svg/home-banner-piñata-dark-1.svg'
 import BannerPiñataDark2 from '../../assets/svg/home-banner-piñata-dark-2.svg'
 import BannerPiñataDark3 from '../../assets/svg/home-banner-piñata-dark-3.svg'
+import BonnieDark from '../../assets/svg/home-hero-bonnie-dark.svg'
+import Bonnie from '../../assets/svg/home-hero-bonnie.svg'
+import TrentDark from '../../assets/svg/home-hero-trent-dark.svg'
+import Trent from '../../assets/svg/home-hero-trent.svg'
+import { ButtonTertiary } from '../../components/Button'
+import { WithLockedValue } from '../../components/WithLockedValue'
+import { ANALYTICS_PAGE, JACUZZI_ADDRESS, PARTY } from '../../constants'
+import { usePair } from '../../data/Reserves'
+import { useActiveWeb3React } from '../../hooks'
+import { usePartyContract } from '../../hooks/useContract'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { useTotalPartyEarned } from '../../state/stake/hooks'
+import { useIsDarkMode } from '../../state/user/hooks'
+import { useTokenBalance } from '../../state/wallet/hooks'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -116,6 +114,81 @@ const useAnalyticsData = () => {
   return { id, pairCount, totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD }
 }
 
+const queryBundleData = async (callback: (params: any) => void) => {
+  const { data } = await infoClient.query({
+    query: GET_BUNDLE_DATA
+  })
+
+  callback(data?.bundles[0])
+  return data?.bundles[0]
+}
+
+const useBundleData = () => {
+  const [{ ethPrice }, setBundleData] = useState<{ ethPrice: string }>({ ethPrice: '0' })
+
+  useEffect(() => {
+    queryBundleData(setBundleData)
+  }, [])
+
+  return { ethPrice }
+}
+
+const queryTokenData = async (token: Token, callback: (params: any) => void) => {
+  const { data } = await infoClient.query({
+    query: GET_TOKEN_DATA,
+    variables: {
+      address: token.address.toLowerCase()
+    }
+  })
+  callback(data.token)
+  return data
+}
+
+const useTokenData = (token: Token) => {
+  const [{ derivedETH }, setTokenData] = useState<{ derivedETH: string }>({ derivedETH: '' })
+
+  useEffect(() => {
+    queryTokenData(token, setTokenData)
+  }, [token])
+
+  return { derivedETH }
+}
+
+const useJacuzziInfo = () => {
+  const partyContract = usePartyContract()
+  const { ethPrice } = useBundleData()
+  const { derivedETH } = useTokenData(PARTY[ChainId.AVALANCHE])
+  const [jacuzziBalance, setJacuzziBalance] = useState<number>()
+  const [{ totalPartyLiquidity, totalPartyLiquidityUSD }, setJacuzziInfo] = useState<{
+    totalPartyLiquidity: TokenAmount
+    totalPartyLiquidityUSD: number
+  }>({ totalPartyLiquidity: new TokenAmount(PARTY[ChainId.AVALANCHE], '0'), totalPartyLiquidityUSD: 0 })
+
+  const getJacuzziBalance = useCallback(
+    async (callback: (params: any) => void) => {
+      const jacuzziBalance = await partyContract?.balanceOf(JACUZZI_ADDRESS[43114])
+      callback(jacuzziBalance)
+      return jacuzziBalance
+    },
+    [partyContract]
+  )
+
+  useEffect(() => {
+    partyContract && getJacuzziBalance(setJacuzziBalance)
+  }, [partyContract, getJacuzziBalance])
+
+  useEffect(() => {
+    if (ethPrice && derivedETH && jacuzziBalance) {
+      setJacuzziInfo({
+        totalPartyLiquidity: new TokenAmount(PARTY[ChainId.AVALANCHE], String(jacuzziBalance)),
+        totalPartyLiquidityUSD: (Number(jacuzziBalance) * Number(ethPrice) * Number(derivedETH)) / Math.pow(10, 18)
+      })
+    }
+  }, [ethPrice, derivedETH, jacuzziBalance])
+
+  return { totalPartyLiquidity, totalPartyLiquidityUSD }
+}
+
 const usePartyTotalSupply = () => {
   const partyContract = usePartyContract()
 
@@ -168,6 +241,7 @@ export default function Home() {
     totalLiquidityETH,
     totalLiquidityUSD
   } = useAnalyticsData()
+  const { totalPartyLiquidity, totalPartyLiquidityUSD } = useJacuzziInfo()
 
   return (
     <Wrapper>
@@ -241,6 +315,12 @@ export default function Home() {
             <div className="grid-item-stats">
               <p>
                 Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
+              </p>
+              <p>
+                Total PARTY in Jacuzzi <span>{totalPartyLiquidity.toFixed(2, { groupSeparator: ',' })}</span>
+              </p>
+              <p>
+                Total PARTY in Jacuzzi (USD Value) <span>{(+totalPartyLiquidityUSD).toFixed(2)}</span>
               </p>
               {/* <p>
                 Total Volume in AVAX (24h) <span>{(+totalVolumeETH).toFixed(2)}</span>
