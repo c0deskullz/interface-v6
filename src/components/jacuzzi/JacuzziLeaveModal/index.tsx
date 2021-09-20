@@ -7,10 +7,11 @@ import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
 import { useJacuzziContract, usePartyContract } from '../../../hooks/useContract'
-import { JACUZZI_ADDRESS, toFixedTwo, PARTY } from '../../../constants'
+import { JACUZZI_ADDRESS, PARTY } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { ChainId, JSBI } from '@partyswap-libs/sdk'
 import { tryParseAmount } from '../../../state/swap/hooks'
+import { getJacuzziAmmount } from '../../../utils/token'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -74,8 +75,8 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
 
   // track and parse user input
   const [typedValue, setTypedValue] = useState<string>('0')
-  const [balance, setBalance] = useState(0)
-  const [partyBalance, setPartyBalance] = useState(0)
+  const [balance, setBalance] = useState('0')
+  const [partyBalance, setPartyBalance] = useState('0')
   const jacuzzi = useJacuzziContract()
   const party = usePartyContract()
   const addTransaction = useTransactionAdder()
@@ -83,7 +84,7 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
   const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.FUJI])
 
   const handleSetMax = () => {
-    setTypedValue(balance.toString())
+    setTypedValue(balance)
   }
 
   const handleUnstake = async () => {
@@ -109,8 +110,8 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
       stakedPARTY = userBalance.mul(partyJacuzziBalance).div(totalSupply)
     }
 
-    setPartyBalance(toFixedTwo(stakedPARTY.toString()))
-    setBalance(toFixedTwo(userBalance.toString()))
+    setPartyBalance(getJacuzziAmmount(chainId, stakedPARTY))
+    setBalance(getJacuzziAmmount(chainId, userBalance))
   }, [chainId, account, jacuzzi, party])
 
   useEffect(() => {

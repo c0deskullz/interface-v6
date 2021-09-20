@@ -403,3 +403,5 @@ export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.Big
 export const PARTY_DECIMALS_DIVISOR = 1000000000000000000
 
 export const toFixedTwo = (value: any): number => +(value / PARTY_DECIMALS_DIVISOR).toFixed(2)
+export const toFixed = (value: any, digits: number = 4) =>
+  +(value / PARTY_DECIMALS_DIVISOR).toFixed(digits) - 1 / 10 ** (digits - 1)

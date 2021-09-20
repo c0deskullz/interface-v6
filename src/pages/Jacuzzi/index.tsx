@@ -19,13 +19,14 @@ import JacuzziStakingModal from '../../components/jacuzzi/JacuzziStakingModal'
 import QuestionHelper from '../../components/QuestionHelper'
 import { RowBetween } from '../../components/Row'
 import { newTransactionsFirst } from '../../components/Web3Status'
-import { JACUZZI_ADDRESS, PARTY, PARTY_DECIMALS_DIVISOR, toFixedTwo } from '../../constants'
+import { JACUZZI_ADDRESS, PARTY, PARTY_DECIMALS_DIVISOR, toFixed, toFixedTwo } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useJacuzziContract, usePartyContract } from '../../hooks/useContract'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { useIsDarkMode } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
+import { createJacuzziTokenInstance } from '../../utils/token'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -238,16 +239,6 @@ export default function Jacuzzi() {
     return new Token(chainId || ChainId.AVALANCHE, PARTY[chainId || ChainId.AVALANCHE].address, 18, 'PARTY', 'PARTY')
   }, [chainId])
 
-  const createxPARTYTokenInstance = useCallback(() => {
-    return new Token(
-      chainId || ChainId.AVALANCHE,
-      JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE] || '',
-      18,
-      'PARTY',
-      'PARTY'
-    )
-  }, [chainId])
-
   const getUserBalances = useCallback(async () => {
     if (!jacuzzi || !party || !account) {
       setDisplayUserTotalLiquidity('0')
@@ -260,15 +251,15 @@ export default function Jacuzzi() {
     const userXpartyToPARTY = +jacuzziBalance?.toString() * ratio
 
     setUserPARTYBalance(toFixedTwo(userBalance.toString()))
-    setUserxPARTYStake(toFixedTwo(jacuzziBalance.toString()))
+    setUserxPARTYStake(toFixed(jacuzziBalance.toString(), 10))
 
     setDisplayUserTotalLiquidity(
       new TokenAmount(createPARTYTokenInstance(), JSBI.BigInt(userXpartyToPARTY)).toFixed(2, { groupSeparator: ',' })
     )
     setDisplayUserTotalsupply(
-      new TokenAmount(createxPARTYTokenInstance(), jacuzziBalance).toFixed(2, { groupSeparator: ',' })
+      new TokenAmount(createJacuzziTokenInstance(chainId), jacuzziBalance).toFixed(2, { groupSeparator: ',' })
     )
-  }, [ratio, jacuzzi, party, account, createPARTYTokenInstance, createxPARTYTokenInstance])
+  }, [chainId, ratio, jacuzzi, party, account, createPARTYTokenInstance])
 
   const getContractBalances = useCallback(async () => {
     if (!jacuzzi || !party) {
@@ -285,8 +276,10 @@ export default function Jacuzzi() {
     setDisplayTotalLiquidity(
       new TokenAmount(createPARTYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
     )
-    setDisplayTotalsupply(new TokenAmount(createxPARTYTokenInstance(), supply).toFixed(2, { groupSeparator: ',' }))
-  }, [jacuzzi, party, chainId, createPARTYTokenInstance, createxPARTYTokenInstance])
+    setDisplayTotalsupply(
+      new TokenAmount(createJacuzziTokenInstance(chainId), supply).toFixed(2, { groupSeparator: ',' })
+    )
+  }, [jacuzzi, party, chainId, createPARTYTokenInstance])
 
   const apr = useMemo(() => {
     const TOKENS_PER_DAY = 32900

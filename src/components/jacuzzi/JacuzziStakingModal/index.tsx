@@ -7,7 +7,7 @@ import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonPrimary } from '../../../components/Button'
 import { useActiveWeb3React } from '../../../hooks'
 import { useJacuzziContract, usePartyContract } from '../../../hooks/useContract'
-import { toFixedTwo, PARTY } from '../../../constants'
+import { PARTY, toFixed } from '../../../constants'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { tryParseAmount } from '../../../state/swap/hooks'
 import { ChainId } from '@partyswap-libs/sdk'
@@ -64,8 +64,8 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   const { chainId, account } = useActiveWeb3React()
 
   // track and parse user input
-  const [typedValue, setTypedValue] = useState<string>('0')
-  const [balance, setBalance] = useState(0)
+  const [typedValue, setTypedValue] = useState('0')
+  const [balance, setBalance] = useState('0')
   const party = usePartyContract()
   const jacuzzi = useJacuzziContract()
   const addTransaction = useTransactionAdder()
@@ -73,7 +73,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.FUJI])
 
   const handleSetMax = () => {
-    setTypedValue(balance.toString())
+    setTypedValue(balance)
   }
 
   const handleStake = async () => {
@@ -91,7 +91,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
     }
 
     const userBalance = await party.balanceOf(account)
-    setBalance(toFixedTwo(userBalance.toString()))
+    setBalance(toFixed(userBalance.toString(), 8).toString())
   }, [chainId, account, party])
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
     }
 
     return () => {
-      setTypedValue('0')
+      setTypedValue(() => '0')
     }
   }, [getUserBalance, isOpen])
 
@@ -115,12 +115,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
         <StakeAmount>
           <button onClick={handleSetMax}>MAX</button>
 
-          <StakeInput
-            type="number"
-            name="value_to_stake"
-            value={typedValue}
-            onChange={e => setTypedValue(e.target.value)}
-          />
+          <StakeInput name="value_to_stake" value={typedValue} onChange={e => setTypedValue(e.target.value)} />
         </StakeAmount>
         <ButtonPrimary onClick={handleStake}>Stake</ButtonPrimary>
       </ContentWrapper>
