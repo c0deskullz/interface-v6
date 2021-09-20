@@ -16,7 +16,7 @@ export const GET_BLOCK = gql`
 `
 
 export const GET_FACTORY_DATA = gql`
-  query factoryData($first: Int!){
+  query factoryData($first: Int!) {
     partyswapFactories(first: 500) {
       id
       pairCount
@@ -24,6 +24,22 @@ export const GET_FACTORY_DATA = gql`
       totalVolumeETH
       totalLiquidityETH
       totalLiquidityUSD
+    }
+  }
+`
+
+export const GET_BUNDLE_DATA = gql`
+  query bundleData {
+    bundles(first: 1) {
+      ethPrice
+    }
+  }
+`
+
+export const GET_TOKEN_DATA = gql`
+  query token($address: String) {
+    token(id: $address) {
+      derivedETH
     }
   }
 `
