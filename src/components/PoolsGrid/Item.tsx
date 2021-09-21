@@ -158,7 +158,11 @@ export default function PoolsGridItem({
         </div>
         {account ? (
           <StyledInternalLink to={`/party/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
-            <button className="btn btn-secondary">{isStaking ? 'Manage' : 'Deposit'}</button>
+            {isStaking ? (
+              <button className="btn">Manage</button>
+            ) : (
+              <button className="btn btn-secondary">Deposit</button>
+            )}
           </StyledInternalLink>
         ) : (
           <button className="btn hero-btn" onClick={toggleWalletModal}>
