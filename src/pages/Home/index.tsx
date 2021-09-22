@@ -1,4 +1,6 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId, JSBI, Token, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
+import { utils } from 'ethers'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -21,7 +23,7 @@ import TrentDark from '../../assets/svg/home-hero-trent-dark.svg'
 import Trent from '../../assets/svg/home-hero-trent.svg'
 import { ButtonTertiary } from '../../components/Button'
 import { WithLockedValue } from '../../components/WithLockedValue'
-import { ANALYTICS_PAGE, JACUZZI_ADDRESS, PARTY } from '../../constants'
+import { ANALYTICS_PAGE, JACUZZI_ADDRESS, PARTY, USDT } from '../../constants'
 import { usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { usePartyContract } from '../../hooks/useContract'
@@ -96,7 +98,7 @@ const useAnalyticsData = () => {
     pairCount: number
     totalVolumeUSD: number
     totalVolumeETH: string
-    totalLiquidityUSD: number
+    totalLiquidityUSD: string
     totalLiquidityETH: string
   }>({
     id: '',
@@ -104,7 +106,7 @@ const useAnalyticsData = () => {
     totalVolumeETH: '0',
     totalVolumeUSD: 0,
     totalLiquidityETH: '0',
-    totalLiquidityUSD: 0
+    totalLiquidityUSD: '0'
   })
 
   useEffect(() => {
@@ -140,7 +142,7 @@ const queryTokenData = async (token: Token, callback: (params: any) => void) => 
       address: token.address.toLowerCase()
     }
   })
-  callback(data.token)
+  callback(data.token || { derivedETH: '1' })
   return data
 }
 
@@ -155,14 +157,20 @@ const useTokenData = (token: Token) => {
 }
 
 const useJacuzziInfo = () => {
+  const { chainId } = useActiveWeb3React()
   const partyContract = usePartyContract()
   const { ethPrice } = useBundleData()
-  const { derivedETH } = useTokenData(PARTY[ChainId.AVALANCHE])
-  const [jacuzziBalance, setJacuzziBalance] = useState<number>()
-  const [{ totalPartyLiquidity, totalPartyLiquidityUSD }, setJacuzziInfo] = useState<{
+  const { derivedETH } = useTokenData(PARTY[chainId ? chainId : ChainId.AVALANCHE])
+  const [jacuzziBalance, setJacuzziBalance] = useState<BigNumber>()
+  const [{ totalPartyLiquidity, totalPartyLiquidityWAVAX, totalPartyLiquidityUSD }, setJacuzziInfo] = useState<{
     totalPartyLiquidity: TokenAmount
-    totalPartyLiquidityUSD: number
-  }>({ totalPartyLiquidity: new TokenAmount(PARTY[ChainId.AVALANCHE], '0'), totalPartyLiquidityUSD: 0 })
+    totalPartyLiquidityWAVAX: TokenAmount
+    totalPartyLiquidityUSD: TokenAmount
+  }>({
+    totalPartyLiquidity: new TokenAmount(PARTY[chainId ? chainId : ChainId.AVALANCHE], '0'),
+    totalPartyLiquidityWAVAX: new TokenAmount(WAVAX[chainId ? chainId : ChainId.AVALANCHE], '0'),
+    totalPartyLiquidityUSD: new TokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], '0')
+  })
 
   const getJacuzziBalance = useCallback(
     async (callback: (params: any) => void) => {
@@ -179,26 +187,49 @@ const useJacuzziInfo = () => {
 
   useEffect(() => {
     if (ethPrice && derivedETH && jacuzziBalance) {
+      const derivedETHBN = utils.parseUnits(derivedETH.substring(0, 6), 6)
+      const ethPriceBN = utils.parseUnits(ethPrice.substring(0, 6), 6)
+      const totalPartyLiquidity = new TokenAmount(
+        PARTY[chainId ? chainId : ChainId.AVALANCHE],
+        jacuzziBalance.toString()
+      )
+      const totalPartyLiquidityWAVAX = new TokenAmount(
+        WAVAX[chainId ? chainId : ChainId.AVALANCHE],
+        jacuzziBalance
+          .mul(derivedETHBN)
+          .div(BigNumber.from('10').pow('18'))
+          .toString()
+      )
+      const totalPartyLiquidityUSD = new TokenAmount(
+        USDT[chainId ? chainId : ChainId.AVALANCHE],
+        jacuzziBalance
+          .mul(derivedETHBN)
+          .mul(ethPriceBN)
+          .div(BigNumber.from('10').pow('24'))
+          .toString()
+      )
       setJacuzziInfo({
-        totalPartyLiquidity: new TokenAmount(PARTY[ChainId.AVALANCHE], String(jacuzziBalance)),
-        totalPartyLiquidityUSD: (Number(jacuzziBalance) * Number(ethPrice) * Number(derivedETH)) / Math.pow(10, 18)
+        totalPartyLiquidity,
+        totalPartyLiquidityWAVAX,
+        totalPartyLiquidityUSD
       })
     }
-  }, [ethPrice, derivedETH, jacuzziBalance])
+  }, [ethPrice, derivedETH, jacuzziBalance, chainId])
 
-  return { totalPartyLiquidity, totalPartyLiquidityUSD }
+  return { totalPartyLiquidity, totalPartyLiquidityWAVAX, totalPartyLiquidityUSD }
 }
 
 const usePartyTotalSupply = () => {
+  const { chainId } = useActiveWeb3React()
   const partyContract = usePartyContract()
 
   const getTotalSupply = useCallback(
     async (callback: (params: any) => void) => {
       const totalSupply = await partyContract?.totalSupply()
-      const tokenAmmount = new TokenAmount(PARTY[ChainId.AVALANCHE], totalSupply)
+      const tokenAmmount = new TokenAmount(PARTY[chainId ? chainId : ChainId.AVALANCHE], totalSupply)
       callback(tokenAmmount)
     },
-    [partyContract]
+    [partyContract, chainId]
   )
 
   const [totalSupply, setTotalSupply] = useState<TokenAmount>()
@@ -209,6 +240,9 @@ const usePartyTotalSupply = () => {
 
   return totalSupply
 }
+
+const toTokenAmount = (token: Token, value: number | string) =>
+  new TokenAmount(token, utils.parseUnits(String(value).substring(0, token.decimals + 1), token.decimals).toString())
 
 export default function Home() {
   const { chainId, account } = useActiveWeb3React()
@@ -242,6 +276,10 @@ export default function Home() {
     totalLiquidityUSD
   } = useAnalyticsData()
   const { totalPartyLiquidity, totalPartyLiquidityUSD } = useJacuzziInfo()
+  // const { totalValueLockedUSD } = useTotalValueLocked()
+
+  const totalLiquidityUSDFormatted = toTokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], totalLiquidityUSD)
+  const totalLiquidityAVAXFormatted = toTokenAmount(WAVAX[chainId ? chainId : ChainId.AVALANCHE], totalLiquidityETH)
 
   return (
     <Wrapper>
@@ -316,12 +354,6 @@ export default function Home() {
               <p>
                 Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
-              <p>
-                Total PARTY in Jacuzzi <span>{totalPartyLiquidity.toFixed(2, { groupSeparator: ',' })}</span>
-              </p>
-              <p>
-                Total PARTY in Jacuzzi (USD Value) <span>{(+totalPartyLiquidityUSD).toFixed(2)}</span>
-              </p>
               {/* <p>
                 Total Volume in AVAX (24h) <span>{(+totalVolumeETH).toFixed(2)}</span>
               </p>
@@ -329,10 +361,18 @@ export default function Home() {
                 Total Volume in USD (24h) <span>{(+totalVolumeUSD).toFixed(2)}</span>
               </p> */}
               <p>
-                Total Liquidity in AVAX <span>{(+totalLiquidityETH).toFixed(2)}</span>
+                Total Liquidity (AVAX Value){' '}
+                <span>{totalLiquidityAVAXFormatted.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
-                Total Liquidity in USD <span>{(+totalLiquidityUSD).toFixed(2)}</span>
+                Total Liquidity (USD Value)<span>{totalLiquidityUSDFormatted.toFixed(2, { groupSeparator: ',' })}</span>
+              </p>
+              <p>
+                Total PARTY in Jacuzzi <span>{totalPartyLiquidity.toFixed(2, { groupSeparator: ',' })}</span>
+              </p>
+              <p>
+                Total PARTY in Jacuzzi (USD Value){' '}
+                <span>{totalPartyLiquidityUSD.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
             </div>
             <p>
