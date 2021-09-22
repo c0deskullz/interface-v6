@@ -1,28 +1,28 @@
-import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@partyswap-libs/sdk'
-import { useMemo } from 'react'
+import { ChainId, CurrencyAmount, JSBI, Pair, Token, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
+import { useMemo, useCallback } from 'react'
 import {
   aaBLOCK,
+  AVME,
   BAG,
   DAI,
   ETH,
+  GB,
   // FRAX,
   LINK,
+  PARTY,
   PEFI,
   PNG,
+  QI,
+  RENDOGE,
+  SHERPA,
+  // ZERO,
+  SNOB,
   // SPORE,
   USDT,
   WBTC,
-  PARTY,
-  // ZERO,
-  SNOB,
-  AVME,
   // ELK,
   XAVA,
-  SHERPA,
-  YAK,
-  RENDOGE,
-  QI,
-  GB
+  YAK
 } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
@@ -251,10 +251,11 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
   avaxPartyPairReserveOfParty: JSBI,
   avaxPartyPairReserveOfOtherToken: JSBI,
   stakingTokenPairReserveOfParty: JSBI,
-  totalStakedAmount: TokenAmount
+  totalStakedAmount: TokenAmount,
+  chainId?: ChainId
 ): TokenAmount {
   if (JSBI.EQ(totalSupply, JSBI.BigInt(0))) {
-    return new TokenAmount(WAVAX[ChainId.FUJI], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[chainId || ChainId.FUJI], JSBI.BigInt(0))
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxPartyRatio = JSBI.divide(
@@ -265,7 +266,7 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
   const valueOfPartyInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfParty, avaxPartyRatio), oneToken)
 
   return new TokenAmount(
-    WAVAX[ChainId.FUJI],
+    WAVAX[chainId || ChainId.FUJI],
     JSBI.divide(
       JSBI.multiply(
         JSBI.multiply(totalStakedAmount.raw, valueOfPartyInAvax),
@@ -279,12 +280,13 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
 const calculteTotalStakedAmountInAvax = function(
   totalSupply: JSBI,
   reserveInWavax: JSBI,
-  totalStakedAmount: TokenAmount
+  totalStakedAmount: TokenAmount,
+  chainId?: ChainId
 ): TokenAmount {
   if (JSBI.GT(totalSupply, 0)) {
     // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
     return new TokenAmount(
-      WAVAX[ChainId.FUJI],
+      WAVAX[chainId || ChainId.FUJI],
       JSBI.divide(
         JSBI.multiply(
           JSBI.multiply(totalStakedAmount.raw, reserveInWavax),
@@ -294,12 +296,17 @@ const calculteTotalStakedAmountInAvax = function(
       )
     )
   } else {
-    return new TokenAmount(WAVAX[ChainId.FUJI], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[chainId || ChainId.FUJI], JSBI.BigInt(0))
   }
 }
 
 // gets the staking info from the network for the active chain id
-export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): StakingInfo[] {
+export function useStakingInfo(
+  version: number,
+  pairToFilterBy?: Pair | null,
+  options: { once: boolean } = { once: false }
+): StakingInfo[] {
+  const { once } = options
   const { chainId, account } = useActiveWeb3React()
 
   const info = useMemo(
@@ -353,7 +360,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     NEVER_RELOAD
   )
 
-  return useMemo(() => {
+  const callback = useCallback(() => {
     if (!chainId || !party) return []
 
     return rewardsAddresses.reduce<StakingInfo[]>((memo, rewardsAddress, index) => {
@@ -414,13 +421,14 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
         const totalRewardRate = new TokenAmount(party, JSBI.BigInt(rewardRateState.result?.[0]))
         const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
         const totalStakedInWavax = isAvaxPool
-          ? calculteTotalStakedAmountInAvax(totalSupply, pair.reserveOf(wavax).raw, totalStakedAmount)
+          ? calculteTotalStakedAmountInAvax(totalSupply, pair.reserveOf(wavax).raw, totalStakedAmount, chainId)
           : calculateTotalStakedAmountInAvaxFromParty(
               totalSupply,
               avaxPartyPair.reserveOf(party).raw,
               avaxPartyPair.reserveOf(WAVAX[tokens[1].chainId]).raw,
               pair.reserveOf(party).raw,
-              totalStakedAmount
+              totalStakedAmount,
+              chainId
             )
         const multiplier = JSBI.divide(JSBI.BigInt(weight.result?.[0]), JSBI.BigInt(100))
         const getHypotheticalRewardRate = (
@@ -472,6 +480,26 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     avaxPartyPair,
     weights
   ])
+
+  const constantValue = useMemo(callback, [chainId, info, rewardsAddresses, avaxPartyPairState, party])
+
+  const changingValue = useMemo(callback, [
+    balances,
+    chainId,
+    earnedAmounts,
+    info,
+    periodFinishes,
+    rewardRates,
+    rewardsAddresses,
+    totalSupplies,
+    avaxPartyPairState,
+    pairs,
+    party,
+    avaxPartyPair,
+    weights
+  ])
+
+  return once ? constantValue : changingValue
 }
 
 export function useTotalPartyEarned(): TokenAmount | undefined {
