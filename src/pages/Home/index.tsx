@@ -89,6 +89,9 @@ const queryAnalyticsData = async (callback: (params: any) => void) => {
   return data?.partyswapFactories[0]
 }
 
+const toTokenAmount = (token: Token, value: number | string) =>
+  new TokenAmount(token, utils.parseUnits(String(value).substring(0, token.decimals + 1), token.decimals).toString())
+
 const useAnalyticsData = () => {
   const [
     { id, pairCount, totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD },
@@ -162,14 +165,14 @@ const useJacuzziInfo = () => {
   const { ethPrice } = useBundleData()
   const { derivedETH } = useTokenData(PARTY[chainId ? chainId : ChainId.AVALANCHE])
   const [jacuzziBalance, setJacuzziBalance] = useState<BigNumber>()
-  const [{ totalPartyLiquidity, totalPartyLiquidityWAVAX, totalPartyLiquidityUSD }, setJacuzziInfo] = useState<{
-    totalPartyLiquidity: TokenAmount
-    totalPartyLiquidityWAVAX: TokenAmount
-    totalPartyLiquidityUSD: TokenAmount
+  const [{ totalPartyInJacuzzi, totalPartyInJacuzziWAVAX, totalPartyInJacuzziUSD }, setJacuzziInfo] = useState<{
+    totalPartyInJacuzzi: TokenAmount
+    totalPartyInJacuzziWAVAX: TokenAmount
+    totalPartyInJacuzziUSD: TokenAmount
   }>({
-    totalPartyLiquidity: new TokenAmount(PARTY[chainId ? chainId : ChainId.AVALANCHE], '0'),
-    totalPartyLiquidityWAVAX: new TokenAmount(WAVAX[chainId ? chainId : ChainId.AVALANCHE], '0'),
-    totalPartyLiquidityUSD: new TokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], '0')
+    totalPartyInJacuzzi: new TokenAmount(PARTY[chainId ? chainId : ChainId.AVALANCHE], '0'),
+    totalPartyInJacuzziWAVAX: new TokenAmount(WAVAX[chainId ? chainId : ChainId.AVALANCHE], '0'),
+    totalPartyInJacuzziUSD: new TokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], '0')
   })
 
   const getJacuzziBalance = useCallback(
@@ -189,18 +192,18 @@ const useJacuzziInfo = () => {
     if (ethPrice && derivedETH && jacuzziBalance) {
       const derivedETHBN = utils.parseUnits(derivedETH.substring(0, 6), 6)
       const ethPriceBN = utils.parseUnits(ethPrice.substring(0, 6), 6)
-      const totalPartyLiquidity = new TokenAmount(
+      const totalPartyInJacuzzi = new TokenAmount(
         PARTY[chainId ? chainId : ChainId.AVALANCHE],
         jacuzziBalance.toString()
       )
-      const totalPartyLiquidityWAVAX = new TokenAmount(
+      const totalPartyInJacuzziWAVAX = new TokenAmount(
         WAVAX[chainId ? chainId : ChainId.AVALANCHE],
         jacuzziBalance
           .mul(derivedETHBN)
-          .div(BigNumber.from('10').pow('18'))
+          .div(BigNumber.from('10').pow('6'))
           .toString()
       )
-      const totalPartyLiquidityUSD = new TokenAmount(
+      const totalPartyInJacuzziUSD = new TokenAmount(
         USDT[chainId ? chainId : ChainId.AVALANCHE],
         jacuzziBalance
           .mul(derivedETHBN)
@@ -208,15 +211,38 @@ const useJacuzziInfo = () => {
           .div(BigNumber.from('10').pow('24'))
           .toString()
       )
+
       setJacuzziInfo({
-        totalPartyLiquidity,
-        totalPartyLiquidityWAVAX,
-        totalPartyLiquidityUSD
+        totalPartyInJacuzzi,
+        totalPartyInJacuzziWAVAX,
+        totalPartyInJacuzziUSD
       })
     }
   }, [ethPrice, derivedETH, jacuzziBalance, chainId])
 
-  return { totalPartyLiquidity, totalPartyLiquidityWAVAX, totalPartyLiquidityUSD }
+  return { totalPartyInJacuzzi, totalPartyInJacuzziWAVAX, totalPartyInJacuzziUSD }
+}
+
+const useTotalValueLocked = () => {
+  const { chainId } = useActiveWeb3React()
+  const { totalLiquidityUSD } = useAnalyticsData()
+  const { totalPartyInJacuzziUSD } = useJacuzziInfo()
+  const [{ totalValueLockedUSD }, setTotalValueLocked] = useState<{
+    totalValueLockedUSD: TokenAmount
+  }>({
+    totalValueLockedUSD: new TokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], '0')
+  })
+
+  useEffect(() => {
+    if (!totalPartyInJacuzziUSD || !totalLiquidityUSD || !chainId) return
+
+    const totalValueLockedStaking = toTokenAmount(USDT[chainId || ChainId.AVALANCHE], totalLiquidityUSD)
+    const totalValueLockedUSD = totalValueLockedStaking.add(totalPartyInJacuzziUSD)
+
+    setTotalValueLocked({ totalValueLockedUSD })
+  }, [chainId, totalLiquidityUSD, totalPartyInJacuzziUSD])
+
+  return { totalValueLockedUSD }
 }
 
 const usePartyTotalSupply = () => {
@@ -240,9 +266,6 @@ const usePartyTotalSupply = () => {
 
   return totalSupply
 }
-
-const toTokenAmount = (token: Token, value: number | string) =>
-  new TokenAmount(token, utils.parseUnits(String(value).substring(0, token.decimals + 1), token.decimals).toString())
 
 export default function Home() {
   const { chainId, account } = useActiveWeb3React()
@@ -275,8 +298,8 @@ export default function Home() {
     totalLiquidityETH,
     totalLiquidityUSD
   } = useAnalyticsData()
-  const { totalPartyLiquidity, totalPartyLiquidityUSD } = useJacuzziInfo()
-  // const { totalValueLockedUSD } = useTotalValueLocked()
+  const { totalPartyInJacuzzi, totalPartyInJacuzziUSD } = useJacuzziInfo()
+  const { totalValueLockedUSD } = useTotalValueLocked()
 
   const totalLiquidityUSDFormatted = toTokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], totalLiquidityUSD)
   const totalLiquidityAVAXFormatted = toTokenAmount(WAVAX[chainId ? chainId : ChainId.AVALANCHE], totalLiquidityETH)
@@ -368,11 +391,14 @@ export default function Home() {
                 Total Liquidity (USD Value)<span>{totalLiquidityUSDFormatted.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
-                Total PARTY in Jacuzzi <span>{totalPartyLiquidity.toFixed(2, { groupSeparator: ',' })}</span>
+                Total PARTY in Jacuzzi <span>{totalPartyInJacuzzi.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               <p>
                 Total PARTY in Jacuzzi (USD Value){' '}
-                <span>{totalPartyLiquidityUSD.toFixed(2, { groupSeparator: ',' })}</span>
+                <span>{totalPartyInJacuzziUSD.toFixed(2, { groupSeparator: ',' })}</span>
+              </p>
+              <p>
+                Total Value Locked (USD Value) <span>{totalValueLockedUSD.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
             </div>
             <p>
