@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId, JSBI, Token, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
+import axios from 'axios'
 import { utils } from 'ethers'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -267,6 +268,30 @@ const usePartyTotalSupply = () => {
   return totalSupply
 }
 
+const usePartyTotalCirculatingSupply = () => {
+  const { chainId } = useActiveWeb3React()
+  const { REACT_APP_API_URL: apiUrl } = process.env
+  const [totalPartyCirculatingSupply, setTotalPartyCirculatingSupply] = useState<TokenAmount>(
+    new TokenAmount(PARTY[chainId || ChainId.AVALANCHE], '0')
+  )
+
+  useEffect(() => {
+    const getCirculatingSupply = async (callback: (value: any) => void) => {
+      const { data } = (await axios.get(`${apiUrl}party/circulating`)) as { data: number }
+      const value = toTokenAmount(
+        PARTY[chainId || ChainId.AVALANCHE],
+        BigNumber.from(BigInt(data).toString())
+          .div(BigNumber.from('10').pow('18'))
+          .toString()
+      )
+      callback(value)
+    }
+    getCirculatingSupply(setTotalPartyCirculatingSupply)
+  }, [apiUrl, chainId])
+
+  return { totalPartyCirculatingSupply }
+}
+
 export default function Home() {
   const { chainId, account } = useActiveWeb3React()
 
@@ -300,6 +325,7 @@ export default function Home() {
   } = useAnalyticsData()
   const { totalPartyInJacuzzi, totalPartyInJacuzziUSD } = useJacuzziInfo()
   const { totalValueLockedUSD } = useTotalValueLocked()
+  const { totalPartyCirculatingSupply } = usePartyTotalCirculatingSupply()
 
   const totalLiquidityUSDFormatted = toTokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], totalLiquidityUSD)
   const totalLiquidityAVAXFormatted = toTokenAmount(WAVAX[chainId ? chainId : ChainId.AVALANCHE], totalLiquidityETH)
@@ -376,6 +402,10 @@ export default function Home() {
             <div className="grid-item-stats">
               <p>
                 Total PARTY Supply <span>{totalSupply?.toFixed(2, { groupSeparator: ',' })}</span>
+              </p>
+              <p>
+                Total PARTY Circulating Supply{' '}
+                <span>{totalPartyCirculatingSupply.toFixed(2, { groupSeparator: ',' })}</span>
               </p>
               {/* <p>
                 Total Volume in AVAX (24h) <span>{(+totalVolumeETH).toFixed(2)}</span>
