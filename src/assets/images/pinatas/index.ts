@@ -22,6 +22,7 @@ import AvaxBenqi from './AVAX-BENQI.png'
 import AvaxUsdt from './AVAX-USDT.png'
 import AvaxDai from './AVAX-DAI.png'
 import AvaxGb from './AVAX-GB.png'
+import AvaxUSDCe from './AVAX-USDCe.png'
 
 export {
   AvaxUsdt,
@@ -45,6 +46,7 @@ export {
   AvaxXava,
   AvaxZero,
   AvaxBenqi,
+  AvaxUSDCe,
   PartyAvax,
   PartyDai,
   PartyUsdt
