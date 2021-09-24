@@ -163,7 +163,9 @@ export default function PoolsGridItem({
           </div> */}
         </div>
         {account ? (
-          <StyledInternalLink to={`/party/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}>
+          <StyledInternalLink
+            to={`/party/${currencyId(currency0)}/${currencyId(currency1)}/${version}/${multiplier?.toString() === '0'}`}
+          >
             {isStaking ? (
               <button className="btn">Manage</button>
             ) : (

@@ -84,7 +84,6 @@ export default function App() {
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} /> {/**LIQUIDITY */}
               <Route exact strict path="/jacuzzi" component={Jacuzzi} />
-              {/**TODO: JACUZZY */}
               <Route exact strict path="/party/:version" component={Earn} /> {/**FARMS */}
               <Route exact strict path="/vote" component={Vote} />
               <Route exact strict path="/airdrop" component={Airdrop} />
@@ -97,7 +96,7 @@ export default function App() {
               <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-              <Route exact strict path="/party/:currencyIdA/:currencyIdB/:version" component={Manage} />
+              <Route exact strict path="/party/:currencyIdA/:currencyIdB/:version/:delisted" component={Manage} />
               <Route exact strict path="/vote/:id" component={VotePage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>

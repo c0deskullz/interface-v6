@@ -182,9 +182,9 @@ const Warning = () => {
 
 export default function Manage({
   match: {
-    params: { currencyIdA, currencyIdB, version }
+    params: { currencyIdA, currencyIdB, version, delisted }
   }
-}: RouteComponentProps<{ currencyIdA: string; currencyIdB: string; version: string }>) {
+}: RouteComponentProps<{ currencyIdA: string; currencyIdB: string; version: string; delisted: string }>) {
   const { account, chainId } = useActiveWeb3React()
 
   // get currencies and pair
@@ -193,7 +193,8 @@ export default function Manage({
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
-  const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
+  const stakingInfos = useStakingInfo(Number(version), stakingTokenPair)
+  const stakingInfo = delisted === 'true' ? stakingInfos?.[1] : stakingInfos?.[0]
 
   const rewardRate = useMemo(() => {
     if (stakingInfo) {
@@ -231,7 +232,10 @@ export default function Manage({
             wavax,
             JSBI.divide(
               JSBI.multiply(
-                JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(wavax).raw),
+                JSBI.multiply(
+                  stakingInfo?.totalStakedAmount.raw || JSBI.BigInt(0),
+                  stakingTokenPair.reserveOf(wavax).raw
+                ),
                 JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
               ),
               totalSupplyOfStakingToken.raw
@@ -273,7 +277,7 @@ export default function Manage({
           ? JSBI.BigInt(0)
           : JSBI.divide(
               JSBI.multiply(
-                JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPartyInAvax),
+                JSBI.multiply(stakingInfo?.totalStakedAmount.raw || JSBI.BigInt(0), valueOfPartyInAvax),
                 JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
               ),
               totalSupplyOfStakingToken.raw
