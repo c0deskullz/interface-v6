@@ -340,7 +340,7 @@ export default function Manage({
 
       <PageContent gap="lg" className="poolsGrid-item">
         <div className="poolsGrid-item-content">
-          {rewardRate === '0' && <Warning />}
+          {stakingInfo?.multiplier?.toString() === '0' && <Warning />}
           <div className="poolsGrid-item-header">
             <div>
               <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={48} />
