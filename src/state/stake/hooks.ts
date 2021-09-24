@@ -85,6 +85,7 @@ export const STAKING_V2_AVALANCHE: {
   tokens: [Token, Token]
   stakingRewardAddress: string
   pair: string
+  delisted?: boolean
 }[] = [
   {
     tokens: [WAVAX[ChainId.AVALANCHE], PARTY[ChainId.AVALANCHE]],
@@ -94,6 +95,12 @@ export const STAKING_V2_AVALANCHE: {
   {
     tokens: [PARTY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x04FA5D713F256A785E39385Ae071cB05adba97F8',
+    pair: '0x384240aC78C1f361FD8093798758084beE81e6fb',
+    delisted: true
+  },
+  {
+    tokens: [PARTY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x839b20d7f8b5d2b6ec07cf126a4bb51b9b67de60',
     pair: '0x384240aC78C1f361FD8093798758084beE81e6fb'
   },
   {
@@ -218,6 +225,7 @@ export const STAKING_REWARDS_INFO: {
     tokens: [Token, Token]
     stakingRewardAddress: string
     pair: string
+    delisted?: boolean
   }[][]
 } = {
   [ChainId.FUJI]: [STAKING_V1, STAKING_V2],
@@ -437,7 +445,9 @@ export function useStakingInfo(
               totalStakedAmount,
               chainId
             )
-        const multiplier = JSBI.divide(JSBI.BigInt(weight.result?.[0]), JSBI.BigInt(100))
+        const multiplier = info[index].delisted
+          ? JSBI.BigInt(0)
+          : JSBI.divide(JSBI.BigInt(weight.result?.[0]), JSBI.BigInt(100))
         const getHypotheticalRewardRate = (
           stakedAmount: TokenAmount,
           totalStakedAmount: TokenAmount,
