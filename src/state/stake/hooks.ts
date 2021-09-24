@@ -81,6 +81,7 @@ export const STAKING_V2: {
   // }
 ]
 
+// ALWAYS PUT DELISTED STAKINGS AFTER NEW ONES
 export const STAKING_V2_AVALANCHE: {
   tokens: [Token, Token]
   stakingRewardAddress: string
@@ -94,25 +95,25 @@ export const STAKING_V2_AVALANCHE: {
   },
   {
     tokens: [PARTY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x04FA5D713F256A785E39385Ae071cB05adba97F8',
-    pair: '0x384240aC78C1f361FD8093798758084beE81e6fb',
-    delisted: true
-  },
-  {
-    tokens: [PARTY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x839b20d7f8b5d2b6ec07cf126a4bb51b9b67de60',
     pair: '0x384240aC78C1f361FD8093798758084beE81e6fb'
   },
   {
-    tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x5A4f44127ec4bd4164B09Db623A9d65523D53434',
-    pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44',
+    tokens: [PARTY[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x04FA5D713F256A785E39385Ae071cB05adba97F8',
+    pair: '0x384240aC78C1f361FD8093798758084beE81e6fb',
     delisted: true
   },
   {
     tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
     stakingRewardAddress: '0xb4be4ac1a0a3bd381da8e9adf3176413a590e282',
     pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44'
+  },
+  {
+    tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x5A4f44127ec4bd4164B09Db623A9d65523D53434',
+    pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44',
+    delisted: true
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
@@ -333,7 +334,7 @@ export function useStakingInfo(
   const info = useMemo(
     () =>
       chainId
-        ? STAKING_REWARDS_INFO[chainId || ChainId.FUJI]?.[version]?.filter(stakingRewardInfo =>
+        ? STAKING_REWARDS_INFO[chainId || ChainId.AVALANCHE]?.[version]?.filter(stakingRewardInfo =>
             pairToFilterBy === undefined
               ? true
               : pairToFilterBy === null
@@ -345,7 +346,7 @@ export function useStakingInfo(
     [chainId, pairToFilterBy, version]
   )
 
-  const party = PARTY[chainId || ChainId.FUJI]
+  const party = PARTY[chainId || ChainId.AVALANCHE]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
   const pairAddresses = useMemo(() => info.map(({ pair }) => [pair] as MethodArg[]), [info])
@@ -363,7 +364,7 @@ export function useStakingInfo(
     pairAddresses as OptionalMethodInputs[]
   )
   const pairs = usePairs(tokens)
-  const [avaxPartyPairState, avaxPartyPair] = usePair(WAVAX[chainId || ChainId.FUJI], party)
+  const [avaxPartyPairState, avaxPartyPair] = usePair(WAVAX[chainId || ChainId.AVALANCHE], party)
 
   // tokens per second, constants
   const rewardRates = useMultipleContractSingleData(
