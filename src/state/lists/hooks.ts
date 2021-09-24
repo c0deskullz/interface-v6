@@ -25,7 +25,9 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<{ [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }>
+type MutableTokenAddressMap = { [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
+
+export type TokenAddressMap = Readonly<MutableTokenAddressMap>
 
 /**
  * An empty result, useful as a default.
@@ -67,22 +69,39 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   return map
 }
 
-export function useTokenList(url: string | undefined): TokenAddressMap {
+export function useTokenList(urls: string | string[] | undefined): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  const tokenList = {} as MutableTokenAddressMap
+
   return useMemo(() => {
-    if (!url) return EMPTY_LIST
-    const current = lists[url]?.current
-    if (!current) return EMPTY_LIST
-    try {
-      return listToTokenMap(current)
-    } catch (error) {
-      console.error('Could not show token list due to error', error)
-      return EMPTY_LIST
-    }
-  }, [lists, url])
+    const urlArray = typeof urls === 'string' ? [urls] : urls || []
+
+    urlArray.forEach(url => {
+      const current = lists[url]?.current
+
+      if (url && current) {
+        try {
+          const data: TokenAddressMap = listToTokenMap(current)
+
+          Object.keys(data).forEach(key => {
+            const chainId = Number(key) as ChainId
+            tokenList[chainId] = tokenList[chainId] || {}
+            tokenList[chainId] = {
+              ...tokenList[chainId],
+              ...data[chainId]
+            }
+          })
+        } catch (error) {
+          console.error('Could not show token list due to error', error)
+        }
+      }
+    })
+
+    return tokenList as TokenAddressMap
+  }, [lists, urls, tokenList])
 }
 
-export function useSelectedListUrl(): string | undefined {
+export function useSelectedListUrl(): string[] | undefined {
   return useSelector<AppState, AppState['lists']['selectedListUrl']>(state => state.lists.selectedListUrl)
 }
 
@@ -90,14 +109,21 @@ export function useSelectedTokenList(): TokenAddressMap {
   return useTokenList(useSelectedListUrl())
 }
 
-export function useSelectedListInfo(): { current: TokenList | null; pending: TokenList | null; loading: boolean } {
-  const selectedUrl = useSelectedListUrl()
+export function useSelectedListInfo(): {
+  current: TokenList | null
+  pending: TokenList | null
+  loading: boolean
+  multipleSelected: boolean
+} {
+  const selectedListUrl = useSelectedListUrl()
+  const selectedUrl = (selectedListUrl || [])?.[0]
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   const list = selectedUrl ? listsByUrl[selectedUrl] : undefined
   return {
     current: list?.current ?? null,
     pending: list?.pendingUpdate ?? null,
-    loading: list?.loadingRequestId !== null
+    loading: list?.loadingRequestId !== null,
+    multipleSelected: (selectedListUrl || [])?.length > 1
   }
 }
 
