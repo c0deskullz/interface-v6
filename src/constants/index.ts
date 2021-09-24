@@ -37,6 +37,17 @@ export const ETH: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB', 18, 'WETH.e', 'Ether')
 }
 
+export const USDC: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC.e', 'USD Coin'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
+    6,
+    'USDC.e',
+    'USD Coin'
+  )
+}
+
 export const USDT: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDT', 'Tether USD'),
   [ChainId.AVALANCHE]: new Token(
@@ -147,7 +158,7 @@ export const ZERO: { [chainId in ChainId]: Token } = {
 }
 export const ELK: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ELK', 'Elk'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xE1C8f3d529BEa8E3fA1FAC5B416335a2f998EE1C', 18, 'ELK', 'Elk')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C', 18, 'ELK', 'Elk')
 }
 
 export const XAVA: { [chainId in ChainId]: Token } = {
