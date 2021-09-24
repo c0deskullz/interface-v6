@@ -1,7 +1,7 @@
 import { ChainId, CurrencyAmount, JSBI, Pair, Token, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
 import { useMemo, useCallback } from 'react'
 import {
-  aaBLOCK,
+  // aaBLOCK,
   AVME,
   BAG,
   DAI,
@@ -106,7 +106,8 @@ export const STAKING_V2_AVALANCHE: {
   {
     tokens: [PARTY[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x5A4f44127ec4bd4164B09Db623A9d65523D53434',
-    pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44'
+    pair: '0x8504BAC082fCC25b4593952b067cF5358Bb1bd44',
+    delisted: true
   },
   {
     tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
@@ -138,11 +139,11 @@ export const STAKING_V2_AVALANCHE: {
     stakingRewardAddress: '0xb466124bd5ED4851f96A3Ca18f099FfeF7be2612',
     pair: '0xEd326435E5e83Dc2263813F09Fb95E8d71d70030'
   },
-  {
-    tokens: [WAVAX[ChainId.AVALANCHE], aaBLOCK[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0xf9ac26A28b5dA299E8Ff51F2f8eaB9CBa911668b',
-    pair: '0x04fF7cb0c1bd7f350Ec2495989c654218992AE40'
-  },
+  // {
+  //   tokens: [WAVAX[ChainId.AVALANCHE], aaBLOCK[ChainId.AVALANCHE]],
+  //   stakingRewardAddress: '0xf9ac26A28b5dA299E8Ff51F2f8eaB9CBa911668b',
+  //   pair: '0x04fF7cb0c1bd7f350Ec2495989c654218992AE40'
+  // },
   // {
   //   tokens: [WAVAX[ChainId.AVALANCHE], SPORE[ChainId.AVALANCHE]],
   //   stakingRewardAddress: '0x1fA07d1481e264F4FFE857C918CE27e841Ba427b',
