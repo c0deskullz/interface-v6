@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
+import Toggle from '../../components/Toggle'
 import { useFetchListCallback } from '../../hooks/useFetchListCallback'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-
 import useToggle from '../../hooks/useToggle'
 import { AppDispatch, AppState } from '../../state'
 import { acceptListUpdate, removeList, selectList } from '../../state/lists/actions'
@@ -17,8 +17,7 @@ import { CloseIcon, ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import listVersionLabel from '../../utils/listVersionLabel'
 import { parseENSAddress } from '../../utils/parseENSAddress'
 import uriToHttp from '../../utils/uriToHttp'
-import { ButtonOutlined, ButtonPrimary, ButtonSecondary } from '../Button'
-
+import { ButtonOutlined, ButtonSecondary } from '../Button'
 import Column from '../Column'
 import ListLogo from '../ListLogo'
 import QuestionHelper from '../QuestionHelper'
@@ -96,7 +95,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
   const dispatch = useDispatch<AppDispatch>()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
 
-  const isSelected = listUrl === selectedListUrl
+  const isSelected = (selectedListUrl || []).includes(listUrl)
 
   const [open, toggle] = useToggle(false)
   const node = useRef<HTMLDivElement>()
@@ -112,16 +111,14 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
   useOnClickOutside(node, open ? toggle : undefined)
 
   const selectThisList = useCallback(() => {
-    if (isSelected) return
     ReactGA.event({
       category: 'Lists',
       action: 'Select List',
       label: listUrl
     })
 
-    dispatch(selectList(listUrl))
-    onBack()
-  }, [dispatch, isSelected, listUrl, onBack])
+    dispatch(selectList({ url: listUrl, shouldSelect: !isSelected }))
+  }, [dispatch, isSelected, listUrl])
 
   const handleAcceptListUpdate = useCallback(() => {
     if (!pending) return
@@ -207,31 +204,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
           </PopoverContainer>
         )}
       </StyledMenu>
-      {isSelected ? (
-        <ButtonPrimary
-          disabled={true}
-          className="select-button"
-          style={{ width: '5rem', minWidth: '5rem', padding: '0.5rem .35rem', borderRadius: '12px', fontSize: '14px' }}
-        >
-          Selected
-        </ButtonPrimary>
-      ) : (
-        <>
-          <ButtonPrimary
-            className="select-button"
-            style={{
-              width: '5rem',
-              minWidth: '4.5rem',
-              padding: '0.5rem .35rem',
-              borderRadius: '12px',
-              fontSize: '14px'
-            }}
-            onClick={selectThisList}
-          >
-            Select
-          </ButtonPrimary>
-        </>
-      )}
+      <Toggle id="toggle-expert-mode-button" isActive={isSelected} toggle={selectThisList} />
     </Row>
   )
 })
