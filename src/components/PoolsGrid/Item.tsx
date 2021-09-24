@@ -127,7 +127,13 @@ export default function PoolsGridItem({
             <h4>{pinataCalculatedSymbol}</h4>
             <div className="poolsGrid-item-header-features">
               <span>
-                <BadgeIcon /> Core
+                {multiplier?.toString() !== '0' ? (
+                  <>
+                    <BadgeIcon /> Core
+                  </>
+                ) : (
+                  'Delisted Pool'
+                )}
               </span>
               <span>{multiplier?.toString()}X</span>
             </div>
