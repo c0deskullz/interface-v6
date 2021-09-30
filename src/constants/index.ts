@@ -23,8 +23,8 @@ type ChainTokenList = {
 }
 
 export const PARTY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xb68Dd903198339f1818Fb3710AB4Ea2Ff85231B8', 18, 'PARTY', 'PARTY'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x69A61f38Df59CBB51962E69C54D39184E21C27Ec', 18, 'PARTY', 'PARTY')
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x02048Fe5d5849Bfdb0FF2150c443c2a2A28fc0dE', 18, 'PARTY', 'PARTY'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x3EA3e5C6957581F3e70b2C33721D4E6844f60619', 18, 'PARTY', 'PARTY')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
@@ -276,7 +276,7 @@ export const GB: { [chainId in ChainId]: Token } = {
 }
 
 export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0xd040e0A2268389f7110E194197F1eD97F586ebBF',
+  [ChainId.FUJI]: '0x101061ac181FEca52A69c569c0601dB6e4dd7098',
   [ChainId.AVALANCHE]: '0x5a04d600B6a5B2D89946e839A9Af2f8BE11A1955'
 }
 
