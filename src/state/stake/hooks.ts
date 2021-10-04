@@ -280,10 +280,10 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
     return new TokenAmount(WAVAX[chainId || ChainId.FUJI], JSBI.BigInt(0))
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
-  const avaxPartyRatio = JSBI.divide(
-    JSBI.multiply(oneToken, avaxPartyPairReserveOfOtherToken),
-    avaxPartyPairReserveOfParty
-  )
+  const avaxPartyRatio =
+    avaxPartyPairReserveOfParty === JSBI.BigInt(0)
+      ? JSBI.divide(JSBI.multiply(oneToken, avaxPartyPairReserveOfOtherToken), avaxPartyPairReserveOfParty)
+      : JSBI.BigInt(0)
 
   const valueOfPartyInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfParty, avaxPartyRatio), oneToken)
 
