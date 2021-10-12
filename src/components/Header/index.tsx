@@ -24,7 +24,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import PartyBalanceContent from './PartyBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-import { ANALYTICS_PAGE } from '../../constants'
+import { ANALYTICS_PAGE, TOKEN_MIGRATION_PAGE } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -411,6 +411,7 @@ const Links = ({ className }: { className?: string }) => {
         Jacuzzis
       </StyledNavLink>
       <StyledExternalLink href={ANALYTICS_PAGE}>Charts</StyledExternalLink>
+      <StyledExternalLink href={TOKEN_MIGRATION_PAGE}>Token V2</StyledExternalLink>
     </div>
   )
 }
