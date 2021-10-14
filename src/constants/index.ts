@@ -276,7 +276,7 @@ export const GB: { [chainId in ChainId]: Token } = {
 }
 
 export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0x7eC89fad7eFd804e47A90cA722682b6E93c455a2',
+  [ChainId.FUJI]: '0xa0a29Bd6e48C36512894bdDAA08ae6034e1d7211',
   [ChainId.AVALANCHE]: '0x5a04d600B6a5B2D89946e839A9Af2f8BE11A1955'
 }
 
