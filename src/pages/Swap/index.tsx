@@ -4,26 +4,34 @@ import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
+import { ReactComponent as BannerImage } from '../../assets/svg/swap-banner.svg'
+import imageLeftDark from '../../assets/svg/swap-image-left-dark.svg'
+import imageLeft from '../../assets/svg/swap-image-left.svg'
+import imageRightDark from '../../assets/svg/swap-image-right-dark.svg'
+import imageRight from '../../assets/svg/swap-image-right.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import pattern from '../../assets/svg/swap-pattern.svg'
 import AddressInputPanel from '../../components/AddressInputPanel'
-import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
+import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Column'
-import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
+import Loader from '../../components/Loader'
+import { VersionTabs } from '../../components/NavigationTabs'
+import ProgressSteps from '../../components/ProgressSteps'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
+import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
-import ProgressSteps from '../../components/ProgressSteps'
-
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
+import useENS from '../../hooks/useENS'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
@@ -35,23 +43,12 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useExpertModeManager, useIsDarkMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
-import Loader from '../../components/Loader'
-import useENS from '../../hooks/useENS'
-
-import imageLeft from '../../assets/svg/swap-image-left.svg'
-import imageLeftDark from '../../assets/svg/swap-image-left-dark.svg'
-import imageRight from '../../assets/svg/swap-image-right.svg'
-import imageRightDark from '../../assets/svg/swap-image-right-dark.svg'
-import pattern from '../../assets/svg/swap-pattern.svg'
-import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
-import { ReactComponent as BannerImage } from '../../assets/svg/swap-banner.svg'
-import { useIsDarkMode } from '../../state/user/hooks'
 
 const PageWrapper = styled.div`
   display: flex;
@@ -330,7 +327,7 @@ export default function Swap() {
       />
 
       <>
-        <SwapPoolTabs active={'swap'} />
+        <VersionTabs active={'v2'} pathname="/swap" />
 
         <AppBody>
           <Wrapper id="swap-page">

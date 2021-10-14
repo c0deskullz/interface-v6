@@ -104,7 +104,7 @@ const HeaderLinks = styled(Row)`
   .spread {
     display: flex;
   }
-  @media (min-width: 1400px) {
+  @media (min-width: 1600px) {
     position: absolute;
     left: 0;
     right: 0;
@@ -411,7 +411,7 @@ const Links = ({ className }: { className?: string }) => {
         Jacuzzis
       </StyledNavLink>
       <StyledExternalLink href={ANALYTICS_PAGE}>Charts</StyledExternalLink>
-      <StyledExternalLink href={TOKEN_MIGRATION_PAGE}>Token V2</StyledExternalLink>
+      <StyledExternalLink href={TOKEN_MIGRATION_PAGE}>Migrate Token</StyledExternalLink>
     </div>
   )
 }
