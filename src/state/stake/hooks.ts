@@ -52,7 +52,7 @@ export const STAKING_V2: {
 }[] = [
   {
     tokens: [WAVAX[ChainId.FUJI], PARTY[ChainId.FUJI]],
-    stakingRewardAddress: '0x9996c356321ccf0c73035637a1f781ef8f92741b',
+    stakingRewardAddress: '0xf61421f8e63532ad4586df8da81849016c75e6bc',
     pair: '0x4d5425e83b15004ce4f9f934ae802fca4b220ea9'
   },
   {
@@ -60,7 +60,7 @@ export const STAKING_V2: {
       WAVAX[ChainId.FUJI],
       new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
     ],
-    stakingRewardAddress: '0x4a1924322c6ac70f4f2af637767f6edc86bbfba8',
+    stakingRewardAddress: '0x4f39fa1d907efc01af14d0fd053ba0d1faa7ccd1',
     pair: '0xb81853e2D8cE364416B6F07866ea3647de3AF7dA'
   },
   {
@@ -68,7 +68,7 @@ export const STAKING_V2: {
       PARTY[ChainId.FUJI],
       new Token(ChainId.FUJI, '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22', 18, 'FUJISTABLE', 'The Fuji stablecoin')
     ],
-    stakingRewardAddress: '0x7dfce35b2168df338ffb6dc0040b0bbf99dac94c',
+    stakingRewardAddress: '0x3db8e0cacc89dea8b209e0d3d166c92e02691746',
     pair: '0xe0ac4d8d3afc17430a82c2eb4e935971e95211c9'
   }
   // {

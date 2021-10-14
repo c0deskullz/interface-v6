@@ -1,20 +1,20 @@
-import React, { useEffect, useCallback, useRef, useState, ReactNode } from 'react'
-import styled from 'styled-components'
-import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
-import { RouteComponentProps } from 'react-router-dom'
-import PoolsGrid from '../../components/PoolsGrid'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
-import PoolsGridItem from '../../components/PoolsGrid/Item'
-import Loader from '../../components/Loader'
-import { useActiveWeb3React } from '../../hooks'
 import { ChainId, JSBI } from '@partyswap-libs/sdk'
-
-import imageLeft from '../../assets/svg/pools-hero-left.svg'
-import imageRight from '../../assets/svg/pools-hero-right.svg'
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+import styled from 'styled-components'
 import imageLeftDark from '../../assets/svg/pools-hero-left-dark.svg'
+import imageLeft from '../../assets/svg/pools-hero-left.svg'
 import imageRightDark from '../../assets/svg/pools-hero-right-dark.svg'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
+import imageRight from '../../assets/svg/pools-hero-right.svg'
+import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
+import Loader from '../../components/Loader'
+import { VersionTabs } from '../../components/NavigationTabs'
+import PoolsGrid from '../../components/PoolsGrid'
+import PoolsGridItem from '../../components/PoolsGrid/Item'
+import { useActiveWeb3React } from '../../hooks'
+import { StakingInfo, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -101,6 +101,15 @@ const fetchPoolAprs = async (
 
 const Hero = styled.div`
   background: ${({ theme }) => theme.gradient1};
+  position: relative;
+
+  .version-tabs {
+    position: absolute;
+    width: 100%;
+    top: auto;
+    bottom: 5%;
+    z-index: 15;
+  }
 `
 
 export default function Earn({
@@ -166,6 +175,9 @@ export default function Earn({
               Learn More
             </a>
           </div>
+        </div>
+        <div className="version-tabs">
+          <VersionTabs active={'v2'} pathname="/party/1" />
         </div>
         <img
           src={isDarkMode ? imageLeftDark : imageLeft}

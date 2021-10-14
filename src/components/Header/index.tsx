@@ -24,7 +24,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import PartyBalanceContent from './PartyBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-import { ANALYTICS_PAGE } from '../../constants'
+import { ANALYTICS_PAGE, TOKEN_MIGRATION_PAGE } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -104,7 +104,7 @@ const HeaderLinks = styled(Row)`
   .spread {
     display: flex;
   }
-  @media (min-width: 1400px) {
+  @media (min-width: 1600px) {
     position: absolute;
     left: 0;
     right: 0;
@@ -411,6 +411,7 @@ const Links = ({ className }: { className?: string }) => {
         Jacuzzis
       </StyledNavLink>
       <StyledExternalLink href={ANALYTICS_PAGE}>Charts</StyledExternalLink>
+      <StyledExternalLink href={TOKEN_MIGRATION_PAGE}>Migrate Token</StyledExternalLink>
     </div>
   )
 }
