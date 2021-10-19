@@ -12,6 +12,9 @@ export const ROUTER_ADDRESS = {
 
 export const LANDING_PAGE = 'https://partyswap.io/'
 export const ANALYTICS_PAGE = 'https://info.partyswap.io/'
+// TODO: update url to prod url
+export const TOKEN_MIGRATION_PAGE = 'https://partyswap-migrator-frontend.netlify.app/'
+export const V1_PAGE = 'https://app.partyswap.io/#'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -23,8 +26,8 @@ type ChainTokenList = {
 }
 
 export const PARTY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x02048Fe5d5849Bfdb0FF2150c443c2a2A28fc0dE', 18, 'PARTY', 'PARTY'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x3EA3e5C6957581F3e70b2C33721D4E6844f60619', 18, 'PARTY', 'PARTY')
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xCEAA8d36a189b3d8b867AD534D91A3Bdbd31686b', 18, 'PARTY', 'PARTY'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x25afD99fcB474D7C336A2971F26966da652a92bc', 18, 'PARTY', 'PARTY')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
@@ -56,6 +59,17 @@ export const USDT: { [chainId in ChainId]: Token } = {
     6,
     'USDT.e',
     'Tether USD'
+  )
+}
+
+export const BUSD: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'BUSD', 'Binance-Peg BUSD Token'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x9610b01AAa57Ec026001F7Ec5CFace51BfEA0bA6',
+    18,
+    'BUSD',
+    'Binance-Peg BUSD Token'
   )
 }
 
@@ -276,8 +290,8 @@ export const GB: { [chainId in ChainId]: Token } = {
 }
 
 export const LIQUIDITY_POOL_MANAGER_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: '0x7eC89fad7eFd804e47A90cA722682b6E93c455a2',
-  [ChainId.AVALANCHE]: '0x5a04d600B6a5B2D89946e839A9Af2f8BE11A1955'
+  [ChainId.FUJI]: '0xa0a29Bd6e48C36512894bdDAA08ae6034e1d7211',
+  [ChainId.AVALANCHE]: '0xC40E43f7Ba697658A2B3a9f6b659ec23Aab4Bd33'
 }
 
 export const JACUZZI_ADDRESS: { [chainId in ChainId]?: string } = {

@@ -1,16 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
-import { NavLink, Link as HistoryLink } from 'react-router-dom'
-
 import { ArrowLeft } from 'react-feather'
-import { RowBetween } from '../Row'
+import { useTranslation } from 'react-i18next'
+import { Link as HistoryLink, NavLink } from 'react-router-dom'
+import styled, { css, DefaultTheme } from 'styled-components'
+import { V1_PAGE } from '../../constants'
 import QuestionHelper from '../QuestionHelper'
+import { RowBetween } from '../Row'
 
-const Tabs = styled.div`
+const Tabs = styled.div<{ width?: string }>`
   position: relative;
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 20rem;
+  width: ${({ width }) => width || '20rem'};
   justify-content: space-evenly;
   align-items: center;
   background-color: ${({ theme }) => theme.surface3};
@@ -29,10 +29,8 @@ const NoBorderTabs = styled.div`
 
 const activeClassName = 'ACTIVE'
 
-const StyledNavLink = styled(NavLink).attrs({
-  activeClassName
-})`
-  ${({ theme }) => theme.flexRowNoWrap}
+const anchorTagCss = ({ theme }: { theme: DefaultTheme }) => css`
+  ${theme.flexRowNoWrap}
   align-items: center;
   justify-content: center;
   height: 3rem;
@@ -40,26 +38,38 @@ const StyledNavLink = styled(NavLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.text6};
+  color: ${theme.text6};
   font-size: 1.125rem;
   font-weight: 600;
   flex: 1;
 
   &.${activeClassName} {
     color: #fff;
-    background-color: ${({ theme }) => theme.primary1};
+    background-color: ${theme.primary1};
     :hover,
     :focus {
       color: #fff;
-      background-color: ${({ theme }) => theme.primary1};
+      background-color: ${theme.primary1};
     }
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => theme.text6};
+    color: ${theme.text6};
     text-decoration: none;
   }
+`
+
+const StyledNavLink = styled(NavLink).attrs({
+  activeClassName
+})`
+  ${anchorTagCss}
+`
+
+const StyledExternalLink = styled.a.attrs<{ isActive: boolean }>(({ isActive }) => ({
+  className: isActive && activeClassName
+}))<{ isActive: boolean }>`
+  ${anchorTagCss}
 `
 
 const ActiveText = styled.div`
@@ -70,6 +80,19 @@ const ActiveText = styled.div`
 const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `
+
+export function VersionTabs({ active, pathname }: { active: 'v1' | 'v2'; pathname: string }) {
+  return (
+    <Tabs width="10rem">
+      <StyledExternalLink id={`v2-nav-link`} isActive={active === 'v2'}>
+        {'V2'}
+      </StyledExternalLink>
+      <StyledExternalLink id={`v1-nav-link`} href={V1_PAGE + pathname} isActive={active === 'v1'}>
+        {'V1'}
+      </StyledExternalLink>
+    </Tabs>
+  )
+}
 
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()

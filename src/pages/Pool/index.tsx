@@ -1,28 +1,26 @@
+import { ChainId, Pair } from '@partyswap-libs/sdk'
 import React, { useContext, useMemo } from 'react'
-import styled, { ThemeContext } from 'styled-components'
-import { Pair } from '@partyswap-libs/sdk'
 import { Link } from 'react-router-dom'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
-
-import FullPositionCard from '../../components/PositionCard'
-import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { StyledInternalLink, TYPE, HideSmall, ExternalLink } from '../../theme'
 import { Text } from 'rebass'
-import { GreyCard } from '../../components/Card'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import { AutoColumn } from '../../components/Column'
-
-import { useActiveWeb3React } from '../../hooks'
-import { usePairs } from '../../data/Reserves'
-import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
-import { Dots } from '../../components/swap/styleds'
-import { ChainId } from '@partyswap-libs/sdk'
-import { ANALYTICS_PAGE } from '../../constants'
-
-import pattern from '../../assets/svg/swap-pattern.svg'
+import styled, { ThemeContext } from 'styled-components'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
-import { useIsDarkMode } from '../../state/user/hooks'
+import pattern from '../../assets/svg/swap-pattern.svg'
+import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { GreyCard } from '../../components/Card'
+import { AutoColumn } from '../../components/Column'
+import { VersionTabs } from '../../components/NavigationTabs'
+import FullPositionCard from '../../components/PositionCard'
+import { RowBetween, RowFixed } from '../../components/Row'
+import { Dots } from '../../components/swap/styleds'
+import { ANALYTICS_PAGE } from '../../constants'
+import { usePairs } from '../../data/Reserves'
+import { useActiveWeb3React } from '../../hooks'
+import { toV2LiquidityToken, useIsDarkMode, useTrackedTokenPairs } from '../../state/user/hooks'
+import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
+import { ExternalLink, HideSmall, StyledInternalLink, TYPE } from '../../theme'
+
+
+
 
 const PageWrapper = styled.div`
   position: relative;
@@ -175,7 +173,7 @@ export default function Pool() {
         {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
 
         <PageContent>
-          <SwapPoolTabs active={'pool'} />
+          <VersionTabs active={'v2'} pathname="/pool" />
 
           <AutoColumn gap="lg" justify="center">
             <AutoColumn gap="lg" style={{ width: '100%' }}>
