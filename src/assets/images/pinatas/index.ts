@@ -23,6 +23,8 @@ import AvaxUsdt from './AVAX-USDT.png'
 import AvaxDai from './AVAX-DAI.png'
 import AvaxGb from './AVAX-GB.png'
 import AvaxUSDCe from './AVAX-USDCe.png'
+import UsdtBusd from './USDT-BUSD.png'
+import UsdtUsdc from './USDT-USDC.png'
 
 export {
   AvaxUsdt,
@@ -49,5 +51,7 @@ export {
   AvaxUSDCe,
   PartyAvax,
   PartyDai,
-  PartyUsdt
+  PartyUsdt,
+  UsdtBusd,
+  UsdtUsdc
 }
