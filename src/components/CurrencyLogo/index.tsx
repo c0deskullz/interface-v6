@@ -7,7 +7,7 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 
-const getTokenLogoURL = (address: string, usePartyUrl: boolean = false) =>
+export const getTokenLogoURL = (address: string, usePartyUrl: boolean = false) =>
   usePartyUrl
     ? `https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/${address}/logo.png`
     : `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${address}/logo.png`
@@ -39,23 +39,16 @@ export default function CurrencyLogo({
 
   const srcs: string[] = useMemo(() => {
     if (currency === CAVAX) return []
-
     if (currency instanceof Token) {
+      const v2 = currency.name === 'PARTY V2'
+      const partyLogoUrl = v2
+        ? getTokenLogoURL('0x25afD99fcB474D7C336A2971F26966da652a92bc', true)
+        : getTokenLogoURL('0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', true)
       if (currency instanceof WrappedTokenInfo) {
-        return [
-          ...uriLocations,
-          currency.symbol === 'PARTY'
-            ? getTokenLogoURL('0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', true)
-            : getTokenLogoURL(currency.address)
-        ]
+        return [...uriLocations, currency.symbol === 'PARTY' ? partyLogoUrl : getTokenLogoURL(currency.address)]
       }
 
-      return [
-        ...uriLocations,
-        currency.symbol === 'PARTY'
-          ? getTokenLogoURL('0x15957be9802B50c6D66f58a99A2a3d73F5aaf615', true)
-          : getTokenLogoURL(currency.address)
-      ]
+      return [...uriLocations, currency.symbol === 'PARTY' ? partyLogoUrl : getTokenLogoURL(currency.address)]
     }
     return []
   }, [currency, uriLocations])

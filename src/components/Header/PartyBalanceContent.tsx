@@ -17,6 +17,7 @@ import { AddParty } from '../AddParty'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
+import { getTokenLogoURL } from '../CurrencyLogo'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -108,7 +109,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
               <AutoColumn gap="md" justify="center">
                 <PngTokenAnimated
                   width="64px"
-                  src="https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/0x15957be9802B50c6D66f58a99A2a3d73F5aaf615/logo.png"
+                  src={getTokenLogoURL('0x25afD99fcB474D7C336A2971F26966da652a92bc', true)}
                 />{' '}
                 {/* {isDarkMode ? (
                   <div>
