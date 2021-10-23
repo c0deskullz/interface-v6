@@ -272,7 +272,6 @@ export default function Jacuzzi() {
     setJacuzziPARTYStake(toFixedTwo(partyJacuzziBalance.toString()))
 
     const supply = await jacuzzi.totalSupply()
-    console.log(supply.toString())
 
     setDisplayTotalLiquidity(
       new TokenAmount(createPARTYTokenInstance(), partyJacuzziBalance).toFixed(2, { groupSeparator: ',' })
@@ -283,15 +282,14 @@ export default function Jacuzzi() {
   }, [jacuzzi, party, chainId, createPARTYTokenInstance])
 
   const apr = useMemo(() => {
-    const TOKENS_PER_DAY = 32900
-    const HALVING_CYCLE_DAYS = 182.5
-
+    const TOKENS_PER_DAY = 40000
+    const HALVING_CYCLE_DAYS = 30
     if (!jacuzziPARTYStake) {
       return 0
     }
 
     const today = Date.now()
-    const firstHalvingDay = Date.UTC(2021, 9 - 1, 0)
+    const firstHalvingDay = Date.UTC(2021, 10, 24)
     const passedHalvingCycles = (today - firstHalvingDay) / (HALVING_CYCLE_DAYS * 24 * 60 * 60 * 1000)
     let roi = 0
 
