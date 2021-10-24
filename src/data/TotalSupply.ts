@@ -23,7 +23,7 @@ export function usePartyCirculation(): TokenAmount | undefined {
 
   useEffect(() => {
     const getCirculation = async (callback: (data: string) => void) => {
-      const { data } = await axios.get('https://api.partyswap.io/party/circulating')
+      const { data } = await axios.get('https://apiv2.partyswap.io/party/circulating')
       callback(data.toLocaleString('fullwide', { useGrouping: false }))
     }
 
