@@ -3,7 +3,7 @@ import { AutoColumn } from '../../components/Column'
 import styled, { ThemeContext } from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI, TokenAmount, CAVAX, Token, WAVAX } from '@partyswap-libs/sdk'
+import { JSBI, TokenAmount, CAVAX, Token, WAVAX, ChainId } from '@partyswap-libs/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useCurrency } from '../../hooks/Tokens'
@@ -28,7 +28,7 @@ import { useTotalSupply } from '../../data/TotalSupply'
 import { usePair } from '../../data/Reserves'
 import usePrevious from '../../hooks/usePrevious'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
-import { BIG_INT_ZERO, PARTY } from '../../constants'
+import { BIG_INT_ZERO, PARTY, USDT } from '../../constants'
 
 import pattern from '../../assets/svg/swap-pattern.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
@@ -212,6 +212,16 @@ export default function Manage({
   }, [stakingInfo])
 
   const avaxPool = currencyA === CAVAX || currencyB === CAVAX
+  const partyPool =
+    tokenA &&
+    tokenB &&
+    (tokenA?.equals(PARTY[tokenA?.chainId || ChainId.AVALANCHE]) ||
+      tokenB?.equals(PARTY[tokenB?.chainId || ChainId.AVALANCHE]))
+  const stablePool =
+    tokenA &&
+    tokenB &&
+    (tokenA?.equals(USDT[tokenA?.chainId || ChainId.AVALANCHE]) ||
+      tokenB?.equals(USDT[tokenB?.chainId || ChainId.AVALANCHE]))
 
   let valueOfTotalStakedAmountInWavax: TokenAmount | undefined
   // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
@@ -219,6 +229,7 @@ export default function Manage({
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
   const [, avaxPartyTokenPair] = usePair(CAVAX, PARTY[chainId ? chainId : 43114])
+  const [, avaxStableTokenPair] = usePair(CAVAX, USDT[chainId ? chainId : 43114])
   // let usdToken: Token | undefined
   if (avaxPool) {
     token = currencyA === CAVAX ? tokenB : tokenA
@@ -246,7 +257,7 @@ export default function Manage({
 
     // get the USD value of staked wavax
     // usdToken = wavax
-  } else {
+  } else if (partyPool) {
     var party
     if (tokenA && tokenA.equals(PARTY[tokenA.chainId])) {
       token = tokenB
@@ -283,6 +294,43 @@ export default function Manage({
               totalSupplyOfStakingToken.raw
             )
       )
+    } else if (stablePool) {
+      var stable
+      if (tokenA && tokenA.equals(PARTY[tokenA.chainId])) {
+        token = tokenB
+        stable = tokenA
+      } else {
+        token = tokenA
+        stable = tokenB
+      }
+      if (totalSupplyOfStakingToken && stakingTokenPair && avaxStableTokenPair && tokenB && stable) {
+        const oneToken = JSBI.BigInt(1000000000000000000)
+        const avaxStableRatio =
+          avaxStableTokenPair.reserveOf(stable).raw.toString() === '0'
+            ? JSBI.BigInt(0)
+            : JSBI.divide(
+                JSBI.multiply(oneToken, avaxStableTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
+                avaxStableTokenPair.reserveOf(stable).raw
+              )
+
+        const valueOfStableInAvax = JSBI.divide(
+          JSBI.multiply(stakingTokenPair.reserveOf(stable).raw, avaxStableRatio),
+          oneToken
+        )
+
+        valueOfTotalStakedAmountInWavax = new TokenAmount(
+          WAVAX[tokenB.chainId],
+          totalSupplyOfStakingToken.raw.toString() === '0'
+            ? JSBI.BigInt(0)
+            : JSBI.divide(
+                JSBI.multiply(
+                  JSBI.multiply(stakingInfo?.totalStakedAmount.raw || JSBI.BigInt(0), valueOfStableInAvax),
+                  JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
+                ),
+                totalSupplyOfStakingToken.raw
+              )
+        )
+      }
     }
     // usdToken = party
   }
