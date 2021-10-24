@@ -68,7 +68,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://partyswap.io/downloads/litepaper-v1.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="https://partyswap.gitbook.io/partyswap/party-stuff/litepaper-v2" target="_blank" rel="noopener noreferrer">
                   Litepaper
                 </a>
               </li>
