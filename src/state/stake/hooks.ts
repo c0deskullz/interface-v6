@@ -230,7 +230,7 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxPartyRatio =
-    avaxPartyPairReserveOfParty === JSBI.BigInt(0)
+    avaxPartyPairReserveOfParty !== JSBI.BigInt(0)
       ? JSBI.divide(JSBI.multiply(oneToken, avaxPartyPairReserveOfOtherToken), avaxPartyPairReserveOfParty)
       : JSBI.BigInt(0)
 
@@ -252,7 +252,7 @@ const calculateTotalStakedAmountInAvaxFromStableToken = function(
   totalSupply: JSBI,
   avaxStablePairReserveOfStable: JSBI,
   avaxStablePairReserveOfOtherToken: JSBI,
-  stakingTokenPairReserveOfParty: JSBI,
+  stakingTokenPairReserveOfStable: JSBI,
   totalStakedAmount: TokenAmount,
   chainId?: ChainId
 ): TokenAmount {
@@ -261,17 +261,17 @@ const calculateTotalStakedAmountInAvaxFromStableToken = function(
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxStableRatio =
-    avaxStablePairReserveOfStable === JSBI.BigInt(0)
+    avaxStablePairReserveOfStable !== JSBI.BigInt(0)
       ? JSBI.divide(JSBI.multiply(oneToken, avaxStablePairReserveOfOtherToken), avaxStablePairReserveOfStable)
       : JSBI.BigInt(0)
 
-  const valueOfPartyInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfParty, avaxStableRatio), oneToken)
+  const valueOfStableInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfStable, avaxStableRatio), oneToken)
 
   return new TokenAmount(
     WAVAX[chainId || ChainId.FUJI],
     JSBI.divide(
       JSBI.multiply(
-        JSBI.multiply(totalStakedAmount.raw, valueOfPartyInAvax),
+        JSBI.multiply(totalStakedAmount.raw, valueOfStableInAvax),
         JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
       ),
       totalSupply
@@ -428,8 +428,8 @@ export function useStakingInfo(
         const totalStakedAmount = new TokenAmount(dummyPair.liquidityToken, totalSupply)
         const totalRewardRate = new TokenAmount(party, JSBI.BigInt(rewardRateState.result?.[0]))
         const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
-        const isPartyPool = tokens[0].equals(PARTY[tokens[0].chainId])
-        const isStableCoinPool = tokens[0].equals(USDT[tokens[0].chainId])
+        const isPartyPool = tokens[0].equals(PARTY[tokens[0].chainId]) || tokens[1].equals(PARTY[tokens[1].chainId])
+        const isStableCoinPool = tokens[0].equals(USDT[tokens[0].chainId]) || tokens[1].equals(USDT[tokens[1].chainId])
         let totalStakedInWavax
         if (isAvaxPool) {
           totalStakedInWavax = calculteTotalStakedAmountInAvax(
@@ -448,8 +448,6 @@ export function useStakingInfo(
             chainId
           )
         } else if (isStableCoinPool) {
-          console.log(avaxUsdtPair.reserveOf(usdt).raw)
-          console.log(avaxUsdtPair.reserveOf(WAVAX[tokens[1].chainId]).raw)
           totalStakedInWavax = calculateTotalStakedAmountInAvaxFromStableToken(
             totalSupply,
             avaxUsdtPair.reserveOf(usdt).raw,
