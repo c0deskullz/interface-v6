@@ -294,45 +294,45 @@ export default function Manage({
               totalSupplyOfStakingToken.raw
             )
       )
-    } else if (stablePool) {
-      var stable
-      if (tokenA && tokenA.equals(PARTY[tokenA.chainId])) {
-        token = tokenB
-        stable = tokenA
-      } else {
-        token = tokenA
-        stable = tokenB
-      }
-      if (totalSupplyOfStakingToken && stakingTokenPair && avaxStableTokenPair && tokenB && stable) {
-        const oneToken = JSBI.BigInt(1000000000000000000)
-        const avaxStableRatio =
-          avaxStableTokenPair.reserveOf(stable).raw.toString() === '0'
-            ? JSBI.BigInt(0)
-            : JSBI.divide(
-                JSBI.multiply(oneToken, avaxStableTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
-                avaxStableTokenPair.reserveOf(stable).raw
-              )
-
-        const valueOfStableInAvax = JSBI.divide(
-          JSBI.multiply(stakingTokenPair.reserveOf(stable).raw, avaxStableRatio),
-          oneToken
-        )
-
-        valueOfTotalStakedAmountInWavax = new TokenAmount(
-          WAVAX[tokenB.chainId],
-          totalSupplyOfStakingToken.raw.toString() === '0'
-            ? JSBI.BigInt(0)
-            : JSBI.divide(
-                JSBI.multiply(
-                  JSBI.multiply(stakingInfo?.totalStakedAmount.raw || JSBI.BigInt(0), valueOfStableInAvax),
-                  JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-                ),
-                totalSupplyOfStakingToken.raw
-              )
-        )
-      }
     }
     // usdToken = party
+  } else if (stablePool) {
+    var stable
+    if (tokenA && tokenA.equals(USDT[tokenA.chainId])) {
+      token = tokenB
+      stable = tokenA
+    } else {
+      token = tokenA
+      stable = tokenB
+    }
+    if (totalSupplyOfStakingToken && stakingTokenPair && avaxStableTokenPair && tokenB && stable) {
+      const oneToken = JSBI.BigInt(1000000000000000000)
+      const avaxStableRatio =
+        avaxStableTokenPair.reserveOf(stable).raw.toString() === '0'
+          ? JSBI.BigInt(0)
+          : JSBI.divide(
+              JSBI.multiply(oneToken, avaxStableTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
+              avaxStableTokenPair.reserveOf(stable).raw
+            )
+
+      const valueOfStableInAvax = JSBI.divide(
+        JSBI.multiply(stakingTokenPair.reserveOf(stable).raw, avaxStableRatio),
+        oneToken
+      )
+
+      valueOfTotalStakedAmountInWavax = new TokenAmount(
+        WAVAX[tokenB.chainId],
+        totalSupplyOfStakingToken.raw.toString() === '0'
+          ? JSBI.BigInt(0)
+          : JSBI.divide(
+              JSBI.multiply(
+                JSBI.multiply(stakingInfo?.totalStakedAmount.raw || JSBI.BigInt(0), valueOfStableInAvax),
+                JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
+              ),
+              totalSupplyOfStakingToken.raw
+            )
+      )
+    }
   }
 
   // get the color of the token
