@@ -220,7 +220,7 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
   chainId?: ChainId
 ): TokenAmount {
   if (JSBI.EQ(totalSupply, JSBI.BigInt(0))) {
-    return new TokenAmount(WAVAX[chainId || ChainId.FUJI], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[chainId || ChainId.AVALANCHE], JSBI.BigInt(0))
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxPartyRatio =
@@ -231,7 +231,7 @@ const calculateTotalStakedAmountInAvaxFromParty = function(
   const valueOfPartyInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfParty, avaxPartyRatio), oneToken)
 
   return new TokenAmount(
-    WAVAX[chainId || ChainId.FUJI],
+    WAVAX[chainId || ChainId.AVALANCHE],
     JSBI.divide(
       JSBI.multiply(
         JSBI.multiply(totalStakedAmount.raw, valueOfPartyInAvax),
@@ -251,7 +251,7 @@ const calculateTotalStakedAmountInAvaxFromStableToken = function(
   chainId?: ChainId
 ): TokenAmount {
   if (JSBI.EQ(totalSupply, JSBI.BigInt(0))) {
-    return new TokenAmount(WAVAX[chainId || ChainId.FUJI], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[chainId || ChainId.AVALANCHE], JSBI.BigInt(0))
   }
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxStableRatio =
@@ -262,7 +262,7 @@ const calculateTotalStakedAmountInAvaxFromStableToken = function(
   const valueOfStableInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfStable, avaxStableRatio), oneToken)
 
   return new TokenAmount(
-    WAVAX[chainId || ChainId.FUJI],
+    WAVAX[chainId || ChainId.AVALANCHE],
     JSBI.divide(
       JSBI.multiply(
         JSBI.multiply(totalStakedAmount.raw, valueOfStableInAvax),
@@ -282,7 +282,7 @@ const calculteTotalStakedAmountInAvax = function(
   if (JSBI.GT(totalSupply, 0)) {
     // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
     return new TokenAmount(
-      WAVAX[chainId || ChainId.FUJI],
+      WAVAX[chainId || ChainId.AVALANCHE],
       JSBI.divide(
         JSBI.multiply(
           JSBI.multiply(totalStakedAmount.raw, reserveInWavax),
@@ -292,7 +292,7 @@ const calculteTotalStakedAmountInAvax = function(
       )
     )
   } else {
-    return new TokenAmount(WAVAX[chainId || ChainId.FUJI], JSBI.BigInt(0))
+    return new TokenAmount(WAVAX[chainId || ChainId.AVALANCHE], JSBI.BigInt(0))
   }
 }
 
@@ -304,6 +304,8 @@ export function useStakingInfo(
 ): StakingInfo[] {
   const { once } = options
   const { chainId, account } = useActiveWeb3React()
+
+  console.log('CHAIN ID: ', chainId)
 
   const info = useMemo(
     () =>

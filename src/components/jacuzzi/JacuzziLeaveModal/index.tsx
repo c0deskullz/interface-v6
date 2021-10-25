@@ -81,7 +81,7 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
   const party = usePartyContract()
   const addTransaction = useTransactionAdder()
 
-  const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.FUJI])
+  const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.AVALANCHE])
 
   const handleSetMax = () => {
     setTypedValue(balance)
@@ -102,7 +102,7 @@ export default function JacuzziLeaveModal({ isOpen, onDismiss }: StakingModalPro
 
     const userBalance = await jacuzzi.balanceOf(account)
     const totalSupply = await jacuzzi.totalSupply()
-    const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.FUJI])
+    const partyJacuzziBalance = await party.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE])
     let stakedPARTY
     if (partyJacuzziBalance.toString() === '0') {
       stakedPARTY = JSBI.BigInt(0)

@@ -14,15 +14,15 @@ import { wrappedCurrency } from './wrappedCurrency'
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
   const { chainId } = useActiveWeb3React()
   const wrapped = wrappedCurrency(currency, chainId)
-  const USDC = chainId ? DAI[chainId] : DAI[ChainId.FUJI]
+  const USDC = chainId ? DAI[chainId] : DAI[ChainId.AVALANCHE]
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
       [
         chainId && wrapped && currencyEquals(WAVAX[chainId], wrapped) ? undefined : currency,
         chainId ? WAVAX[chainId] : undefined
       ],
-      [wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.FUJI ? USDC : undefined],
-      [chainId ? WAVAX[chainId] : undefined, chainId === ChainId.FUJI ? USDC : undefined]
+      [wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.AVALANCHE ? USDC : undefined],
+      [chainId ? WAVAX[chainId] : undefined, chainId === ChainId.AVALANCHE ? USDC : undefined]
     ],
     [chainId, currency, wrapped, USDC]
   )

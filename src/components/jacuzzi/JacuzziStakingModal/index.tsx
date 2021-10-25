@@ -70,7 +70,7 @@ export default function JacuzziStakingModal({ isOpen, onDismiss }: StakingModalP
   const jacuzzi = useJacuzziContract()
   const addTransaction = useTransactionAdder()
 
-  const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.FUJI])
+  const parsedAmmount = tryParseAmount(typedValue, PARTY[chainId || ChainId.AVALANCHE])
 
   const handleSetMax = () => {
     setTypedValue(balance)

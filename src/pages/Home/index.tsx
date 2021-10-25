@@ -161,7 +161,7 @@ const useTokenData = (token: Token) => {
 }
 
 const useJacuzziInfo = () => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const partyContract = usePartyContract()
   const { ethPrice } = useBundleData()
   const { derivedETH } = useTokenData(PARTY[chainId ? chainId : ChainId.AVALANCHE])
@@ -178,16 +178,16 @@ const useJacuzziInfo = () => {
 
   const getJacuzziBalance = useCallback(
     async (callback: (params: any) => void) => {
-      const jacuzziBalance = await partyContract?.balanceOf(JACUZZI_ADDRESS[43114])
+      const jacuzziBalance = await partyContract?.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE])
       callback(jacuzziBalance)
       return jacuzziBalance
     },
-    [partyContract]
+    [partyContract, chainId]
   )
 
   useEffect(() => {
-    partyContract && getJacuzziBalance(setJacuzziBalance)
-  }, [partyContract, getJacuzziBalance])
+    partyContract && account && getJacuzziBalance(setJacuzziBalance)
+  }, [partyContract, account, getJacuzziBalance])
 
   useEffect(() => {
     if (ethPrice && derivedETH && jacuzziBalance) {
@@ -247,7 +247,7 @@ const useTotalValueLocked = () => {
 }
 
 const usePartyTotalSupply = () => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const partyContract = usePartyContract()
 
   const getTotalSupply = useCallback(
@@ -262,8 +262,8 @@ const usePartyTotalSupply = () => {
   const [totalSupply, setTotalSupply] = useState<TokenAmount>()
 
   useEffect(() => {
-    getTotalSupply(setTotalSupply)
-  }, [getTotalSupply])
+    account && getTotalSupply(setTotalSupply)
+  }, [getTotalSupply, account])
 
   return totalSupply
 }

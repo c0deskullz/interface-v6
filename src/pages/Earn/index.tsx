@@ -69,7 +69,9 @@ const fetchPoolAprs = async (
         return +(info_b.multiplier?.toString() || '0') - +(info_a.multiplier?.toString() || '0')
       })
       .map(stakingInfo => {
-        return fetch(`${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}/${chainId}`)
+        return fetch(
+          `${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}/${chainId || ChainId.AVALANCHE}`
+        )
           .then(res => res.text())
           .then(res => ({ apr: res, ...stakingInfo }))
       })
@@ -150,7 +152,9 @@ export default function Earn({
     }
   }, [stakingInfos, setPoolCards, chainId, poolsLength])
 
-  const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
+  const stakingRewardsExist = Boolean(
+    typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId || ChainId.AVALANCHE]?.length ?? 0) > 0
+  )
 
   const isDarkMode = useIsDarkMode()
 
