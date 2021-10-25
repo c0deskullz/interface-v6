@@ -296,7 +296,7 @@ export default function Jacuzzi() {
     for (let i = 0; i < 365; i++) {
       const passedHalvingCyclesInYear = i / HALVING_CYCLE_DAYS
       const totalHalvingCycles = Math.floor(passedHalvingCyclesInYear + passedHalvingCycles)
-      roi = roi + TOKENS_PER_DAY / (jacuzziPARTYStake * Math.pow(2, totalHalvingCycles))
+      roi = roi + TOKENS_PER_DAY / (jacuzziPARTYStake * Math.pow(4 / 3, totalHalvingCycles))
     }
 
     return (roi * 100).toFixed(2)

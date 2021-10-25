@@ -26,7 +26,7 @@ type ChainTokenList = {
 }
 
 export const PARTY: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0xCEAA8d36a189b3d8b867AD534D91A3Bdbd31686b', 18, 'PARTY', 'PARTY V2'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x02048fe5d5849bfdb0ff2150c443c2a2a28fc0de', 18, 'PARTY', 'PARTY V2'),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
     '0x25afD99fcB474D7C336A2971F26966da652a92bc',
@@ -58,7 +58,13 @@ export const USDC: { [chainId in ChainId]: Token } = {
 }
 
 export const USDT: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDT', 'Tether USD'),
+  [ChainId.FUJI]: new Token(
+    ChainId.FUJI,
+    '0x2058ec2791dD28b6f67DB836ddf87534F4Bbdf22',
+    18,
+    'FUJISTABLE',
+    'The Fuji stablecoin'
+  ),
   [ChainId.AVALANCHE]: new Token(
     ChainId.AVALANCHE,
     '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
