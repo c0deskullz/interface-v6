@@ -1,4 +1,4 @@
-import { Currency, CAVAX, Token, ChainId } from '@partyswap-libs/sdk'
+import { Currency, CAVAX, Token } from '@partyswap-libs/sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
@@ -22,8 +22,6 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { PARTY } from '../../constants'
-
 interface CurrencySearchProps {
   isOpen: boolean
   onDismiss: () => void
@@ -88,12 +86,12 @@ export function CurrencySearch({
     if (symbolMatch.length > 1) return sorted
 
     return [
-      ...(searchToken ? [searchToken] : [PARTY[chainId || ChainId.AVALANCHE]]),
+      ...(searchToken ? [searchToken] : []),
       // sort any exact symbol matches first
       ...sorted.filter(token => token.symbol?.toLowerCase() === symbolMatch[0]),
       ...sorted.filter(token => token.symbol?.toLowerCase() !== symbolMatch[0])
     ]
-  }, [chainId, filteredTokens, searchQuery, searchToken, tokenComparator])
+  }, [filteredTokens, searchQuery, searchToken, tokenComparator])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

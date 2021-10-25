@@ -180,7 +180,7 @@ export default function CurrencyList({
       curatedCurrencies.unshift(Currency.CAVAX)
     }
 
-    if (!currencies.some(currency => currency.symbol === PARTY[chainId || ChainId.AVALANCHE].symbol)) {
+    if (!currencies.some(currency => currency.name === PARTY[chainId || ChainId.AVALANCHE].name)) {
       curatedCurrencies.unshift(PARTY[chainId || ChainId.AVALANCHE])
     }
 
