@@ -247,25 +247,31 @@ const useTotalValueLocked = () => {
 }
 
 const usePartyTotalSupply = () => {
-  const { chainId, account } = useActiveWeb3React()
-  const partyContract = usePartyContract()
+  const { chainId } = useActiveWeb3React()
+  const { REACT_APP_API_URL: apiUrl } = process.env
+  const [totalPartySupply, setTotalPartySupply] = useState<TokenAmount>(
+    new TokenAmount(PARTY[chainId || ChainId.AVALANCHE], '0')
+  )
 
   const getTotalSupply = useCallback(
     async (callback: (params: any) => void) => {
-      const totalSupply = await partyContract?.totalSupply()
-      const tokenAmmount = new TokenAmount(PARTY[chainId ? chainId : ChainId.AVALANCHE], totalSupply)
-      callback(tokenAmmount)
+      const { data } = (await axios.get(`${apiUrl}party/totalSupply`)) as { data: number }
+      const value = toTokenAmount(
+        PARTY[chainId || ChainId.AVALANCHE],
+        BigNumber.from(BigInt(data).toString())
+          .div(BigNumber.from('10').pow('18'))
+          .toString()
+      )
+      callback(value)
     },
-    [partyContract, chainId]
+    [chainId, apiUrl]
   )
 
-  const [totalSupply, setTotalSupply] = useState<TokenAmount>()
-
   useEffect(() => {
-    account && getTotalSupply(setTotalSupply)
-  }, [getTotalSupply, account])
+    getTotalSupply(setTotalPartySupply)
+  }, [getTotalSupply])
 
-  return totalSupply
+  return totalPartySupply
 }
 
 const usePartyTotalCirculatingSupply = () => {
