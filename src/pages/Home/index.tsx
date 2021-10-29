@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { infoClient } from '../../apollo/client'
-import { GET_BUNDLE_DATA, GET_FACTORY_DATA, GET_TOKEN_DATA } from '../../apollo/queries'
+import { GET_FACTORY_DATA } from '../../apollo/queries'
 import FarmsIcon from '../../assets/svg/grid-item-header-farms-staking.svg'
 import StatsIcon from '../../assets/svg/grid-item-header-stats.svg'
 import BannerBackground from '../../assets/svg/home-banner-background.svg'
@@ -24,10 +24,9 @@ import TrentDark from '../../assets/svg/home-hero-trent-dark.svg'
 import Trent from '../../assets/svg/home-hero-trent.svg'
 import { ButtonTertiary } from '../../components/Button'
 import { WithLockedValue } from '../../components/WithLockedValue'
-import { ANALYTICS_PAGE, JACUZZI_ADDRESS, PARTY, USDT } from '../../constants'
+import { ANALYTICS_PAGE, PARTY, USDT } from '../../constants'
 import { usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
-import { usePartyContract } from '../../hooks/useContract'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTotalPartyEarned } from '../../state/stake/hooks'
 import { useIsDarkMode } from '../../state/user/hooks'
@@ -120,52 +119,50 @@ const useAnalyticsData = () => {
   return { id, pairCount, totalVolumeETH, totalVolumeUSD, totalLiquidityETH, totalLiquidityUSD }
 }
 
-const queryBundleData = async (callback: (params: any) => void) => {
-  const { data } = await infoClient.query({
-    query: GET_BUNDLE_DATA
-  })
+// const queryBundleData = async (callback: (params: any) => void) => {
+//   const { data } = await infoClient.query({
+//     query: GET_BUNDLE_DATA
+//   })
 
-  callback(data?.bundles[0])
-  return data?.bundles[0]
-}
+//   callback(data?.bundles[0])
+//   return data?.bundles[0]
+// }
 
-const useBundleData = () => {
-  const [{ ethPrice }, setBundleData] = useState<{ ethPrice: string }>({ ethPrice: '0' })
+// const useBundleData = () => {
+//   const [{ ethPrice }, setBundleData] = useState<{ ethPrice: string }>({ ethPrice: '0' })
 
-  useEffect(() => {
-    queryBundleData(setBundleData)
-  }, [])
+//   useEffect(() => {
+//     queryBundleData(setBundleData)
+//   }, [])
 
-  return { ethPrice }
-}
+//   return { ethPrice }
+// }
 
-const queryTokenData = async (token: Token, callback: (params: any) => void) => {
-  const { data } = await infoClient.query({
-    query: GET_TOKEN_DATA,
-    variables: {
-      address: token.address.toLowerCase()
-    }
-  })
-  callback(data.token || { derivedETH: '1' })
-  return data
-}
+// const queryTokenData = async (token: Token, callback: (params: any) => void) => {
+//   const { data } = await infoClient.query({
+//     query: GET_TOKEN_DATA,
+//     variables: {
+//       address: token.address.toLowerCase()
+//     }
+//   })
+//   callback(data.token || { derivedETH: '1' })
+//   return data
+// }
 
-const useTokenData = (token: Token) => {
-  const [{ derivedETH }, setTokenData] = useState<{ derivedETH: string }>({ derivedETH: '' })
+// const useTokenData = (token: Token) => {
+//   const [{ derivedETH }, setTokenData] = useState<{ derivedETH: string }>({ derivedETH: '' })
 
-  useEffect(() => {
-    queryTokenData(token, setTokenData)
-  }, [token])
+//   useEffect(() => {
+//     queryTokenData(token, setTokenData)
+//   }, [token])
 
-  return { derivedETH }
-}
+//   return { derivedETH }
+// }
 
 const useJacuzziInfo = () => {
-  const { chainId, account } = useActiveWeb3React()
-  const partyContract = usePartyContract()
-  const { ethPrice } = useBundleData()
-  const { derivedETH } = useTokenData(PARTY[chainId ? chainId : ChainId.AVALANCHE])
-  const [jacuzziBalance, setJacuzziBalance] = useState<BigNumber>()
+  const { chainId } = useActiveWeb3React()
+  const { REACT_APP_API_URL: apiUrl } = process.env
+
   const [{ totalPartyInJacuzzi, totalPartyInJacuzziWAVAX, totalPartyInJacuzziUSD }, setJacuzziInfo] = useState<{
     totalPartyInJacuzzi: TokenAmount
     totalPartyInJacuzziWAVAX: TokenAmount
@@ -178,48 +175,25 @@ const useJacuzziInfo = () => {
 
   const getJacuzziBalance = useCallback(
     async (callback: (params: any) => void) => {
-      const jacuzziBalance = await partyContract?.balanceOf(JACUZZI_ADDRESS[chainId || ChainId.AVALANCHE])
-      callback(jacuzziBalance)
-      return jacuzziBalance
+      const {
+        data: { totalPartyInJacuzzi, totalPartyInJacuzziUSD, totalPartyInJacuzziWAVAX }
+      } = (await axios.get(`${apiUrl}party/jacuzzi`)) as { data: any }
+      callback({
+        totalPartyInJacuzzi: new TokenAmount(PARTY[chainId ? chainId : ChainId.AVALANCHE], totalPartyInJacuzzi),
+        totalPartyInJacuzziUSD: new TokenAmount(USDT[chainId ? chainId : ChainId.AVALANCHE], totalPartyInJacuzziUSD),
+        totalPartyInJacuzziWAVAX: new TokenAmount(
+          WAVAX[chainId ? chainId : ChainId.AVALANCHE],
+          totalPartyInJacuzziWAVAX
+        )
+      })
+      return {}
     },
-    [partyContract, chainId]
+    [apiUrl, chainId]
   )
 
   useEffect(() => {
-    partyContract && account && getJacuzziBalance(setJacuzziBalance)
-  }, [partyContract, account, getJacuzziBalance])
-
-  useEffect(() => {
-    if (ethPrice && derivedETH && jacuzziBalance) {
-      const derivedETHBN = utils.parseUnits(derivedETH.substring(0, 6), 6)
-      const ethPriceBN = utils.parseUnits(ethPrice.substring(0, 6), 6)
-      const totalPartyInJacuzzi = new TokenAmount(
-        PARTY[chainId ? chainId : ChainId.AVALANCHE],
-        jacuzziBalance.toString()
-      )
-      const totalPartyInJacuzziWAVAX = new TokenAmount(
-        WAVAX[chainId ? chainId : ChainId.AVALANCHE],
-        jacuzziBalance
-          .mul(derivedETHBN)
-          .div(BigNumber.from('10').pow('6'))
-          .toString()
-      )
-      const totalPartyInJacuzziUSD = new TokenAmount(
-        USDT[chainId ? chainId : ChainId.AVALANCHE],
-        jacuzziBalance
-          .mul(derivedETHBN)
-          .mul(ethPriceBN)
-          .div(BigNumber.from('10').pow('24'))
-          .toString()
-      )
-
-      setJacuzziInfo({
-        totalPartyInJacuzzi,
-        totalPartyInJacuzziWAVAX,
-        totalPartyInJacuzziUSD
-      })
-    }
-  }, [ethPrice, derivedETH, jacuzziBalance, chainId])
+    getJacuzziBalance(setJacuzziInfo)
+  }, [getJacuzziBalance])
 
   return { totalPartyInJacuzzi, totalPartyInJacuzziWAVAX, totalPartyInJacuzziUSD }
 }
