@@ -257,7 +257,7 @@ const usePartyTotalCirculatingSupply = () => {
 
   useEffect(() => {
     const getCirculatingSupply = async (callback: (value: any) => void) => {
-      const { data } = (await axios.get(`${apiUrl}party/circulating`)) as { data: number }
+      const { data } = (await axios.get(`${apiUrl}party/circulating?asUint256=true`)) as { data: number }
       const value = toTokenAmount(
         PARTY[chainId || ChainId.AVALANCHE],
         BigNumber.from(BigInt(data).toString())
