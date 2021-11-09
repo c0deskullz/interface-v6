@@ -81,12 +81,15 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `
 
-export function VersionTabs({ active, pathname }: { active: 'v1' | 'v2'; pathname: string }) {
+export function VersionTabs({ active, pathname }: { active: 'v1' | 'v2' | 'boosted'; pathname: string }) {
   return (
-    <Tabs width="10rem">
-      <StyledExternalLink id={`v2-nav-link`} isActive={active === 'v2'}>
+    <Tabs width="20rem">
+      <StyledNavLink id={`boosted-nav-link`} to={'/party/3'} isActive={() => active === 'boosted'}>
+        {'Boosted'}
+      </StyledNavLink>
+      <StyledNavLink id={`v2-nav-link`} to={'/party/2'} isActive={() => active === 'v2'}>
         {'V2'}
-      </StyledExternalLink>
+      </StyledNavLink>
       <StyledExternalLink id={`v1-nav-link`} href={V1_PAGE + pathname} isActive={active === 'v1'}>
         {'V1'}
       </StyledExternalLink>

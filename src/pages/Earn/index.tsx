@@ -1,5 +1,5 @@
 import { ChainId, JSBI } from '@partyswap-libs/sdk'
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import imageLeftDark from '../../assets/svg/pools-hero-left-dark.svg'
@@ -32,6 +32,19 @@ const LoaderWrapper = styled.div`
   svg {
     width: 2rem;
     height: 2rem;
+  }
+`
+
+const Hero = styled.div`
+  background: ${({ theme }) => theme.gradient1};
+  position: relative;
+
+  .version-tabs {
+    position: absolute;
+    width: 100%;
+    top: auto;
+    bottom: 5%;
+    z-index: 15;
   }
 `
 
@@ -101,18 +114,8 @@ const fetchPoolAprs = async (
   }
 }
 
-const Hero = styled.div`
-  background: ${({ theme }) => theme.gradient1};
-  position: relative;
-
-  .version-tabs {
-    position: absolute;
-    width: 100%;
-    top: auto;
-    bottom: 5%;
-    z-index: 15;
-  }
-`
+type StakingVersion = 'v1' | 'v2' | 'boosted'
+const activeTab: StakingVersion[] = ['v1', 'v2', 'boosted']
 
 export default function Earn({
   match: {
@@ -120,8 +123,9 @@ export default function Earn({
   }
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
-  const stakingInfos = useStakingInfo(Number(version))
-  const poolCards = useRef<
+  const stakingVersionIndex = Number(version) <= 1 ? 1 : Number(version) - 1
+  const stakingInfos = useStakingInfo(stakingVersionIndex, undefined, { once: true })
+  const [poolCards, setPoolCards] = useState<
     {
       stakingInfo: StakingInfo
       version: string
@@ -129,28 +133,18 @@ export default function Earn({
     }[]
   >([])
 
-  const setPoolCards = useCallback(results => {
-    poolCards.current = results
-  }, [])
-  const [poolsLength, setPoolsLength] = useState<number>(0)
-
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
   const [currentStakingPool, setCurrentStakingPool] = useState<StakingInfo | undefined>()
 
   useEffect(() => {
-    if (stakingInfos.length && poolsLength !== stakingInfos.length) {
-      const updatePoolCards = (results: ReactNode[]) => {
-        setPoolCards(results)
-        setPoolsLength(results.length)
+    setPoolCards([])
+    fetchPoolAprs(chainId, stakingInfos, setPoolCards, {
+      onClickClaim: stakingInfo => {
+        setCurrentStakingPool(stakingInfo)
+        setShowClaimRewardModal(true)
       }
-      fetchPoolAprs(chainId, stakingInfos, updatePoolCards, {
-        onClickClaim: stakingInfo => {
-          setCurrentStakingPool(stakingInfo)
-          setShowClaimRewardModal(true)
-        }
-      })
-    }
-  }, [stakingInfos, setPoolCards, chainId, poolsLength])
+    })
+  }, [chainId, stakingInfos])
 
   const stakingRewardsExist = Boolean(
     typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId || ChainId.AVALANCHE]?.length ?? 0) > 0
@@ -181,7 +175,7 @@ export default function Earn({
           </div>
         </div>
         <div className="version-tabs">
-          <VersionTabs active={'v2'} pathname="/party/1" />
+          <VersionTabs active={activeTab[stakingVersionIndex]} pathname="/party/1" />
         </div>
         <img
           src={isDarkMode ? imageLeftDark : imageLeft}
@@ -195,14 +189,14 @@ export default function Earn({
         />
       </Hero>
 
-      {stakingRewardsExist && poolCards?.current.length === 0 ? (
+      {stakingRewardsExist && poolCards?.length === 0 ? (
         <LoaderWrapper>
           <Loader style={{ margin: 'auto' }} />
         </LoaderWrapper>
       ) : !stakingRewardsExist ? (
         'No active rewards'
       ) : (
-        <PoolsGrid pools={poolCards.current} />
+        <PoolsGrid pools={poolCards} />
       )}
     </Wrapper>
   )
