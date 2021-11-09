@@ -8,7 +8,7 @@ import imageRightDark from '../../assets/svg/pools-hero-right-dark.svg'
 import imageRight from '../../assets/svg/pools-hero-right.svg'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
 import Loader from '../../components/Loader'
-import { VersionTabs } from '../../components/NavigationTabs'
+import { EarnVersionTabs } from '../../components/NavigationTabs'
 import PoolsGrid from '../../components/PoolsGrid'
 import PoolsGridItem from '../../components/PoolsGrid/Item'
 import { useActiveWeb3React } from '../../hooks'
@@ -56,6 +56,7 @@ const fetchPoolAprs = async (
     onClickClaim: (stakingInfo: StakingInfo) => void
   }
 ) => {
+  callback([])
   const results = await Promise.all(
     stakingInfos
       ?.sort(function(info_a, info_b) {
@@ -123,7 +124,7 @@ export default function Earn({
   }
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
-  const stakingVersionIndex = Number(version) <= 1 ? 1 : Number(version) - 1
+  const [stakingVersionIndex, setStakingVersionIndex] = useState<number>(0)
   const stakingInfos = useStakingInfo(stakingVersionIndex, undefined, { once: true })
   const [poolCards, setPoolCards] = useState<
     {
@@ -137,7 +138,10 @@ export default function Earn({
   const [currentStakingPool, setCurrentStakingPool] = useState<StakingInfo | undefined>()
 
   useEffect(() => {
-    setPoolCards([])
+    setStakingVersionIndex(Number(version) <= 1 ? 1 : Number(version) - 1)
+  }, [version])
+
+  useEffect(() => {
     fetchPoolAprs(chainId, stakingInfos, setPoolCards, {
       onClickClaim: stakingInfo => {
         setCurrentStakingPool(stakingInfo)
@@ -175,7 +179,7 @@ export default function Earn({
           </div>
         </div>
         <div className="version-tabs">
-          <VersionTabs active={activeTab[stakingVersionIndex]} pathname="/party/1" />
+          <EarnVersionTabs active={activeTab[stakingVersionIndex]} />
         </div>
         <img
           src={isDarkMode ? imageLeftDark : imageLeft}
