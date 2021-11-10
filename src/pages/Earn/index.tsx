@@ -107,7 +107,7 @@ const fetchPoolAprs = async (
           <PoolsGridItem
             apr={apr}
             stakingInfo={stakingInfo}
-            version={boosted ? '3' : '1'}
+            version={boosted ? '2' : '1'}
             key={`${currency0.symbol}-${currency1.symbol}`}
             onClickClaim={props.onClickClaim}
           />
