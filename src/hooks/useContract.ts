@@ -6,6 +6,7 @@ import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/
 import { abi as GOVERNANCE_ABI } from '@pangolindex/governance/artifacts/contracts/GovernorAlpha.sol/GovernorAlpha.json'
 import { abi as PARTY_ABI } from 'yay-token/build/contracts/PartyToken.json'
 import { abi as LIQUIDITY_POOL_MANAGER_ABI } from '@partyswap-libs/party-governance/build/contracts/LiquidityPoolManager.json'
+import { abi as BOOSTED_LIQUIDITY_POOL_MANAGER_ABI } from '../constants/abis/boosted-lpm.json'
 import { abi as JACCUZZI_ABI } from '@partyswap-libs/party-jacuzzi/build/contracts/PartyJacuzzi.json'
 import { useMemo } from 'react'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
@@ -17,7 +18,12 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { AIRDROP_ADDRESS, JACUZZI_ADDRESS, LIQUIDITY_POOL_MANAGER_ADDRESS } from '../constants'
+import {
+  AIRDROP_ADDRESS,
+  BOOSTED_LIQUIDITY_POOL_MANAGER_ADDRESS,
+  JACUZZI_ADDRESS,
+  LIQUIDITY_POOL_MANAGER_ADDRESS
+} from '../constants'
 import { GOVERNANCE_ADDRESS, PARTY } from '../constants'
 
 // returns null on errors
@@ -97,7 +103,15 @@ export function useJacuzziContract() {
   return useContract(chainId ? JACUZZI_ADDRESS[chainId] : undefined, JACCUZZI_ABI)
 }
 
-export function useLiquidityPoolManagerContract() {
+export function useLiquidityPoolManagerContract(boosted: boolean = false) {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? LIQUIDITY_POOL_MANAGER_ADDRESS[chainId] : undefined, LIQUIDITY_POOL_MANAGER_ABI, false)
+  return useContract(
+    chainId
+      ? boosted
+        ? BOOSTED_LIQUIDITY_POOL_MANAGER_ADDRESS[chainId]
+        : LIQUIDITY_POOL_MANAGER_ADDRESS[chainId]
+      : undefined,
+    boosted ? BOOSTED_LIQUIDITY_POOL_MANAGER_ABI : LIQUIDITY_POOL_MANAGER_ABI,
+    false
+  )
 }

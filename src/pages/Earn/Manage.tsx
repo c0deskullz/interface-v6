@@ -377,6 +377,7 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
 
   const handleDepositClick = useCallback(() => {
+    console.log(account)
     if (account) {
       setShowStakingModal(true)
     } else {

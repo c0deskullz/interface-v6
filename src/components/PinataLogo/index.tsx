@@ -38,6 +38,8 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
     switch (pinataSymbol) {
       case 'AVAX-PARTY':
         return PartyAvax
+      case 'PARTY-AVAX':
+        return PartyAvax
       case 'AVAX-aaBLOCK':
         return AvaxAaBlock
       case 'AVAX-AVME':
@@ -97,7 +99,7 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
       case 'USDT.e-USDC.e':
         return UsdtUsdc
       default:
-        // console.log(pinataSymbol)
+        console.log(pinataSymbol, ': SYMBOL')
         return PartyUsdt
     }
   }, [pinataSymbol])

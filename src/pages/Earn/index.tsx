@@ -52,6 +52,7 @@ const fetchPoolAprs = async (
   chainId: ChainId | undefined,
   stakingInfos: StakingInfo[],
   callback: (arr: any[]) => any,
+  boosted: boolean,
   props: {
     onClickClaim: (stakingInfo: StakingInfo) => void
   }
@@ -84,7 +85,8 @@ const fetchPoolAprs = async (
       })
       .map(stakingInfo => {
         return fetch(
-          `${process.env.REACT_APP_APR_API}${stakingInfo.stakingRewardAddress}/${chainId || ChainId.AVALANCHE}`
+          `${process.env.REACT_APP_APR_API}${boosted ? 'b/' : ''}${stakingInfo.stakingRewardAddress}/${chainId ||
+            ChainId.AVALANCHE}`
         )
           .then(res => res.text())
           .then(res => ({ apr: res, ...stakingInfo }))
@@ -105,7 +107,7 @@ const fetchPoolAprs = async (
           <PoolsGridItem
             apr={apr}
             stakingInfo={stakingInfo}
-            version={'1'}
+            version={boosted ? '3' : '1'}
             key={`${currency0.symbol}-${currency1.symbol}`}
             onClickClaim={props.onClickClaim}
           />
@@ -142,13 +144,13 @@ export default function Earn({
   }, [version])
 
   useEffect(() => {
-    fetchPoolAprs(chainId, stakingInfos, setPoolCards, {
+    fetchPoolAprs(chainId, stakingInfos, setPoolCards, activeTab[stakingVersionIndex] === 'boosted', {
       onClickClaim: stakingInfo => {
         setCurrentStakingPool(stakingInfo)
         setShowClaimRewardModal(true)
       }
     })
-  }, [chainId, stakingInfos])
+  }, [chainId, stakingInfos, stakingVersionIndex])
 
   const stakingRewardsExist = Boolean(
     typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId || ChainId.AVALANCHE]?.length ?? 0) > 0
