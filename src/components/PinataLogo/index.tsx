@@ -99,7 +99,6 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
       case 'USDT.e-USDC.e':
         return UsdtUsdc
       default:
-        console.log(pinataSymbol, ': SYMBOL')
         return PartyUsdt
     }
   }, [pinataSymbol])
