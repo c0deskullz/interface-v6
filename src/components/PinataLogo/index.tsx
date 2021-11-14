@@ -1,30 +1,34 @@
 import React, { useMemo } from 'react'
 import {
-  AvaxSherpa,
-  AvaxYak,
   AvaxAaBlock,
+  AvaxApex,
   AvaxAvme,
   AvaxBag,
+  AvaxBenqi,
+  AvaxDai,
   AvaxDoge,
   AvaxElk,
   AvaxEth,
   AvaxFraxi,
+  AvaxGb,
+  AvaxHusky,
   AvaxLink,
+  AvaxMim,
   AvaxPefi,
   AvaxPng,
+  AvaxSherpa,
+  AvaxShibx,
   AvaxSno,
   AvaxSpore,
+  AvaxUSDCe,
+  AvaxUsdt,
   AvaxWbtc,
   AvaxXava,
+  AvaxYak,
   AvaxZero,
-  AvaxBenqi,
   PartyAvax,
   PartyDai,
   PartyUsdt,
-  AvaxUsdt,
-  AvaxGb,
-  AvaxDai,
-  AvaxUSDCe,
   UsdtBusd,
   UsdtUsdc
 } from '../../assets/images/pinatas'
@@ -98,6 +102,18 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return UsdtBusd
       case 'USDT.e-USDC.e':
         return UsdtUsdc
+      case 'APE-X-AVAX':
+      case 'AVAX-APE-X':
+        return AvaxApex
+      case 'HUSKY-AVAX':
+      case 'AVAX-HUSKY':
+        return AvaxHusky
+      case 'MIM-AVAX':
+      case 'AVAX-MIM':
+        return AvaxMim
+      case 'SHIBX-AVAX':
+      case 'AVAX-SHIBX':
+        return AvaxShibx
       default:
         return PartyUsdt
     }
