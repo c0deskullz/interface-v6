@@ -420,7 +420,7 @@ export default function Jacuzzi() {
                     Total xPARTY Supply: <span>{displayTotalSupply}</span>
                   </p>
                   <a
-                    href="https://cchain.explorer.avax.network/tokens/0x99c904CC0E919867404B49a804d30473E8344b1C/token-transfers"
+                    href="https://snowtrace.io/address/0xA07d1932775f22DaeDA671812c16F859b4257363"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
