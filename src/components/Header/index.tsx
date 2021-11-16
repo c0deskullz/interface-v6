@@ -406,7 +406,7 @@ const Links = ({ className }: { className?: string }) => {
       >
         Liquidity
       </StyledNavLink>
-      <StyledNavLink id={`stake-nav-link`} to={'/party/1'}>
+      <StyledNavLink id={`stake-nav-link`} to={'/party/3'}>
         Piñatas
       </StyledNavLink>
       <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>

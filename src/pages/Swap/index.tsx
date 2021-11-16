@@ -538,7 +538,7 @@ export default function Swap() {
 
       <AdvancedSwapDetailsDropdown trade={trade} />
 
-      <Banner href="#/party/1" show={Boolean(trade)}>
+      <Banner href="#/party/3" show={Boolean(trade)}>
         <img src={BannerImage} alt="Stake GB and earn $PARTY" />
       </Banner>
     </PageWrapper>

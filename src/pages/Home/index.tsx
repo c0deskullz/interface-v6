@@ -318,7 +318,7 @@ export default function Home() {
             <p className="smallText">Welcome to the Party</p>
             <h1>The most reliable Avalanche swap yet</h1>
             {account ? (
-              <Link to="/party/1">
+              <Link to="/party/3">
                 <button className="btn">Let's hit some piñatas</button>
               </Link>
             ) : (
@@ -361,7 +361,7 @@ export default function Home() {
             </div>
             <p style={{ marginTop: 'auto' }}>
               {account ? (
-                <Link to="/party/1">
+                <Link to="/party/3">
                   <button className="btn">Claim All</button>
                 </Link>
               ) : (

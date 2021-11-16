@@ -136,7 +136,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
                   <TYPE.body fontWeight="700">
                     {partyToClaim?.toFixed(4, { groupSeparator: ',' })}{' '}
                     {partyToClaim && partyToClaim.greaterThan('0') && (
-                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/party/1">
+                      <StyledInternalLink onClick={() => setShowPngBalanceModal(false)} to="/party/3">
                         (claim)
                       </StyledInternalLink>
                     )}
