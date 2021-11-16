@@ -1,7 +1,7 @@
 import React from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { Link as HistoryLink, NavLink } from 'react-router-dom'
+import { Link as HistoryLink, NavLink, useLocation } from 'react-router-dom'
 import styled, { css, DefaultTheme } from 'styled-components'
 import { V1_PAGE } from '../../constants'
 import QuestionHelper from '../QuestionHelper'
@@ -81,17 +81,76 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `
 
-export function VersionTabs({ active, pathname }: { active: 'v1' | 'v2'; pathname: string }) {
+interface Tab {
+  name: string
+  activeCondition: boolean
+  path?: string
+  isExternalLink?: boolean
+}
+
+export function CommonTabs({ tabs, width = '20rem' }: { tabs: Tab[]; width?: string }) {
+  const { pathname } = useLocation()
+
   return (
-    <Tabs width="10rem">
-      <StyledExternalLink id={`v2-nav-link`} isActive={active === 'v2'}>
-        {'V2'}
-      </StyledExternalLink>
-      <StyledExternalLink id={`v1-nav-link`} href={V1_PAGE + pathname} isActive={active === 'v1'}>
-        {'V1'}
-      </StyledExternalLink>
+    <Tabs width={width}>
+      {tabs.map(({ name, activeCondition, path, isExternalLink }, index) =>
+        isExternalLink ? (
+          <StyledExternalLink id={`${name}-nav-link`} key={`${name}-${index}`} isActive={activeCondition} href={path}>
+            {name}
+          </StyledExternalLink>
+        ) : (
+          <StyledNavLink
+            id={`${name}-nav-link`}
+            to={path ?? pathname}
+            key={`${name}-${index}`}
+            isActive={() => activeCondition}
+          >
+            {name}
+          </StyledNavLink>
+        )
+      )}
     </Tabs>
   )
+}
+
+export function EarnVersionTabs({ active }: { active: 'v1' | 'v2' | 'boosted' }) {
+  const tabs: Tab[] = [
+    {
+      name: 'Boosted',
+      activeCondition: active === 'boosted',
+      path: '/party/3'
+    },
+    {
+      name: 'V2',
+      activeCondition: active === 'v2',
+      path: '/party/2'
+    },
+    {
+      name: 'V1',
+      activeCondition: active === 'v1',
+      isExternalLink: true,
+      path: V1_PAGE + '/party/1'
+    }
+  ]
+
+  return <CommonTabs tabs={tabs} />
+}
+
+export function VersionTabs({ active, pathname }: { active: 'v1' | 'v2'; pathname: string }) {
+  const tabs: Tab[] = [
+    {
+      name: 'V2',
+      activeCondition: active === 'v2'
+    },
+    {
+      name: 'V1',
+      activeCondition: active === 'v1',
+      isExternalLink: true,
+      path: V1_PAGE + pathname
+    }
+  ]
+
+  return <CommonTabs tabs={tabs} />
 }
 
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
