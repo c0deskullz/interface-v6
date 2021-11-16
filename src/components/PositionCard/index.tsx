@@ -259,7 +259,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <AutoColumn gap="1.5rem">
               <div className="poolsGrid-item-table">
                 <p>
-                  Pooled {currency1.symbol}:
+                  Pooled {currency0.symbol}:
                   <span>
                     {token0Deposited ? (
                       <>
@@ -272,7 +272,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   </span>
                 </p>
                 <p>
-                  Pooled {currency0.symbol}:
+                  Pooled {currency1.symbol}:
                   <span>
                     {token1Deposited ? (
                       <>
