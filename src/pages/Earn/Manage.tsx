@@ -180,6 +180,29 @@ const Warning = () => {
   )
 }
 
+const BusdDisclaimer = () => {
+  const theme = useContext(ThemeContext)
+
+  return (
+    <StyledWarning className="grid-item-accent">
+      <AlertTriangle size={24} style={{ marginRight: '8px', minWidth: 24 }} color={theme.primaryText2} />
+      <TYPE.body color={theme.text7}>
+        This pool is using a{' '}
+        <a
+          style={{
+            color: theme.primaryText2
+          }}
+          href="https://anyswap.exchange/#/bridge?bridgetoken=0x9610b01aaa57ec026001f7ec5cface51bfea0ba6"
+          target="_blank"
+        >
+          BUSD token address that you can obtain at AnySwap
+        </a>
+        .
+      </TYPE.body>
+    </StyledWarning>
+  )
+}
+
 export default function Manage({
   match: {
     params: { currencyIdA, currencyIdB, version, delisted }
@@ -191,6 +214,19 @@ export default function Manage({
   const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
   const tokenA = wrappedCurrency(currencyA ?? undefined, chainId)
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
+
+  const showBusdDisclaimer = useMemo<boolean>(() => {
+    if (
+      tokenA &&
+      tokenB &&
+      (tokenA.address === '0x9610b01AAa57Ec026001F7Ec5CFace51BfEA0bA6' ||
+        tokenB.address === '0x9610b01AAa57Ec026001F7Ec5CFace51BfEA0bA6')
+    ) {
+      return true
+    }
+
+    return false
+  }, [tokenA, tokenB])
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const stakingInfos = useStakingInfo(Number(version), stakingTokenPair)
@@ -394,6 +430,7 @@ export default function Manage({
       <PageContent gap="lg" className="poolsGrid-item">
         <div className="poolsGrid-item-content">
           {stakingInfo?.multiplier?.toString() === '0' && <Warning />}
+          {showBusdDisclaimer && <BusdDisclaimer />}
           <div className="poolsGrid-item-header">
             <div>
               <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={48} />
