@@ -194,6 +194,7 @@ const BusdDisclaimer = () => {
           }}
           href="https://anyswap.exchange/#/bridge?bridgetoken=0x9610b01aaa57ec026001f7ec5cface51bfea0ba6"
           target="_blank"
+          rel="noopener noreferrer"
         >
           BUSD token address that you can obtain at AnySwap
         </a>
