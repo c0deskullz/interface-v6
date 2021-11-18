@@ -1,16 +1,17 @@
+import { Fraction, JSBI } from '@partyswap-libs/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
 import { ReactComponent as BadgeSVG } from '../../assets/svg/badge.svg'
 import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
-import { StakingInfo } from '../../state/stake/hooks'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ChainId, Fraction, JSBI } from '@partyswap-libs/sdk'
-import PinataLogo from '../PinataLogo'
-import { StyledInternalLink } from '../../theme'
-import { currencyId } from '../../utils/currencyId'
 import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { StakingInfo } from '../../state/stake/hooks'
+import { StyledInternalLink } from '../../theme'
+import { currencyId } from '../../utils/currencyId'
+import { useSnowtraceUrl } from '../../utils/useSnowtraceUrl'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
+import PinataLogo from '../PinataLogo'
 import { WithLockedValue } from '../WithLockedValue'
 
 const Item = styled.div`
@@ -75,7 +76,7 @@ export default function PoolsGridItem({
   apr: string
   onClickClaim: (stakingInfo: StakingInfo) => void
 }) {
-  const { chainId, account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const {
     tokens,
     stakedAmount,
@@ -85,13 +86,6 @@ export default function PoolsGridItem({
     multiplier,
     stakingRewardAddress
   } = stakingInfo
-  const avascanUrl = useMemo(() => {
-    if (chainId === ChainId.FUJI) {
-      return 'https://cchain.explorer.avax-test.network/address/' + stakingRewardAddress
-    }
-
-    return 'https://cchain.explorer.avax.network/address/' + stakingRewardAddress
-  }, [stakingRewardAddress, chainId])
   const token0 = tokens[0]
   const token1 = tokens[1]
 
@@ -117,6 +111,10 @@ export default function PoolsGridItem({
       </>
     )
   }, [currency0, currency1])
+
+  const token0Url = useSnowtraceUrl(token0.address)
+  const token1Url = useSnowtraceUrl(token1.address)
+  const pinataUrl = useSnowtraceUrl(stakingRewardAddress)
 
   return (
     <Item className="poolsGrid-item">
@@ -196,8 +194,14 @@ export default function PoolsGridItem({
               Total Staked In WAVAX:{' '}
               <span>{`${totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}</span>
             </p>
-            <a href={avascanUrl} target="_blank" rel="noopener noreferrer">
-              View Contract <ExtLink />
+            <a href={token0Url} target="_blank" rel="noopener noreferrer">
+              View {token0.symbol} Contract <ExtLink />
+            </a>
+            <a href={token1Url} target="_blank" rel="noopener noreferrer">
+              View {token1.symbol} Contract <ExtLink />
+            </a>
+            <a href={pinataUrl} target="_blank" rel="noopener noreferrer">
+              View Piñata Contract <ExtLink />
             </a>
           </div>
         </details>
