@@ -1,39 +1,41 @@
-import React, { useCallback, useState, useMemo, useContext } from 'react'
-import { AutoColumn } from '../../components/Column'
+import { CAVAX, ChainId, JSBI, Token, TokenAmount, WAVAX } from '@partyswap-libs/sdk'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
+import { AlertTriangle } from 'react-feather'
+import { Link, RouteComponentProps } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
-import { Link } from 'react-router-dom'
-
-import { JSBI, TokenAmount, CAVAX, Token, WAVAX, ChainId } from '@partyswap-libs/sdk'
-import { RouteComponentProps } from 'react-router-dom'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
-import { useCurrency } from '../../hooks/Tokens'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import { TYPE } from '../../theme'
-
-import { RowBetween } from '../../components/Row'
-import { DataCard } from '../../components/earn/styled'
-import { ButtonPrimary } from '../../components/Button'
-import StakingModal from '../../components/earn/StakingModal'
-import { useStakingInfo } from '../../state/stake/hooks'
-import UnstakingModal from '../../components/earn/UnstakingModal'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { useActiveWeb3React } from '../../hooks'
-import { useColor } from '../../hooks/useColor'
 import { CountUp } from 'use-count-up'
-
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
-import { currencyId } from '../../utils/currencyId'
-import { useTotalSupply } from '../../data/TotalSupply'
-import { usePair } from '../../data/Reserves'
-import usePrevious from '../../hooks/usePrevious'
+import { ReactComponent as ArrowDown } from '../../assets/svg/arrow-down.svg'
+import { ReactComponent as ExternalLinkSVG } from '../../assets/svg/external-link.svg'
+import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import pattern from '../../assets/svg/swap-pattern.svg'
+import { ButtonPrimary } from '../../components/Button'
+import { AutoColumn } from '../../components/Column'
+import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
+import StakingModal from '../../components/earn/StakingModal'
+import { DataCard } from '../../components/earn/styled'
+import UnstakingModal from '../../components/earn/UnstakingModal'
+import { RowBetween } from '../../components/Row'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
 import { BIG_INT_ZERO, PARTY, USDT } from '../../constants'
-
-import pattern from '../../assets/svg/swap-pattern.svg'
-import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
+import { usePair } from '../../data/Reserves'
+import { useTotalSupply } from '../../data/TotalSupply'
+import { useActiveWeb3React } from '../../hooks'
+import { useCurrency } from '../../hooks/Tokens'
+import { useColor } from '../../hooks/useColor'
+import usePrevious from '../../hooks/usePrevious'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { useStakingInfo } from '../../state/stake/hooks'
 import { useIsDarkMode } from '../../state/user/hooks'
-import { AlertTriangle } from 'react-feather'
+import { useTokenBalance } from '../../state/wallet/hooks'
+import { TYPE } from '../../theme'
+import { currencyId } from '../../utils/currencyId'
+import { useSnowtraceUrl } from '../../utils/useSnowtraceUrl'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
+
+const ExtLink = styled(ExternalLinkSVG)`
+  margin-left: 0.125em;
+`
 
 const PageWrapper = styled.div`
   position: relative;
@@ -96,6 +98,77 @@ const PageContent = styled(AutoColumn)`
       grid-template-columns: 1fr;
       gap: 1rem;
     }
+  }
+`
+
+const PinataDetails = styled.div`
+  border-radius: 1.25rem;
+  background-color: ${({ theme }) => theme.surface5};
+  .grid-item-details-btn svg {
+    transition: 0.25s transform ease;
+  }
+  .grid-item-details-btn {
+    color: ${({ theme }) => theme.primaryText3};
+  }
+  .grid-item-details-btn svg {
+    fill: ${({ theme }) => theme.primaryText3};
+  }
+  .poolsGrid-item-table span {
+    color: ${({ theme }) => theme.text1};
+  }
+  details[open] span svg {
+    transform: rotate(180deg);
+    transition: 0.25s transform ease;
+  }
+  summary:focus {
+    outline: none;
+  }
+  summary::marker,
+  summary::-webkit-details-marker {
+    content: '';
+    display: none;
+  }
+  .poolsGrid-item-table {
+    margin-top: 1rem;
+  }
+  .poolsGrid-item-table p {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .poolsGrid-item-table a {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: auto;
+    margin-bottom: 0.25rem;
+    color: ${({ theme }) => theme.primaryText3};
+  }
+  .poolsGrid-item-table a:hover {
+    text-decoration: underline;
+  }
+  .poolsGrid-item-table a svg {
+    width: 1rem;
+  }
+  .grid-item-details-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: auto;
+  }
+
+  @media (min-width: 550px) {
+    padding: 1.5rem 2rem;
   }
 `
 
@@ -424,6 +497,10 @@ export default function Manage({
 
   const isDarkMode = useIsDarkMode()
 
+  const tokenAUrl = useSnowtraceUrl(tokenA?.address)
+  const tokenBUrl = useSnowtraceUrl(tokenB?.address)
+  const pinataUrl = useSnowtraceUrl(stakingInfo?.stakingRewardAddress)
+
   return (
     <PageWrapper>
       {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
@@ -549,6 +626,32 @@ export default function Manage({
               <TYPE.subHeader>{userLiquidityUnstaked.toSignificant(6)} xPARTY tokens available</TYPE.subHeader>
             )}
           </PositionInfo>
+
+          <PinataDetails>
+            <details>
+              <summary>
+                <span className="grid-item-details-btn">
+                  Details
+                  <ArrowDown />
+                </span>
+              </summary>
+              <div className="poolsGrid-item-table">
+                {!!tokenA && (
+                  <a href={tokenAUrl} target="_blank" rel="noopener noreferrer">
+                    View {tokenA.symbol} Contract <ExtLink />
+                  </a>
+                )}
+                {!!tokenB && (
+                  <a href={tokenBUrl} target="_blank" rel="noopener noreferrer">
+                    View {tokenB.symbol} Contract <ExtLink />
+                  </a>
+                )}
+                <a href={pinataUrl} target="_blank" rel="noopener noreferrer">
+                  View Piñata Contract <ExtLink />
+                </a>
+              </div>
+            </details>
+          </PinataDetails>
         </div>
 
         {stakingInfo && (

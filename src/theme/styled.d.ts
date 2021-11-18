@@ -1,4 +1,4 @@
-import { FlattenSimpleInterpolation, ThemedCssFunction } from 'styled-components'
+import 'styled-components'
 
 export type Color = string
 export interface Colors {
@@ -78,9 +78,16 @@ export interface Grids {
   lg: number
 }
 
+export interface FontSizes {
+  sm?: string
+  md?: string
+  xl?: string
+}
+
 declare module 'styled-components' {
   export interface DefaultTheme extends Colors {
     grids: Grids
+    fontSize: FontSizes
 
     // shadows
     shadow1: string

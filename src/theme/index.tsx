@@ -1,13 +1,13 @@
 import { transparentize } from 'polished'
 import React, { useMemo } from 'react'
+import { Text, TextProps } from 'rebass'
 import styled, {
-  ThemeProvider as StyledComponentsThemeProvider,
   createGlobalStyle,
   css,
-  DefaultTheme
+  DefaultTheme,
+  ThemeProvider as StyledComponentsThemeProvider
 } from 'styled-components'
 import { useIsDarkMode } from '../state/user/hooks'
-import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 
 export * from './components'
@@ -117,6 +117,10 @@ export function theme(darkMode: boolean): DefaultTheme {
       sm: 8,
       md: 12,
       lg: 24
+    },
+
+    fontSize: {
+      sm: '0.9375rem'
     },
 
     //shadows
