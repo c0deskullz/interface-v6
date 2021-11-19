@@ -18,6 +18,7 @@ import {
   AvaxPng,
   AvaxSherpa,
   AvaxShibx,
+  AvaxSing,
   AvaxSno,
   AvaxSpore,
   AvaxUSDCe,
@@ -88,6 +89,8 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return AvaxYak
       case 'AVAX-USDT.e':
         return AvaxUsdt
+      case 'AVAX-SING':
+        return AvaxSing
       case 'AVAX-QI':
         return AvaxBenqi
       case 'PARTY-DAI':
