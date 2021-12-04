@@ -348,6 +348,11 @@ export const SING: { [chainId in ChainId]: Token } = {
   )
 }
 
+export const WOLFI: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WOLFI', 'WOLFI'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xd03392cf4f60fab2fbea38b7d2b826c70b0208a0', 18, 'WOLFI', 'WOLFI')
+}
+
 export const STAKING_V1: {
   tokens: [Token, Token]
   stakingRewardAddress: string
@@ -580,6 +585,12 @@ export const STAKING_BOOSTED: {
     tokens: [WAVAX[ChainId.AVALANCHE], SING[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x1c24273792d0C8D5638D61eAAd2e2f76Ca5437F4',
     pair: '0x780817B719c3534F3515965E8319fe65515bA027',
+    delisted: false
+  },
+  {
+    tokens: [WAVAX[ChainId.AVALANCHE], WOLFI[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x16A5429eA0d687d288e1f900ea579C482bf61992',
+    pair: '0x42BFfA3b8B70F8d3Fff4838BB87F1802575bBd36',
     delisted: false
   },
   {
