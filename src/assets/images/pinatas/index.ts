@@ -24,6 +24,7 @@ import AvaxWbtc from './AVAX-WBTC.png'
 import AvaxXava from './AVAX-XAVA.png'
 import AvaxYak from './AVAX-YAK.png'
 import AvaxZero from './AVAX-ZERO.png'
+import AvaxWolfi from './AVAX-WOLFI.png'
 import AvaxSing from './AVAX-SING.png'
 import PartyAvax from './PARTY-AVAX.png'
 import PartyUsdt from './PARTY-USDTv2.png'
@@ -53,6 +54,7 @@ export {
   AvaxWbtc,
   AvaxXava,
   AvaxZero,
+  AvaxWolfi,
   AvaxBenqi,
   AvaxUSDCe,
   PartyAvax,
