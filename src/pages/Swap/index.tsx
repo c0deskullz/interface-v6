@@ -37,10 +37,13 @@ import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/swap/actions'
 import {
+  useAggregatorTokenAllowance,
+  useCurrenciesAddresses,
   useDefaultsFromURLSearch,
   useDerivedSwapInfo,
   useSwapActionHandlers,
-  useSwapState
+  useSwapState,
+  useTokenIsAvailableInAggregator
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useIsDarkMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -141,6 +144,40 @@ export default function Swap() {
     currencies,
     inputError: swapInputError
   } = useDerivedSwapInfo()
+
+  // TODO: configure approval with buttons
+  // TODO: swap after approval
+  // AGGREGATOR
+
+  const inputToken = useCurrenciesAddresses(currencies.INPUT)
+  const outputToken = useCurrenciesAddresses(currencies.OUTPUT)
+  const inputIsAvailableInAggregator = useTokenIsAvailableInAggregator(inputToken)
+  const outputIsAvailableInAggregator = useTokenIsAvailableInAggregator(outputToken)
+  // const bothTokensAreAvailableInAggregator = useMemo(
+  //   () => inputIsAvailableInAggregator && outputIsAvailableInAggregator,
+  //   [inputIsAvailableInAggregator, outputIsAvailableInAggregator]
+  // )
+  const inputAllowance = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
+  const outputAllowance = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
+
+  useEffect(() => {
+    // console.log(bothTokensAreAvailableInAggregator)
+    console.log(inputToken)
+    console.log(outputToken)
+    console.log(inputIsAvailableInAggregator, ': WHA')
+    console.log(outputIsAvailableInAggregator, ': AHA')
+    console.log(inputAllowance, 'input allowance!!!!')
+    console.log(outputAllowance, 'output allowance!!')
+  }, [
+    inputToken,
+    outputToken,
+    inputIsAvailableInAggregator,
+    outputIsAvailableInAggregator,
+    inputAllowance,
+    outputAllowance
+  ])
+  // END AGGREGATOR
+
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],

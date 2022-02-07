@@ -16,6 +16,9 @@ export const TOKEN_MIGRATION_PAGE = 'https://migrator.partyswap.io/'
 export const NFTS_PAGE = 'https://nfts.partyswap.io/'
 export const V1_PAGE = 'https://old.partyswap.io/#'
 
+export const aggregatorBroadcastApiUrl = (chainId: string) => 'https://tx-gateway.1inch.io/v1.1/' + chainId + '/broadcast'
+export const ONEINCH_BASE_URL = 'https://api.1inch.io/v4.0/'
+
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const GOVERNANCE_ADDRESS = '0xb0Ff2b1047d9E8d294c2eD798faE3fA817F43Ee1'
