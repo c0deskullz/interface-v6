@@ -37,7 +37,7 @@ const Item = styled.div`
 
     .poolsGrid-item-header-features span:nth-child(1) {
       color: #555555;
-      border-color: #555555;
+      border-color: rgba(85, 85, 85, 0.5);
       background-color: transparent;
     }
 
