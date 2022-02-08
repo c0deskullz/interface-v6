@@ -599,6 +599,12 @@ export const STAKING_BOOSTED: {
     stakingRewardAddress: '0xF5AF5F695EfA6cfADF095a662E541248cE6b4FFE',
     pair: '0x067ca3c3baf95804e5073c102fa7e2279e0e71d8',
     delisted: false
+  },
+  {
+    tokens: [USDT[ChainId.AVALANCHE], USDC[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x6cE26E7225e7C85DAACe05FD93459AD05981F543',
+    pair: '0xe1669d006c3fa02636a30809a77eff65075ea92f',
+    delisted: false
   }
 ]
 
