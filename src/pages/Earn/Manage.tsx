@@ -304,7 +304,7 @@ export default function Manage({
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const stakingInfos = useStakingInfo(Number(version), stakingTokenPair)
-  const stakingInfo = delisted === 'true' ? stakingInfos?.[1] : stakingInfos?.[0]
+  const stakingInfo = delisted === 'true' ? stakingInfos?.[1] || stakingInfos?.[0] : stakingInfos?.[0]
 
   const rewardRate = useMemo(() => {
     if (stakingInfo) {
@@ -487,7 +487,6 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
 
   const handleDepositClick = useCallback(() => {
-    console.log(account)
     if (account) {
       setShowStakingModal(true)
     } else {
@@ -603,11 +602,11 @@ export default function Manage({
               <RowBetween>
                 <>
                   {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? (
-                    <ButtonPrimary width="48%" onClick={handleDepositClick}>
+                    <ButtonPrimary width="48%" onClick={handleDepositClick} disabled={delisted === 'true'}>
                       Deposit
                     </ButtonPrimary>
                   ) : (
-                    <ButtonPrimary width="100%" onClick={handleDepositClick}>
+                    <ButtonPrimary width="100%" onClick={handleDepositClick} disabled={delisted === 'true'}>
                       Deposit xPARTY Tokens
                     </ButtonPrimary>
                   )}

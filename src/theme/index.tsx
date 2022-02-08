@@ -97,6 +97,9 @@ export function colors(darkMode: boolean): Colors {
     surface5: darkMode ? '#262652' : '#f6f6ff',
     surface6: darkMode ? '#25224b' : '#ffffff',
 
+    // disabled gray surface
+    disabledSurface: darkMode ? '#ababab' : '#ababab',
+
     // other
     red1: '#FF6871',
     red2: '#F82D3A',
