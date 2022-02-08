@@ -209,7 +209,7 @@ export default function PoolsGridItem({
             {isStaking ? (
               <button className="btn">Manage</button>
             ) : (
-              <button className="btn btn-secondary">Deposit</button>
+              multiplier?.toString() !== '0' && <button className="btn btn-secondary">Deposit</button>
             )}
           </StyledInternalLink>
         ) : (
