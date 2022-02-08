@@ -61,6 +61,8 @@ export interface Colors {
   surface5: Color
   surface6: Color
 
+  disabledSurface: Color
+
   // other
   red1: Color
   red2: Color

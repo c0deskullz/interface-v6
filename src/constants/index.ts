@@ -13,6 +13,7 @@ export const LANDING_PAGE = 'https://partyswap.io/'
 export const ANALYTICS_PAGE = 'https://info.partyswap.io/'
 // TODO: update url to prod url
 export const TOKEN_MIGRATION_PAGE = 'https://migrator.partyswap.io/'
+export const NFTS_PAGE = 'https://nfts.partyswap.io/'
 export const V1_PAGE = 'https://old.partyswap.io/#'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'

@@ -6,9 +6,9 @@ import { NavLink } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { CountUp } from 'use-count-up'
-import PartySwapIcon from '../../assets/svg/partyswapIcon.svg'
-import V2Icon from '../../assets/svg/v2Icon.svg'
-import { ANALYTICS_PAGE, TOKEN_MIGRATION_PAGE } from '../../constants'
+import PartySwapIcon from '../../assets/svg/logo.svg'
+// import V2Icon from '../../assets/svg/v2Icon.svg'
+import { ANALYTICS_PAGE, TOKEN_MIGRATION_PAGE, NFTS_PAGE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import usePrevious from '../../hooks/usePrevious'
 import { useAggregatePartyBalance, useETHBalances } from '../../state/wallet/hooks'
@@ -414,6 +414,7 @@ const Links = ({ className }: { className?: string }) => {
       </StyledNavLink>
       <StyledExternalLink href={ANALYTICS_PAGE}>Charts</StyledExternalLink>
       <StyledExternalLink href={TOKEN_MIGRATION_PAGE}>Migrate Token</StyledExternalLink>
+      <StyledExternalLink href={NFTS_PAGE}>NFT</StyledExternalLink>
     </div>
   )
 }
@@ -457,7 +458,7 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <img src={PartySwapIcon} className="logo" alt="logo" />
-          <img src={V2Icon} className="logo-v2" alt="logo-v2" />
+          {/* <img src={V2Icon} className="logo-v2" alt="logo-v2" /> */}
         </Title>
         <HeaderLinks>
           <Burger className="drawer" open={open} setOpen={setOpen} />

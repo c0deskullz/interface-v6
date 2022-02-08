@@ -23,6 +23,43 @@ const Item = styled.div`
       display: inline-block;
     }
   }
+  &.poolsGrid-item.disabled {
+    background-color: ${({ theme }) => theme.disabledSurface};
+    opacity: 0.77;
+
+    .grid-item-details {
+      background-color: ${({ theme }) => theme.disabledSurface};
+    }
+
+    button.btn,
+    button.btn.btn-secondary {
+      background-color: #555555;
+      border: none;
+    }
+
+    .poolsGrid-item-header-features > span {
+      background-color: #555555;
+      border: none;
+    }
+
+    .poolsGrid-item-header-features span:nth-child(1) {
+      color: #555555;
+      border-color: #555555;
+      background-color: transparent;
+    }
+
+    .grid-item-details .grid-item-details-btn {
+      color: #555555;
+
+      svg {
+        fill: #555555;
+      }
+    }
+
+    .poolsGrid-item-grid > div > p {
+      color: #555555;
+    }
+  }
   .poolsGrid-item-header-features span {
     background-color: ${({ theme }) => theme.primaryText2};
     border: 2px solid ${({ theme }) => theme.primaryText2};
@@ -84,7 +121,8 @@ export default function PoolsGridItem({
     totalStakedInWavax,
     earnedAmount,
     multiplier,
-    stakingRewardAddress
+    stakingRewardAddress,
+    delisted
   } = stakingInfo
   const token0 = tokens[0]
   const token1 = tokens[1]
@@ -117,23 +155,25 @@ export default function PoolsGridItem({
   const pinataUrl = useSnowtraceUrl(stakingRewardAddress)
 
   return (
-    <Item className="poolsGrid-item">
+    <Item className={`poolsGrid-item ${multiplier?.toString() === '0' && !delisted && 'disabled'}`}>
       <div className="poolsGrid-item-content">
         <div className="poolsGrid-item-header">
-          <PinataLogo pinataSymbol={`${currency0.symbol}-${currency1.symbol}`} />
+          <PinataLogo
+            pinataSymbol={`${currency0.symbol}-${currency1.symbol}`}
+            delisted={multiplier?.toString() === '0'}
+          />
           <div>
             <h4>{pinataCalculatedSymbol}</h4>
             <div className="poolsGrid-item-header-features">
-              <span>
-                {multiplier?.toString() !== '0' ? (
-                  <>
-                    <BadgeIcon /> Core
-                  </>
-                ) : (
-                  'Delisted Pool'
-                )}
-              </span>
-              <span>{multiplier?.toString()}X</span>
+              {multiplier?.toString() === '0' ? (
+                <span> {delisted ? 'Delisted Pool' : 'Soon Available'} </span>
+              ) : (
+                <span>
+                  {' '}
+                  <BadgeIcon /> Core{' '}
+                </span>
+              )}
+              {multiplier?.toString() !== '0' && <span>{multiplier?.toString()}X</span>}
             </div>
           </div>
         </div>
@@ -169,7 +209,7 @@ export default function PoolsGridItem({
             {isStaking ? (
               <button className="btn">Manage</button>
             ) : (
-              <button className="btn btn-secondary">Deposit</button>
+              multiplier?.toString() !== '0' && <button className="btn btn-secondary">Deposit</button>
             )}
           </StyledInternalLink>
         ) : (
