@@ -31,15 +31,8 @@ const Item = styled.div`
       background-color: ${({ theme }) => theme.disabledSurface};
     }
 
-    button.btn,
-    button.btn.btn-secondary {
-      background-color: #555555;
-      border: none;
-    }
-
     .poolsGrid-item-header-features > span {
       background-color: #555555;
-      border: none;
     }
 
     .poolsGrid-item-header-features span:nth-child(1) {
@@ -50,7 +43,6 @@ const Item = styled.div`
 
     .grid-item-details .grid-item-details-btn {
       color: #555555;
-
       svg {
         fill: #555555;
       }
@@ -173,7 +165,7 @@ export default function PoolsGridItem({
                   <BadgeIcon /> Core{' '}
                 </span>
               )}
-              {multiplier?.toString() !== '0' && <span>{multiplier?.toString()}X</span>}
+              {+(multiplier?.toString() || '0') >= 30 && <span>Boosted</span>}
             </div>
           </div>
         </div>

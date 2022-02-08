@@ -8,7 +8,7 @@ import imageRightDark from '../../assets/svg/pools-hero-right-dark.svg'
 import imageRight from '../../assets/svg/pools-hero-right.svg'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
 import Loader from '../../components/Loader'
-import { EarnVersionTabs } from '../../components/NavigationTabs'
+// import { EarnVersionTabs } from '../../components/NavigationTabs'
 import PoolsGrid from '../../components/PoolsGrid'
 import PoolsGridItem from '../../components/PoolsGrid/Item'
 import { STAKING_REWARDS_INFO } from '../../constants/index'
@@ -181,9 +181,9 @@ export default function Earn({
             </a>
           </div>
         </div>
-        <div className="version-tabs">
+        {/* <div className="version-tabs">
           <EarnVersionTabs active={activeTab[stakingVersionIndex]} />
-        </div>
+        </div> */}
         <img
           src={isDarkMode ? imageLeftDark : imageLeft}
           alt="Doggo and Penguin chasing a Piñata"
