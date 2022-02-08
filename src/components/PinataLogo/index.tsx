@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import styled from 'styled-components'
 import {
   AvaxAaBlock,
   AvaxApex,
@@ -35,11 +36,28 @@ import {
   UsdtUsdc
 } from '../../assets/images/pinatas'
 
+const ImageContainer = styled.div`
+  position: relative;
+  height: 62px;
+  width: 64px;
+
+  & .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    display: block;
+    background: rgba(171, 171, 171, 0.77);
+  }
+`
+
 interface PinataLogoProps {
   pinataSymbol: string
+  delisted?: boolean
 }
 
-export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
+export default function PinataLogo({ pinataSymbol, delisted }: PinataLogoProps) {
   const pinataLogo = useMemo(() => {
     switch (pinataSymbol) {
       case 'AVAX-PARTY':
@@ -124,5 +142,10 @@ export default function PinataLogo({ pinataSymbol }: PinataLogoProps) {
         return PartyUsdt
     }
   }, [pinataSymbol])
-  return <img src={pinataLogo} alt="a  pinata logo" />
+  return (
+    <ImageContainer>
+      <img src={pinataLogo} alt="a  pinata logo" />
+      {delisted && <div className="overlay"></div>}
+    </ImageContainer>
+  )
 }
