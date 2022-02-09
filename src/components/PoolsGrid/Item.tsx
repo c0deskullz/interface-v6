@@ -165,7 +165,7 @@ export default function PoolsGridItem({
                   <BadgeIcon /> Core{' '}
                 </span>
               )}
-              {+(multiplier?.toString() || '0') >= 30 && <span>Boosted</span>}
+              {+(multiplier?.toString() || '0') >= 20 && <span>Boosted</span>}
             </div>
           </div>
         </div>

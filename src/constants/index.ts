@@ -511,6 +511,12 @@ export const STAKING_BOOSTED: {
     delisted: false
   },
   {
+    tokens: [PARTY[ChainId.AVALANCHE], USDC[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x7FC9605A398ba35b5102a02fc3A915bA8EF0e43E',
+    pair: '0xCb7b5d817AC776180FF4958b7443483fa3f0d64F',
+    delisted: false
+  },
+  {
     tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x6e3050dc1847A472D2f330A40340d97Ce9ca976E',
     pair: '0xA9E3904Bd06A9E4ec01Df8606d335804aa557B9E',
