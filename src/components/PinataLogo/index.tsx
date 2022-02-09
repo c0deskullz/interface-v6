@@ -31,6 +31,7 @@ import {
   AvaxZero,
   PartyAvax,
   PartyDai,
+  PartyUsdc,
   PartyUsdt,
   UsdtBusd,
   UsdtUsdc
@@ -138,6 +139,8 @@ export default function PinataLogo({ pinataSymbol, delisted }: PinataLogoProps) 
         return AvaxShibx
       case 'AVAX-WOLFI':
         return AvaxWolfi
+      case 'PARTY-USDC.e':
+        return PartyUsdc
       default:
         return PartyUsdt
     }

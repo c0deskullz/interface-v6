@@ -31,6 +31,7 @@ import PartyUsdt from './PARTY-USDTv2.png'
 import UsdtBusd from './USDT-BUSD.png'
 import UsdtUsdc from './USDT-USDC.png'
 import PartyDai from './YAY-DAI.png'
+import PartyUsdc from './PARTY-USDC.png'
 
 export {
   AvaxSing,
@@ -65,5 +66,6 @@ export {
   AvaxShibx,
   AvaxApex,
   AvaxHusky,
-  AvaxMim
+  AvaxMim,
+  PartyUsdc
 }
