@@ -15,7 +15,6 @@ import pattern from '../../assets/svg/swap-pattern.svg'
 import { ButtonPrimary } from '../../components/Button'
 import JacuzziLeaveModal from '../../components/jacuzzi/JacuzziLeaveModal'
 import JacuzziStakingModal from '../../components/jacuzzi/JacuzziStakingModal'
-import { VersionTabs } from '../../components/NavigationTabs'
 import QuestionHelper from '../../components/QuestionHelper'
 import { RowBetween } from '../../components/Row'
 import { newTransactionsFirst } from '../../components/Web3Status'
@@ -324,7 +323,6 @@ export default function Jacuzzi() {
       <JacuzziLeaveModal isOpen={unstakeModalOpen} onDismiss={() => setUnstakeModalOpen(false)} />
       <div className="jacuzzi">
         {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
-        <VersionTabs active={'v2'} pathname="/jacuzzi" />
         <div className="jacuzzi-container">
           <div className="jacuzzi-media">
             {isDarkMode ? <img src={JacuzziImageDark} alt="Jacuzzi dark" /> : <img src={JacuzziImage} alt="Jacuzzi" />}
