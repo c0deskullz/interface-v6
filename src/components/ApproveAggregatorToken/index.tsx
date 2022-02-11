@@ -4,7 +4,7 @@ import { ButtonConfirmed } from '../Button'
 import Loader from '../Loader'
 import { AutoRow } from '../Row'
 import { Field } from '../../state/swap/actions'
-import { Currency } from '@partyswap-libs/sdk'
+import { CAVAX, Currency } from '@partyswap-libs/sdk'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { tryParseAmount } from '../../state/swap/hooks'
 
@@ -85,9 +85,11 @@ export function ApproveAggregatorToken({
     if (approval === ApprovalState.APPROVED) {
       onApproved()
     }
+
+    console.log(approval, ApprovalState.APPROVED)
   }, [approval, approvalSubmitted, onApproved])
 
-  return allowance <= 0 ? (
+  return allowance <= 0 && currencyInputAmount?.greaterThan(BigInt(0)) && currencyInputAmount?.currency !== CAVAX ? (
     <Wrapper>
       <span className="hint">You need to approve input token in 1inch router to be able to swap</span>
       <ButtonConfirmed
