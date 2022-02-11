@@ -412,3 +412,47 @@ export function useAggregatorRouterAddress() {
 
   return address
 }
+
+async function quoteOnAggregator(
+  inputTokenAddress: string,
+  outputTokenAddress: string,
+  amount: string,
+  callback: (result: any) => void
+) {
+  const chainId = 43114
+
+  try {
+    const result = await axios.get(
+      `${ONEINCH_BASE_URL}${chainId}/quote?fromTokenAddress=${inputTokenAddress}&toTokenAddress=${outputTokenAddress}&amount=${amount}`
+    )
+
+    callback(result.data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function useQuoteOnAgggregator(
+  inputTokenAddress: string,
+  outputTokenAddress: string,
+  amount: CurrencyAmount | undefined
+):
+  | {
+      estimatedGas: number
+      fromToken: { symbol: string; name: string; decimals: number; address: string; logoURI: string }
+      fromTokenAmount: string
+      protocols: { fromTokenAddress: string; name: string; part: number; toTokenAddress: string }[][][]
+      toToken: { symbol: string; name: string; decimals: number; address: string; logoURI: string }
+      toTokenAmount: string
+    }
+  | undefined {
+  const [data, setData] = useState()
+
+  useEffect(() => {
+    if (inputTokenAddress && outputTokenAddress && amount) {
+      quoteOnAggregator(inputTokenAddress, outputTokenAddress, amount.raw.toString(), setData)
+    }
+  }, [inputTokenAddress, outputTokenAddress, amount])
+
+  return data
+}

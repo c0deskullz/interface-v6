@@ -19,6 +19,7 @@ import Column, { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import Loader from '../../components/Loader'
 import ProgressSteps from '../../components/ProgressSteps'
+import { QuoteAggregatorTokens } from '../../components/QuoteAggregatorTokens'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
@@ -169,22 +170,24 @@ export default function Swap() {
   } = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
   const { allowance: outputAllowance } = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
 
-  useEffect(() => {
-    // console.log(bothTokensAreAvailableInAggregator)
-    console.log(inputToken)
-    console.log(outputToken)
-    console.log(inputIsAvailableInAggregator, ': WHA')
-    console.log(outputIsAvailableInAggregator, ': AHA')
-    console.log(inputAllowance, 'input allowance!!!!')
-    console.log(outputAllowance, 'output allowance!!')
-  }, [
-    inputToken,
-    outputToken,
-    inputIsAvailableInAggregator,
-    outputIsAvailableInAggregator,
-    inputAllowance,
-    outputAllowance
-  ])
+  // useEffect(() => {
+  //   // console.log(bothTokensAreAvailableInAggregator)
+  //   console.log(currencies)
+  //   console.log(inputToken)
+  //   console.log(outputToken)
+  //   console.log(inputIsAvailableInAggregator, ': WHA')
+  //   console.log(outputIsAvailableInAggregator, ': AHA')
+  //   console.log(inputAllowance, 'input allowance!!!!')
+  //   console.log(outputAllowance, 'output allowance!!')
+  // }, [
+  //   currencies,
+  //   inputToken,
+  //   outputToken,
+  //   inputIsAvailableInAggregator,
+  //   outputIsAvailableInAggregator,
+  //   inputAllowance,
+  //   outputAllowance
+  // ])
   // END AGGREGATOR
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
@@ -485,6 +488,13 @@ export default function Swap() {
               inputAmmout={formattedAmounts[Field.INPUT]}
               router={aggregatorRouterAddress}
               onApproved={checkInputAllowanceCallback}
+            />
+
+            <QuoteAggregatorTokens
+              currencies={currencies}
+              inputTokenAddress={inputToken}
+              outputTokenAddress={outputToken}
+              parsedAmounts={parsedAmounts}
             />
             {/* AGGREGATOR ACTIONS */}
 
