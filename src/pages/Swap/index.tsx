@@ -11,6 +11,7 @@ import imageRightDark from '../../assets/svg/swap-image-right-dark.svg'
 import imageRight from '../../assets/svg/swap-image-right.svg'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import pattern from '../../assets/svg/swap-pattern.svg'
+import { ApproveAggregatorToken } from '../../components/ApproveAggregatorToken'
 // import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -37,6 +38,7 @@ import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/swap/actions'
 import {
+  useAggregatorRouterAddress,
   useAggregatorTokenAllowance,
   useCurrenciesAddresses,
   useDefaultsFromURLSearch,
@@ -151,6 +153,7 @@ export default function Swap() {
   // TODO: configure approval with buttons
   // TODO: swap after approval
   // AGGREGATOR
+  const aggregatorRouterAddress = useAggregatorRouterAddress()
 
   const inputToken = useCurrenciesAddresses(currencies.INPUT)
   const outputToken = useCurrenciesAddresses(currencies.OUTPUT)
@@ -160,8 +163,11 @@ export default function Swap() {
   //   () => inputIsAvailableInAggregator && outputIsAvailableInAggregator,
   //   [inputIsAvailableInAggregator, outputIsAvailableInAggregator]
   // )
-  const inputAllowance = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
-  const outputAllowance = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
+  const {
+    allowance: inputAllowance,
+    checkAllowanceCallback: checkInputAllowanceCallback
+  } = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
+  const { allowance: outputAllowance } = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
 
   useEffect(() => {
     // console.log(bothTokensAreAvailableInAggregator)
@@ -470,6 +476,19 @@ export default function Swap() {
                 </Card>
               )}
             </AutoColumn>
+
+            {/* AGGREGATOR ACTIONS */}
+            <ApproveAggregatorToken
+              allowance={inputAllowance}
+              currencies={currencies}
+              inputTokenAddress={inputToken}
+              inputAmmout={formattedAmounts[Field.INPUT]}
+              router={aggregatorRouterAddress}
+              onApproved={checkInputAllowanceCallback}
+            />
+            {/* AGGREGATOR ACTIONS */}
+
+            {/* PARTY SWAP ACTIONS */}
             <BottomGrouping>
               {!account ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
@@ -569,6 +588,7 @@ export default function Swap() {
                 <DefaultVersionLink />
               ) : null}
             </BottomGrouping>
+            {/* PARTY SWAP ACTIONS */}
           </Wrapper>
         </AppBody>
       </>

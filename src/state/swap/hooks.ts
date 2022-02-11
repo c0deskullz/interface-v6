@@ -347,6 +347,19 @@ async function lookupTokenIn1Inch(address: string, callback: (result: boolean) =
   }
 }
 
+async function get1InchSpender(callback: (result: string) => void) {
+  const chainId = 43114
+
+  try {
+    const {
+      data: { address }
+    } = await axios.get(`${ONEINCH_BASE_URL}${chainId}/approve/spender`)
+    return callback(address)
+  } catch (error) {
+    console.error(error, ': API NOT HEALTHY')
+  }
+}
+
 export function useTokenIsAvailableInAggregator(address: string | undefined) {
   const [available, setAvailable] = useState(false)
 
@@ -380,5 +393,22 @@ export function useAggregatorTokenAllowance(address: string | undefined, availab
     checkAllowance(address, account, setAllowance)
   }
 
-  return allowance
+  return {
+    allowance,
+    async checkAllowanceCallback() {
+      if (address && account && available) {
+        checkAllowance(address, account, setAllowance)
+      }
+    }
+  }
+}
+
+export function useAggregatorRouterAddress() {
+  const [address, setAddress] = useState('')
+
+  useEffect(() => {
+    get1InchSpender(setAddress)
+  }, [])
+
+  return address
 }
