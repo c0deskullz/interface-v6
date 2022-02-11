@@ -17,7 +17,6 @@ import Card, { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import Loader from '../../components/Loader'
-import { VersionTabs } from '../../components/NavigationTabs'
 import ProgressSteps from '../../components/ProgressSteps'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
@@ -327,8 +326,6 @@ export default function Swap() {
       />
 
       <>
-        <VersionTabs active={'v2'} pathname="/swap" />
-
         <AppBody>
           <Wrapper id="swap-page">
             <ConfirmSwapModal
