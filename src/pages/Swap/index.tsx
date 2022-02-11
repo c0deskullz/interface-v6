@@ -170,24 +170,24 @@ export default function Swap() {
   } = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
   const { allowance: outputAllowance } = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
 
-  // useEffect(() => {
-  //   // console.log(bothTokensAreAvailableInAggregator)
-  //   console.log(currencies)
-  //   console.log(inputToken)
-  //   console.log(outputToken)
-  //   console.log(inputIsAvailableInAggregator, ': WHA')
-  //   console.log(outputIsAvailableInAggregator, ': AHA')
-  //   console.log(inputAllowance, 'input allowance!!!!')
-  //   console.log(outputAllowance, 'output allowance!!')
-  // }, [
-  //   currencies,
-  //   inputToken,
-  //   outputToken,
-  //   inputIsAvailableInAggregator,
-  //   outputIsAvailableInAggregator,
-  //   inputAllowance,
-  //   outputAllowance
-  // ])
+  useEffect(() => {
+    // console.log(bothTokensAreAvailableInAggregator)
+    console.log(currencies)
+    console.log(inputToken)
+    console.log(outputToken)
+    console.log(inputIsAvailableInAggregator, ': WHA')
+    console.log(outputIsAvailableInAggregator, ': AHA')
+    console.log(inputAllowance, 'input allowance!!!!')
+    console.log(outputAllowance, 'output allowance!!')
+  }, [
+    currencies,
+    inputToken,
+    outputToken,
+    inputIsAvailableInAggregator,
+    outputIsAvailableInAggregator,
+    inputAllowance,
+    outputAllowance
+  ])
   // END AGGREGATOR
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
