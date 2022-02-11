@@ -8,7 +8,6 @@ import pattern from '../../assets/svg/swap-pattern.svg'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { GreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
-import { VersionTabs } from '../../components/NavigationTabs'
 import FullPositionCard from '../../components/PositionCard'
 import { RowBetween, RowFixed } from '../../components/Row'
 import { Dots } from '../../components/swap/styleds'
@@ -18,9 +17,6 @@ import { useActiveWeb3React } from '../../hooks'
 import { toV2LiquidityToken, useIsDarkMode, useTrackedTokenPairs } from '../../state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { ExternalLink, HideSmall, StyledInternalLink, TYPE } from '../../theme'
-
-
-
 
 const PageWrapper = styled.div`
   position: relative;
@@ -173,8 +169,6 @@ export default function Pool() {
         {isDarkMode ? <BackgroundImage className="darkMode" /> : <BackgroundImage />}
 
         <PageContent>
-          <VersionTabs active={'v2'} pathname="/pool" />
-
           <AutoColumn gap="lg" justify="center">
             <AutoColumn gap="lg" style={{ width: '100%' }}>
               <TitleRow padding={'0'} style={{ marginTop: '2rem' }}>
