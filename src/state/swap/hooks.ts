@@ -354,6 +354,7 @@ async function get1InchSpender(callback: (result: string) => void) {
     const {
       data: { address }
     } = await axios.get(`${ONEINCH_BASE_URL}${chainId}/approve/spender`)
+    console.log(address, ': ROUTER')
     return callback(address)
   } catch (error) {
     console.error(error, ': API NOT HEALTHY')
@@ -417,7 +418,8 @@ async function quoteOnAggregator(
   inputTokenAddress: string,
   outputTokenAddress: string,
   amount: string,
-  callback: (result: any) => void
+  callback: (result: any) => void,
+  onError: (error: any) => void
 ) {
   const chainId = 43114
 
@@ -428,6 +430,7 @@ async function quoteOnAggregator(
 
     callback(result.data)
   } catch (error) {
+    onError(error)
     console.log(error)
   }
 }
@@ -436,23 +439,38 @@ export function useQuoteOnAgggregator(
   inputTokenAddress: string,
   outputTokenAddress: string,
   amount: CurrencyAmount | undefined
-):
-  | {
-      estimatedGas: number
-      fromToken: { symbol: string; name: string; decimals: number; address: string; logoURI: string }
-      fromTokenAmount: string
-      protocols: { fromTokenAddress: string; name: string; part: number; toTokenAddress: string }[][][]
-      toToken: { symbol: string; name: string; decimals: number; address: string; logoURI: string }
-      toTokenAmount: string
-    }
-  | undefined {
+): {
+  data:
+    | {
+        estimatedGas: number
+        fromToken: { symbol: string; name: string; decimals: number; address: string; logoURI: string }
+        fromTokenAmount: string
+        protocols: { fromTokenAddress: string; name: string; part: number; toTokenAddress: string }[][][]
+        toToken: { symbol: string; name: string; decimals: number; address: string; logoURI: string }
+        toTokenAmount: string
+      }
+    | undefined
+  error: any
+} {
   const [data, setData] = useState()
+  const [error, setError] = useState()
+
+  const handleError = (error: any) => {
+    setData(undefined)
+    setError(error)
+  }
+
+  useEffect(() => {
+    if (data) {
+      setError(undefined)
+    }
+  }, [data])
 
   useEffect(() => {
     if (inputTokenAddress && outputTokenAddress && amount) {
-      quoteOnAggregator(inputTokenAddress, outputTokenAddress, amount.raw.toString(), setData)
+      quoteOnAggregator(inputTokenAddress, outputTokenAddress, amount.raw.toString(), setData, handleError)
     }
   }, [inputTokenAddress, outputTokenAddress, amount])
 
-  return data
+  return { data, error }
 }

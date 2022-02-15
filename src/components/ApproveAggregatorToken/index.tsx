@@ -50,33 +50,6 @@ export function ApproveAggregatorToken({
   const [approval, approveCallback] = useApproveCallback(currencyInputAmount, router)
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
-  // async function buildTxForApproveTradeWithRouter(tokenAddress: string, amount: string) {
-  //   const url = apiRequestUrl('/approve/transaction', amount ? { tokenAddress, amount } : { tokenAddress })
-
-  //   const transaction = await fetch(url).then(res => res.json())
-
-  //   console.log(account, ': attempted tx')
-  //   console.log(transaction, ': tx details')
-  //   // const gasLimit = await web3.eth.estimateGas({
-  //   //   ...transaction,
-  //   //   from: account
-  //   // })
-
-  //   return {
-  //     ...transaction
-  //     // gas: gasLimit
-  //   }
-  // }
-
-  // const wait = async () => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       console.log('just awaited some time :)')
-  //       return resolve(true)
-  //     }, 5000)
-  //   })
-  // }
-
   useEffect(() => {
     if (approval === ApprovalState.PENDING) {
       setApprovalSubmitted(true)

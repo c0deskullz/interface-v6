@@ -188,6 +188,12 @@ export default function Swap() {
     inputAllowance,
     outputAllowance
   ])
+
+  const [useAggregator, setUseAggregator] = useState(false)
+
+  useEffect(() => {
+    console.log('USE AGGREGATOR: ', useAggregator)
+  }, [useAggregator])
   // END AGGREGATOR
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
@@ -279,7 +285,12 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
+    trade,
+    allowedSlippage,
+    recipient,
+    useAggregator
+  )
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
@@ -480,24 +491,6 @@ export default function Swap() {
               )}
             </AutoColumn>
 
-            {/* AGGREGATOR ACTIONS */}
-            <ApproveAggregatorToken
-              allowance={inputAllowance}
-              currencies={currencies}
-              inputTokenAddress={inputToken}
-              inputAmmout={formattedAmounts[Field.INPUT]}
-              router={aggregatorRouterAddress}
-              onApproved={checkInputAllowanceCallback}
-            />
-
-            <QuoteAggregatorTokens
-              currencies={currencies}
-              inputTokenAddress={inputToken}
-              outputTokenAddress={outputToken}
-              parsedAmounts={parsedAmounts}
-            />
-            {/* AGGREGATOR ACTIONS */}
-
             {/* PARTY SWAP ACTIONS */}
             <BottomGrouping>
               {!account ? (
@@ -598,12 +591,70 @@ export default function Swap() {
                 <DefaultVersionLink />
               ) : null}
             </BottomGrouping>
+
+            <AdvancedSwapDetailsDropdown trade={trade} />
+
             {/* PARTY SWAP ACTIONS */}
+
+            {/* AGGREGATOR QUOTES */}
+            {inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
+              <QuoteAggregatorTokens
+                currencies={currencies}
+                inputTokenAddress={inputToken}
+                outputTokenAddress={outputToken}
+                parsedAmounts={parsedAmounts}
+                onSwitchTradeWithAggregator={setUseAggregator}
+                useAggregator={useAggregator}
+              />
+            )}
+            {/* AGGREGATOR QUOTES */}
+            {/* AGGREGATOR APPROVE */}
+            <div className="aggregator-actions">
+              {/* AGGREGATOR APPROVE */}
+              <ApproveAggregatorToken
+                allowance={inputAllowance}
+                currencies={currencies}
+                inputTokenAddress={inputToken}
+                inputAmmout={formattedAmounts[Field.INPUT]}
+                router={aggregatorRouterAddress}
+                onApproved={checkInputAllowanceCallback}
+              />
+              {parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
+                <ButtonError
+                  onClick={() => {
+                    if (isExpertMode) {
+                      handleSwap()
+                    } else {
+                      setSwapState({
+                        tradeToConfirm: trade,
+                        attemptingTxn: false,
+                        swapErrorMessage: undefined,
+                        showConfirm: true,
+                        txHash: undefined
+                      })
+                    }
+                  }}
+                  width="48%"
+                  id="swap-button"
+                  disabled={
+                    !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
+                  }
+                  error={isValid && priceImpactSeverity > 2}
+                >
+                  <Text fontSize={16} fontWeight={500}>
+                    {priceImpactSeverity > 3 && !isExpertMode
+                      ? `Price Impact High`
+                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                  </Text>
+                </ButtonError>
+              ) : (
+                <></>
+              )}
+              {/* AGGREGATOR ACTIONS */}
+            </div>
           </Wrapper>
         </AppBody>
       </>
-
-      <AdvancedSwapDetailsDropdown trade={trade} />
 
       <Banner href="#/party/3" show={Boolean(trade)}>
         <img src={BannerImage} alt="Stake GB and earn $PARTY" />
