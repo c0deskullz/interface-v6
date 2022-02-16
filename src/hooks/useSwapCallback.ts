@@ -58,6 +58,8 @@ function useSwapCallArguments(
     deadline = currentTime.add(10)
   }
 
+  // TODO: also give trade when token is not available on party
+  // TODO: there is an error when fromTokenAddress is WAVAX...
   const { parameters: aggregatorParameters, contract: aggregatorRouterContract } = useAggregatorSwapRouter({
     trade,
     deadline,
