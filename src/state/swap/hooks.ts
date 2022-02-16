@@ -396,10 +396,8 @@ export function useAggregatorTokenAllowance(address: string | undefined, availab
 
   return {
     allowance,
-    async checkAllowanceCallback() {
-      if (address && account && available) {
-        checkAllowance(address, account, setAllowance)
-      }
+    checkAllowanceCallback() {
+      checkAllowance(address || '', account || '', setAllowance)
     }
   }
 }

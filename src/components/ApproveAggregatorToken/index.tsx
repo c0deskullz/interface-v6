@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 `
 
 interface ApproveAggregatorTokenProps {
-  allowance: number
   currencies: {
     INPUT?: Currency | undefined
     OUTPUT?: Currency | undefined
@@ -38,13 +37,7 @@ interface ApproveAggregatorTokenProps {
 //   return apiBaseUrl + methodName + '?' + new URLSearchParams(queryParams).toString()
 // }
 
-export function ApproveAggregatorToken({
-  allowance,
-  currencies,
-  inputAmmout,
-  router,
-  onApproved
-}: ApproveAggregatorTokenProps) {
+export function ApproveAggregatorToken({ currencies, inputAmmout, router, onApproved }: ApproveAggregatorTokenProps) {
   // const { account } = useActiveWeb3React()
   const currencyInputAmount = tryParseAmount(inputAmmout, currencies.INPUT)
   const [approval, approveCallback] = useApproveCallback(currencyInputAmount, router)
@@ -62,7 +55,9 @@ export function ApproveAggregatorToken({
     console.log(approval, ApprovalState.APPROVED)
   }, [approval, approvalSubmitted, onApproved])
 
-  return allowance <= 0 && currencyInputAmount?.greaterThan(BigInt(0)) && currencyInputAmount?.currency !== CAVAX ? (
+  return approval !== ApprovalState.APPROVED &&
+    currencyInputAmount?.greaterThan(BigInt(0)) &&
+    currencyInputAmount?.currency !== CAVAX ? (
     <Wrapper>
       <span className="hint">You need to approve input token in 1inch router to be able to swap</span>
       <ButtonConfirmed
@@ -70,13 +65,12 @@ export function ApproveAggregatorToken({
         disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
         width="48%"
         altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-        confirmed={approval === ApprovalState.APPROVED}
       >
         {approval === ApprovalState.PENDING ? (
           <AutoRow gap="6px" justify="center">
             Approving <Loader stroke="white" />
           </AutoRow>
-        ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+        ) : approvalSubmitted ? (
           'Approved'
         ) : (
           'Approve ' + currencies[Field.INPUT]?.symbol

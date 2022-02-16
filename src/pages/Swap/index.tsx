@@ -31,7 +31,7 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useENS from '../../hooks/useENS'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
@@ -70,6 +70,18 @@ const PageWrapper = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 2rem 1rem;
   `};
+
+  .aggregator-actions {
+    display: flex;
+    align-items: end;
+
+    & > * {
+      flex: 1;
+      button {
+        width: unset;
+      }
+    }
+  }
 `
 
 const BackgroundImage = styled.div`
@@ -168,25 +180,27 @@ export default function Swap() {
     allowance: inputAllowance,
     checkAllowanceCallback: checkInputAllowanceCallback
   } = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
-  const { allowance: outputAllowance } = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
+  // const { allowance: outputAllowance } = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
 
   useEffect(() => {
     // console.log(bothTokensAreAvailableInAggregator)
-    console.log(currencies)
-    console.log(inputToken)
-    console.log(outputToken)
-    console.log(inputIsAvailableInAggregator, ': WHA')
-    console.log(outputIsAvailableInAggregator, ': AHA')
+    // console.log(currencies)
+    // console.log(inputToken)
+    // console.log(outputToken)
+    // console.log(inputIsAvailableInAggregator, ': WHA')
+    // console.log(outputIsAvailableInAggregator, ': AHA')
     console.log(inputAllowance, 'input allowance!!!!')
-    console.log(outputAllowance, 'output allowance!!')
+    // console.log(outputAllowance, 'output allowance!!')
+    // checkInputAllowanceCallback()
   }, [
-    currencies,
-    inputToken,
-    outputToken,
-    inputIsAvailableInAggregator,
-    outputIsAvailableInAggregator,
-    inputAllowance,
-    outputAllowance
+    // currencies,
+    // inputToken,
+    // outputToken,
+    // inputIsAvailableInAggregator,
+    // outputIsAvailableInAggregator,
+    inputAllowance
+    // outputAllowance,
+    // checkInputAllowanceCallback
   ])
 
   const [useAggregator, setUseAggregator] = useState(false)
@@ -222,6 +236,8 @@ export default function Swap() {
         [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
         [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
       }
+
+  const [aggregatorInputApproval] = useApproveCallback(parsedAmounts?.[Field.INPUT], aggregatorRouterAddress)
 
   const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -612,12 +628,11 @@ export default function Swap() {
             <div className="aggregator-actions">
               {/* AGGREGATOR APPROVE */}
               <ApproveAggregatorToken
-                allowance={inputAllowance}
                 currencies={currencies}
                 inputTokenAddress={inputToken}
                 inputAmmout={formattedAmounts[Field.INPUT]}
                 router={aggregatorRouterAddress}
-                onApproved={checkInputAllowanceCallback}
+                onApproved={() => checkInputAllowanceCallback()}
               />
               {parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
                 <ButtonError
@@ -636,15 +651,10 @@ export default function Swap() {
                   }}
                   width="48%"
                   id="swap-button"
-                  disabled={
-                    !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
-                  }
-                  error={isValid && priceImpactSeverity > 2}
+                  disabled={aggregatorInputApproval !== ApprovalState.APPROVED}
                 >
                   <Text fontSize={16} fontWeight={500}>
-                    {priceImpactSeverity > 3 && !isExpertMode
-                      ? `Price Impact High`
-                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                    Swap
                   </Text>
                 </ButtonError>
               ) : (

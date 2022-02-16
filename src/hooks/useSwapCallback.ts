@@ -10,6 +10,7 @@ import { useActiveWeb3React } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
+import { useAggregatorSwapRouter } from './useAggregatorSwapRouter'
 
 export enum SwapCallbackState {
   INVALID,
@@ -57,6 +58,16 @@ function useSwapCallArguments(
     deadline = currentTime.add(10)
   }
 
+  const { parameters: aggregatorParameters, contract: aggregatorRouterContract } = useAggregatorSwapRouter({
+    trade,
+    deadline,
+    slippage: allowedSlippage / 100
+  })
+
+  if (aggregatorParameters) {
+    console.log(aggregatorParameters, aggregatorRouterContract, ': CHECK')
+  }
+
   return useMemo(() => {
     const tradeVersion = Version.v2
     if (!trade || !recipient || !library || !account || !tradeVersion || !chainId || !deadline) return []
@@ -69,6 +80,7 @@ function useSwapCallArguments(
 
     if (useAggregator) {
       console.log('USE AGGREGATOR FOR THIS TRANSACTION')
+
       return []
     }
 
