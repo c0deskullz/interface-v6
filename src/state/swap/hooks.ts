@@ -147,18 +147,28 @@ export function useDerivedSwapInfo(): {
     outputCurrency ?? undefined
   ])
 
-  const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  const isExactIn: boolean = useMemo(() => independentField === Field.INPUT, [independentField])
+  const parsedAmount = useMemo(
+    () => tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined),
+    [typedValue, isExactIn, inputCurrency, outputCurrency]
+  )
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const v2Trade = useMemo(() => (isExactIn ? bestTradeExactIn : bestTradeExactOut), [
+    isExactIn,
+    bestTradeExactIn,
+    bestTradeExactOut
+  ])
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1]
-  }
+  const currencyBalances = useMemo(
+    () => ({
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1]
+    }),
+    [relevantTokenBalances]
+  )
 
   const currencies: { [field in Field]?: Currency | WrappedTokenInfo } = useMemo(() => {
     return {
@@ -212,16 +222,19 @@ export function useDerivedSwapInfo(): {
     v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage)
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    toggledVersion === Version.v1
-      ? slippageAdjustedAmountsV1
-        ? slippageAdjustedAmountsV1[Field.INPUT]
+  const [balanceIn, amountIn] = useMemo(
+    () => [
+      currencyBalances[Field.INPUT],
+      toggledVersion === Version.v1
+        ? slippageAdjustedAmountsV1
+          ? slippageAdjustedAmountsV1?.[Field.INPUT]
+          : null
+        : slippageAdjustedAmounts
+        ? slippageAdjustedAmounts[Field.INPUT]
         : null
-      : slippageAdjustedAmounts
-      ? slippageAdjustedAmounts[Field.INPUT]
-      : null
-  ]
+    ],
+    [currencyBalances, toggledVersion, slippageAdjustedAmounts, slippageAdjustedAmountsV1]
+  )
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = 'Insufficient ' + amountIn.currency.symbol + ' balance'
@@ -354,10 +367,9 @@ async function get1InchSpender(callback: (result: string) => void) {
     const {
       data: { address }
     } = await axios.get(`${ONEINCH_BASE_URL}${chainId}/approve/spender`)
-    console.log(address, ': ROUTER')
     return callback(address)
   } catch (error) {
-    console.error(error, ': API NOT HEALTHY')
+    console.log(error)
   }
 }
 

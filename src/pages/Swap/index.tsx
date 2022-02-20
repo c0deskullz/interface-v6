@@ -20,6 +20,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import Loader from '../../components/Loader'
 import ProgressSteps from '../../components/ProgressSteps'
 import { QuoteAggregatorTokens } from '../../components/QuoteAggregatorTokens'
+// import { QuoteAggregatorTokens } from '../../components/QuoteAggregatorTokens'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
@@ -31,22 +32,27 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
+import { useAggregatorSwapParams } from '../../hooks/useAggregatorSwapRouter'
 import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useENS from '../../hooks/useENS'
+import { useQuoteOnAgggregatorTokens } from '../../hooks/useQuoteAggregatorTokens'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
+// import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/swap/actions'
 import {
+  tryParseAmount,
   useAggregatorRouterAddress,
-  useAggregatorTokenAllowance,
+  // useAggregatorTokenAllowance,
   useCurrenciesAddresses,
   useDefaultsFromURLSearch,
   useDerivedSwapInfo,
   useSwapActionHandlers,
   useSwapState,
   useTokenIsAvailableInAggregator
+  // useTokenIsAvailableInAggregator
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useIsDarkMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import {
@@ -172,42 +178,8 @@ export default function Swap() {
   const outputToken = useCurrenciesAddresses(currencies.OUTPUT)
   const inputIsAvailableInAggregator = useTokenIsAvailableInAggregator(inputToken)
   const outputIsAvailableInAggregator = useTokenIsAvailableInAggregator(outputToken)
-  // const bothTokensAreAvailableInAggregator = useMemo(
-  //   () => inputIsAvailableInAggregator && outputIsAvailableInAggregator,
-  //   [inputIsAvailableInAggregator, outputIsAvailableInAggregator]
-  // )
-  const {
-    allowance: inputAllowance,
-    checkAllowanceCallback: checkInputAllowanceCallback
-  } = useAggregatorTokenAllowance(inputToken, inputIsAvailableInAggregator)
-  // const { allowance: outputAllowance } = useAggregatorTokenAllowance(outputToken, outputIsAvailableInAggregator)
-
-  useEffect(() => {
-    // console.log(bothTokensAreAvailableInAggregator)
-    // console.log(currencies)
-    // console.log(inputToken)
-    // console.log(outputToken)
-    // console.log(inputIsAvailableInAggregator, ': WHA')
-    // console.log(outputIsAvailableInAggregator, ': AHA')
-    console.log(inputAllowance, 'input allowance!!!!')
-    // console.log(outputAllowance, 'output allowance!!')
-    // checkInputAllowanceCallback()
-  }, [
-    // currencies,
-    // inputToken,
-    // outputToken,
-    // inputIsAvailableInAggregator,
-    // outputIsAvailableInAggregator,
-    inputAllowance
-    // outputAllowance,
-    // checkInputAllowanceCallback
-  ])
 
   const [useAggregator, setUseAggregator] = useState(false)
-
-  useEffect(() => {
-    console.log('USE AGGREGATOR: ', useAggregator)
-  }, [useAggregator])
   // END AGGREGATOR
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
@@ -218,24 +190,35 @@ export default function Swap() {
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const { address: recipientAddress } = useENS(recipient)
   const toggledVersion = useToggledVersion()
-  const tradesByVersion = {
-    [Version.v1]: v1Trade,
-    [Version.v2]: v2Trade
-  }
-  const trade = showWrap ? undefined : tradesByVersion[toggledVersion]
+  const tradesByVersion = useMemo(
+    () => ({
+      [Version.v1]: v1Trade,
+      [Version.v2]: v2Trade
+    }),
+    [v1Trade, v2Trade]
+  )
+  const trade = useMemo(() => (showWrap ? undefined : tradesByVersion[toggledVersion]), [
+    showWrap,
+    tradesByVersion,
+    toggledVersion
+  ])
   const defaultTrade = showWrap ? undefined : tradesByVersion[DEFAULT_VERSION]
 
   const betterTradeLinkVersion: Version | undefined = undefined
 
-  const parsedAmounts = showWrap
-    ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount
-      }
-    : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
-      }
+  const parsedAmounts = useMemo(
+    () =>
+      showWrap
+        ? {
+            [Field.INPUT]: parsedAmount,
+            [Field.OUTPUT]: parsedAmount
+          }
+        : {
+            [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+            [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
+          },
+    [showWrap, parsedAmount, independentField, trade]
+  )
 
   const [aggregatorInputApproval] = useApproveCallback(parsedAmounts?.[Field.INPUT], aggregatorRouterAddress)
 
@@ -301,12 +284,31 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    trade,
-    allowedSlippage,
-    recipient,
-    useAggregator
-  )
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+
+  const {
+    toTokenAmount,
+    error,
+    protocols,
+    fromToken,
+    estimatedGas,
+    formattedInputAmmount,
+    toToken
+  } = useQuoteOnAgggregatorTokens({
+    inputTokenAddress: inputToken,
+    outputTokenAddress: outputToken,
+    parsedAmounts,
+    currencies
+  })
+
+  const aggregatorParameters = useAggregatorSwapParams({
+    inputAmount: parsedAmounts[Field.INPUT],
+    outputAmount: tryParseAmount(toTokenAmount, currencies.OUTPUT),
+    slippage: allowedSlippage / 100,
+    account
+  })
+
+  console.log(aggregatorParameters)
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
@@ -453,7 +455,7 @@ export default function Swap() {
                 </AutoRow>
               </AutoColumn>
               <CurrencyInputPanel
-                value={formattedAmounts[Field.OUTPUT]}
+                value={useAggregator ? toTokenAmount : formattedAmounts[Field.OUTPUT]}
                 onUserInput={handleTypeOutput}
                 label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
                 showMaxButton={false}
@@ -477,7 +479,7 @@ export default function Swap() {
                 </>
               ) : null} */}
 
-              {showWrap ? null : (
+              {showWrap || useAggregator ? null : (
                 <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
                   <AutoColumn gap="4px">
                     {Boolean(trade) && (
@@ -508,119 +510,126 @@ export default function Swap() {
             </AutoColumn>
 
             {/* PARTY SWAP ACTIONS */}
-            <BottomGrouping>
-              {!account ? (
-                <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-              ) : showWrap ? (
-                <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
-                  {wrapInputError ??
-                    (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
-                </ButtonPrimary>
-              ) : noRoute && userHasSpecifiedInputOutput ? (
-                <GreyCard style={{ textAlign: 'center' }}>
-                  <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
-                </GreyCard>
-              ) : showApproveFlow ? (
-                <RowBetween>
-                  <ButtonConfirmed
-                    onClick={approveCallback}
-                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                    width="48%"
-                    altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-                    confirmed={approval === ApprovalState.APPROVED}
-                  >
-                    {approval === ApprovalState.PENDING ? (
-                      <AutoRow gap="6px" justify="center">
-                        Approving <Loader stroke="white" />
-                      </AutoRow>
-                    ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                      'Approved'
-                    ) : (
-                      'Approve ' + currencies[Field.INPUT]?.symbol
-                    )}
-                  </ButtonConfirmed>
-                  <ButtonError
-                    onClick={() => {
-                      if (isExpertMode) {
-                        handleSwap()
-                      } else {
-                        setSwapState({
-                          tradeToConfirm: trade,
-                          attemptingTxn: false,
-                          swapErrorMessage: undefined,
-                          showConfirm: true,
-                          txHash: undefined
-                        })
-                      }
-                    }}
-                    width="48%"
-                    id="swap-button"
-                    disabled={
-                      !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
-                    }
-                    error={isValid && priceImpactSeverity > 2}
-                  >
-                    <Text fontSize={16} fontWeight={500}>
-                      {priceImpactSeverity > 3 && !isExpertMode
-                        ? `Price Impact High`
-                        : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
-                    </Text>
-                  </ButtonError>
-                </RowBetween>
-              ) : (
-                <ButtonError
-                  onClick={() => {
-                    if (isExpertMode) {
-                      handleSwap()
-                    } else {
-                      setSwapState({
-                        tradeToConfirm: trade,
-                        attemptingTxn: false,
-                        swapErrorMessage: undefined,
-                        showConfirm: true,
-                        txHash: undefined
-                      })
-                    }
-                  }}
-                  id="swap-button"
-                  disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
-                  error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
-                >
-                  <Text fontSize={20} fontWeight={500}>
-                    {swapInputError
-                      ? swapInputError
-                      : priceImpactSeverity > 3 && !isExpertMode
-                      ? `Price Impact Too High`
-                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
-                  </Text>
-                </ButtonError>
-              )}
-              {showApproveFlow && (
-                <Column style={{ marginTop: '1rem' }}>
-                  <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
-                </Column>
-              )}
-              {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-              {betterTradeLinkVersion ? (
-                <BetterTradeLink version={betterTradeLinkVersion} />
-              ) : toggledVersion !== DEFAULT_VERSION && defaultTrade ? (
-                <DefaultVersionLink />
-              ) : null}
-            </BottomGrouping>
+            {!useAggregator && (
+              <>
+                <BottomGrouping>
+                  {!account ? (
+                    <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+                  ) : showWrap ? (
+                    <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
+                      {wrapInputError ??
+                        (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
+                    </ButtonPrimary>
+                  ) : noRoute && userHasSpecifiedInputOutput ? (
+                    <GreyCard style={{ textAlign: 'center' }}>
+                      <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
+                    </GreyCard>
+                  ) : showApproveFlow ? (
+                    <RowBetween>
+                      <ButtonConfirmed
+                        onClick={approveCallback}
+                        disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                        width="48%"
+                        altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
+                        confirmed={approval === ApprovalState.APPROVED}
+                      >
+                        {approval === ApprovalState.PENDING ? (
+                          <AutoRow gap="6px" justify="center">
+                            Approving <Loader stroke="white" />
+                          </AutoRow>
+                        ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                          'Approved'
+                        ) : (
+                          'Approve ' + currencies[Field.INPUT]?.symbol
+                        )}
+                      </ButtonConfirmed>
+                      <ButtonError
+                        onClick={() => {
+                          if (isExpertMode) {
+                            handleSwap()
+                          } else {
+                            setSwapState({
+                              tradeToConfirm: trade,
+                              attemptingTxn: false,
+                              swapErrorMessage: undefined,
+                              showConfirm: true,
+                              txHash: undefined
+                            })
+                          }
+                        }}
+                        width="48%"
+                        id="swap-button"
+                        disabled={
+                          !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
+                        }
+                        error={isValid && priceImpactSeverity > 2}
+                      >
+                        <Text fontSize={16} fontWeight={500}>
+                          {priceImpactSeverity > 3 && !isExpertMode
+                            ? `Price Impact High`
+                            : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                        </Text>
+                      </ButtonError>
+                    </RowBetween>
+                  ) : (
+                    <ButtonError
+                      onClick={() => {
+                        if (isExpertMode) {
+                          handleSwap()
+                        } else {
+                          setSwapState({
+                            tradeToConfirm: trade,
+                            attemptingTxn: false,
+                            swapErrorMessage: undefined,
+                            showConfirm: true,
+                            txHash: undefined
+                          })
+                        }
+                      }}
+                      id="swap-button"
+                      disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+                      error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
+                    >
+                      <Text fontSize={20} fontWeight={500}>
+                        {swapInputError
+                          ? swapInputError
+                          : priceImpactSeverity > 3 && !isExpertMode
+                          ? `Price Impact Too High`
+                          : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      </Text>
+                    </ButtonError>
+                  )}
+                  {showApproveFlow && (
+                    <Column style={{ marginTop: '1rem' }}>
+                      <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
+                    </Column>
+                  )}
+                  {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
+                  {betterTradeLinkVersion ? (
+                    <BetterTradeLink version={betterTradeLinkVersion} />
+                  ) : toggledVersion !== DEFAULT_VERSION && defaultTrade ? (
+                    <DefaultVersionLink />
+                  ) : null}
+                </BottomGrouping>
 
-            <AdvancedSwapDetailsDropdown trade={trade} />
+                <AdvancedSwapDetailsDropdown trade={trade} />
+              </>
+            )}
 
             {/* PARTY SWAP ACTIONS */}
 
             {/* AGGREGATOR QUOTES */}
             {inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
               <QuoteAggregatorTokens
-                currencies={currencies}
-                inputTokenAddress={inputToken}
-                outputTokenAddress={outputToken}
-                parsedAmounts={parsedAmounts}
                 onSwitchTradeWithAggregator={setUseAggregator}
                 useAggregator={useAggregator}
+                error={error}
+                protocol={protocols?.[0]}
+                fromToken={fromToken}
+                formattedInputAmmount={formattedInputAmmount}
+                estimatedGas={estimatedGas}
+                toToken={toToken}
+                toTokenAmount={toTokenAmount}
               />
             )}
             {/* AGGREGATOR QUOTES */}
@@ -632,7 +641,7 @@ export default function Swap() {
                 inputTokenAddress={inputToken}
                 inputAmmout={formattedAmounts[Field.INPUT]}
                 router={aggregatorRouterAddress}
-                onApproved={() => checkInputAllowanceCallback()}
+                onApproved={console.log}
               />
               {parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
                 <ButtonError

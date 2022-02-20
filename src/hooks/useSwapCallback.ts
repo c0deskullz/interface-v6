@@ -10,7 +10,6 @@ import { useActiveWeb3React } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
-import { useAggregatorSwapRouter } from './useAggregatorSwapRouter'
 
 export enum SwapCallbackState {
   INVALID,
@@ -44,54 +43,29 @@ type EstimatedSwapCall = SuccessfulCall | FailedCall
 function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  useAggregator: boolean
+  recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-  var deadline = useTransactionDeadline()
+  let deadline = useTransactionDeadline()
 
   const currentTime = BigNumber.from(new Date().getTime())
   if (deadline && deadline < currentTime.add(10)) {
     deadline = currentTime.add(10)
   }
 
-  // TODO: also give trade when token is not available on party
-  // TODO: there is an error when fromTokenAddress is WAVAX...
-  const { parameters: aggregatorParameters, contract: aggregatorRouterContract } = useAggregatorSwapRouter({
-    trade,
-    deadline,
-    slippage: allowedSlippage / 100
-  })
-
-  if (aggregatorParameters) {
-    console.log(aggregatorParameters, aggregatorRouterContract, ': CHECK')
-  }
-
   return useMemo(() => {
     const tradeVersion = Version.v2
     if (!trade || !recipient || !library || !account || !tradeVersion || !chainId || !deadline) return []
 
-    // TODO: add aggregator based on boolean
-    // const {
-    //   parameters: { methodName, args, value },
-    //   contract
-    // } = call
-
-    if (useAggregator) {
-      console.log('USE AGGREGATOR FOR THIS TRANSACTION')
-
-      return []
-    }
+    const swapMethods = []
 
     const contract: Contract | null = getRouterContract(chainId, library, account)
     if (!contract) {
       return []
     }
-
-    const swapMethods = []
 
     swapMethods.push(
       Router.swapCallParameters(trade, {
@@ -114,7 +88,7 @@ function useSwapCallArguments(
     }
 
     return swapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade, useAggregator])
+  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -122,12 +96,11 @@ function useSwapCallArguments(
 export function useSwapCallback(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  useAggregator: boolean
+  recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, useAggregator)
+  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
 

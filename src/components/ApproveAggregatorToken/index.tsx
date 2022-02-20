@@ -52,7 +52,6 @@ export function ApproveAggregatorToken({ currencies, inputAmmout, router, onAppr
       onApproved()
     }
 
-    console.log(approval, ApprovalState.APPROVED)
   }, [approval, approvalSubmitted, onApproved])
 
   return approval !== ApprovalState.APPROVED &&

@@ -1,27 +1,31 @@
-import { CAVAX, ChainId, Token, Trade, WAVAX } from '@partyswap-libs/sdk'
+import { CAVAX, CurrencyAmount, Token } from '@partyswap-libs/sdk'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { serialize } from '../utils/serialize'
-import { useActiveWeb3React } from '.'
 import { ONEINCH_BASE_URL } from '../constants'
-import { useAggregatorRouterAddress } from '../state/swap/hooks'
-import { useAggregatorRouter } from './useContract'
+import _ from 'lodash'
+
+export type AggregatorTrade = {
+  inputAmount?: CurrencyAmount
+  outputAmount?: CurrencyAmount
+  account: string | null | undefined
+  slippage: any
+}
 
 const getSwapParams = async (
-  inputParams: { trade?: Trade; deadline: any; account: string | null | undefined; slippage: any },
+  { inputAmount, outputAmount, account, slippage }: AggregatorTrade,
   callback: (swapParams: any) => void
 ) => {
-  if (inputParams.trade) {
-    const { inputAmount, outputAmount } = inputParams.trade
+  if (inputAmount && outputAmount) {
     const getFromTokenAddress = () => {
-      if (inputAmount.currency === CAVAX) return WAVAX[ChainId.AVALANCHE].address
+      if (inputAmount.currency === CAVAX) return '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
       if (inputAmount.currency instanceof Token) {
         return inputAmount.currency.address
       }
       return ''
     }
     const getToTokenAddress = () => {
-      if (outputAmount.currency === CAVAX) return WAVAX[ChainId.AVALANCHE].address
+      if (outputAmount.currency === CAVAX) return '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
       if (outputAmount.currency instanceof Token) {
         return outputAmount.currency.address
       }
@@ -36,57 +40,42 @@ const getSwapParams = async (
             fromTokenAddress: getFromTokenAddress(),
             toTokenAddress: getToTokenAddress(),
             amount,
-            fromAddress: inputParams.account,
-            slippage: inputParams.slippage
+            fromAddress: account,
+            slippage
           },
           ''
         )}`
       )
-      callback(data)
+      callback(data.tx)
     } catch (error) {
       console.log(error)
     }
   }
 }
 
-export function useAggregatorSwapParams({
-  trade,
-  deadline,
-  slippage
-}: {
-  trade?: Trade
-  deadline: any
-  slippage: any
-}) {
-  const { account } = useActiveWeb3React()
-  const [params, setParams] = useState()
+export function useAggregatorSwapParams({ inputAmount, outputAmount, slippage, account }: AggregatorTrade) {
+  const [params, setParams] = useState<{
+    method: string
+    params: any[]
+  }>({
+    method: 'eth_sendTransaction',
+    params: []
+  })
+
+  const handleSetParams = useCallback(
+    (_params: any) => {
+      if (!_.isEqual(params, { method: 'eth_sendTransaction', params: [_params] })) {
+        setParams({ method: 'eth_sendTransaction', params: [_params] })
+      }
+    },
+    [params]
+  )
 
   useEffect(() => {
-    if (trade && deadline && account) {
-      getSwapParams({ trade, deadline, account, slippage }, setParams)
-    } else {
-      console.log(trade, 'no trade')
-      console.log(deadline, 'no deadline')
-      console.log(slippage, 'no slippage')
+    if (inputAmount && slippage && account) {
+      getSwapParams({ inputAmount, outputAmount, account, slippage }, handleSetParams)
     }
-  }, [trade, deadline, account, slippage])
+  }, [account, inputAmount, outputAmount, slippage, handleSetParams])
 
   return params
-}
-
-export function useAggregatorSwapRouter({
-  trade,
-  deadline,
-  slippage
-}: {
-  trade?: Trade
-  deadline: any
-  slippage: any
-}) {
-  const routerAddress = useAggregatorRouterAddress()
-  const router = useAggregatorRouter(routerAddress)
-
-  const parameters = useAggregatorSwapParams({ trade, deadline, slippage })
-
-  return { contract: router, parameters }
 }
