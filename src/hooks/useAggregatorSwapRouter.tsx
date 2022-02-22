@@ -12,9 +12,18 @@ export type AggregatorTrade = {
   slippage: any
 }
 
+export type OneInchHTTPError = {
+  statusCode: number
+  error: string
+  description: string
+  meta: any[]
+  requestId: string
+}
+
 const getSwapParams = async (
   { inputAmount, outputAmount, account, slippage }: AggregatorTrade,
-  callback: (swapParams: any) => void
+  callback: (swapParams: any) => void,
+  errorCallback: (error: OneInchHTTPError) => void
 ) => {
   if (inputAmount && outputAmount) {
     const getFromTokenAddress = () => {
@@ -47,35 +56,60 @@ const getSwapParams = async (
         )}`
       )
       callback(data.tx)
+      console.log(data.tx, '> DATA')
     } catch (error) {
-      console.log(error)
+      errorCallback(error.response.data as OneInchHTTPError)
     }
   }
 }
 
 export function useAggregatorSwapParams({ inputAmount, outputAmount, slippage, account }: AggregatorTrade) {
-  const [params, setParams] = useState<{
-    method: string
-    params: any[]
-  }>({
+  const [params, setParams] = useState<
+    | {
+        method: string
+        params: any[]
+      }
+    | undefined
+  >({
     method: 'eth_sendTransaction',
     params: []
   })
 
+  const [error, setError] = useState<
+    | {
+        statusCode: number
+        error: string
+        description: string
+        meta: any[]
+        requestId: string
+      }
+    | undefined
+  >(undefined)
+
   const handleSetParams = useCallback(
     (_params: any) => {
       if (!_.isEqual(params, { method: 'eth_sendTransaction', params: [_params] })) {
+        setError(undefined)
         setParams({ method: 'eth_sendTransaction', params: [_params] })
       }
     },
     [params]
   )
 
+  const handleSetError = useCallback(
+    (_error: OneInchHTTPError) => {
+      if (!_.isEqual(error, _error)) {
+        setError(_error)
+      }
+    },
+    [error]
+  )
+
   useEffect(() => {
     if (inputAmount && slippage && account) {
-      getSwapParams({ inputAmount, outputAmount, account, slippage }, handleSetParams)
+      getSwapParams({ inputAmount, outputAmount, account, slippage }, handleSetParams, handleSetError)
     }
-  }, [account, inputAmount, outputAmount, slippage, handleSetParams])
+  }, [account, inputAmount, outputAmount, slippage, handleSetParams, handleSetError])
 
-  return params
+  return { params, error }
 }

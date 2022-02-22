@@ -35,6 +35,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import { useAggregatorSwapParams } from '../../hooks/useAggregatorSwapRouter'
 import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useENS from '../../hooks/useENS'
+import useHandleSwapAggregator from '../../hooks/useHandleSwapAggregator'
 import { useQuoteOnAgggregatorTokens } from '../../hooks/useQuoteAggregatorTokens'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
@@ -63,6 +64,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
+import { fromWei } from 'web3-utils'
 
 const PageWrapper = styled.div`
   display: flex;
@@ -286,29 +288,40 @@ export default function Swap() {
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
 
-  const {
-    toTokenAmount,
-    error,
-    protocols,
-    fromToken,
-    estimatedGas,
-    formattedInputAmmount,
-    toToken
-  } = useQuoteOnAgggregatorTokens({
+  const { toTokenAmount, error, protocols, fromToken, formattedInputAmmount, toToken } = useQuoteOnAgggregatorTokens({
     inputTokenAddress: inputToken,
     outputTokenAddress: outputToken,
     parsedAmounts,
     currencies
   })
 
-  const aggregatorParameters = useAggregatorSwapParams({
+  const { params: aggregatorParams, error: swapTxDataError } = useAggregatorSwapParams({
     inputAmount: parsedAmounts[Field.INPUT],
     outputAmount: tryParseAmount(toTokenAmount, currencies.OUTPUT),
     slippage: allowedSlippage / 100,
     account
   })
 
-  console.log(aggregatorParameters)
+  const aggregatorSwapEstimatedGas = useMemo(() => {
+    if (aggregatorParams?.params.length) {
+      const { gas, gasPrice } = aggregatorParams.params[0]
+      const gasunits = JSBI.BigInt(gas)
+      const estimation = JSBI.multiply(gasunits, JSBI.BigInt(gasPrice))
+      return {
+        avaxFee: fromWei(estimation.toString(), 'ether'),
+        gasUnits: gas
+      }
+    }
+
+    return {
+      avaxFee: '0',
+      gasUnits: '0'
+    }
+  }, [aggregatorParams])
+
+  console.log(aggregatorSwapEstimatedGas)
+
+  const handleSwapWithAggregator = useHandleSwapAggregator(aggregatorParams)
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
@@ -619,7 +632,7 @@ export default function Swap() {
             {/* PARTY SWAP ACTIONS */}
 
             {/* AGGREGATOR QUOTES */}
-            {inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
+            {inputIsAvailableInAggregator && outputIsAvailableInAggregator && !swapTxDataError && (
               <QuoteAggregatorTokens
                 onSwitchTradeWithAggregator={setUseAggregator}
                 useAggregator={useAggregator}
@@ -627,50 +640,41 @@ export default function Swap() {
                 protocol={protocols?.[0]}
                 fromToken={fromToken}
                 formattedInputAmmount={formattedInputAmmount}
-                estimatedGas={estimatedGas}
+                estimatedGas={aggregatorSwapEstimatedGas.gasUnits}
                 toToken={toToken}
                 toTokenAmount={toTokenAmount}
               />
             )}
             {/* AGGREGATOR QUOTES */}
             {/* AGGREGATOR APPROVE */}
-            <div className="aggregator-actions">
-              {/* AGGREGATOR APPROVE */}
-              <ApproveAggregatorToken
-                currencies={currencies}
-                inputTokenAddress={inputToken}
-                inputAmmout={formattedAmounts[Field.INPUT]}
-                router={aggregatorRouterAddress}
-                onApproved={console.log}
-              />
-              {parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
-                <ButtonError
-                  onClick={() => {
-                    if (isExpertMode) {
-                      handleSwap()
-                    } else {
-                      setSwapState({
-                        tradeToConfirm: trade,
-                        attemptingTxn: false,
-                        swapErrorMessage: undefined,
-                        showConfirm: true,
-                        txHash: undefined
-                      })
-                    }
-                  }}
-                  width="48%"
-                  id="swap-button"
-                  disabled={aggregatorInputApproval !== ApprovalState.APPROVED}
-                >
-                  <Text fontSize={16} fontWeight={500}>
-                    Swap
-                  </Text>
-                </ButtonError>
-              ) : (
-                <></>
-              )}
-              {/* AGGREGATOR ACTIONS */}
-            </div>
+            {useAggregator && (
+              <div className="aggregator-actions">
+                {/* AGGREGATOR APPROVE */}
+                <ApproveAggregatorToken
+                  currencies={currencies}
+                  inputTokenAddress={inputToken}
+                  inputAmmout={formattedAmounts[Field.INPUT]}
+                  router={aggregatorRouterAddress}
+                  onApproved={console.log}
+                />
+                {parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
+                  <ButtonError
+                    onClick={handleSwapWithAggregator}
+                    width="48%"
+                    id="swap-button"
+                    disabled={!!swapTxDataError || aggregatorInputApproval !== ApprovalState.APPROVED}
+                    error={!!swapTxDataError}
+                  >
+                    <Text fontSize={16} fontWeight={500}>
+                      {!!swapTxDataError ? swapTxDataError.description : 'Swap'}
+                    </Text>
+                  </ButtonError>
+                ) : (
+                  <></>
+                )}
+                {/* AGGREGATOR ACTIONS */}
+              </div>
+            )}
           </Wrapper>
         </AppBody>
       </>
