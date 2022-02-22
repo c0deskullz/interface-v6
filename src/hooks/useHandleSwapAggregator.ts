@@ -1,11 +1,13 @@
 //@ts-nocheck
 import { JSBI } from '@partyswap-libs/sdk'
 import { useCallback, useMemo } from 'react'
+import { useTransactionAdder } from '../state/transactions/hooks'
 
 // TODO: tx data can be undefined
 // TODO: handle errors
 export default function useHandleSwapAggregator(txData?: { method: string; params: any[] }) {
   const { ethereum } = window
+  const addTransaction = useTransactionAdder()
   const rewrittenTxData = useMemo(
     () => ({
       method: txData?.method,
@@ -29,13 +31,16 @@ export default function useHandleSwapAggregator(txData?: { method: string; param
           if (!response) {
             throw new Error('Something went wrong.')
           }
-          addTransaction(response, {
-            summary: `Swap With Aggregator`
-          })
+          addTransaction(
+            { hash: response },
+            {
+              summary: `Swap With Aggregator`
+            }
+          )
         })
         .catch(console.error)
     }
-  }, [ethereum, rewrittenTxData])
+  }, [ethereum, rewrittenTxData, addTransaction])
 
   return handleSwapWithAggregator
 }

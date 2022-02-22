@@ -319,8 +319,6 @@ export default function Swap() {
     }
   }, [aggregatorParams])
 
-  console.log(aggregatorSwapEstimatedGas)
-
   const handleSwapWithAggregator = useHandleSwapAggregator(aggregatorParams)
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
@@ -632,7 +630,7 @@ export default function Swap() {
             {/* PARTY SWAP ACTIONS */}
 
             {/* AGGREGATOR QUOTES */}
-            {inputIsAvailableInAggregator && outputIsAvailableInAggregator && !swapTxDataError && (
+            {inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
               <QuoteAggregatorTokens
                 onSwitchTradeWithAggregator={setUseAggregator}
                 useAggregator={useAggregator}
@@ -657,12 +655,12 @@ export default function Swap() {
                   router={aggregatorRouterAddress}
                   onApproved={console.log}
                 />
-                {parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
+                {aggregatorInputApproval === ApprovalState.APPROVED && parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
                   <ButtonError
                     onClick={handleSwapWithAggregator}
                     width="48%"
                     id="swap-button"
-                    disabled={!!swapTxDataError || aggregatorInputApproval !== ApprovalState.APPROVED}
+                    disabled={!!swapTxDataError}
                     error={!!swapTxDataError}
                   >
                     <Text fontSize={16} fontWeight={500}>
