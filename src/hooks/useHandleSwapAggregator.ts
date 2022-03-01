@@ -5,7 +5,7 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 
 // TODO: tx data can be undefined
 // TODO: handle errors
-export default function useHandleSwapAggregator(txData?: { method: string; params: any[] }) {
+export default function useHandleSwapAggregator(txData?: { method: string; params: any[]; quote: any }) {
   const { ethereum } = window
   const addTransaction = useTransactionAdder()
   const rewrittenTxData = useMemo(

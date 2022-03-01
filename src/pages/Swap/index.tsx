@@ -288,7 +288,7 @@ export default function Swap() {
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
 
-  const { toTokenAmount, error, protocols, fromToken, formattedInputAmmount, toToken } = useQuoteOnAgggregatorTokens({
+  const { toTokenAmount, error, fromToken, formattedInputAmmount, toToken } = useQuoteOnAgggregatorTokens({
     inputTokenAddress: inputToken,
     outputTokenAddress: outputToken,
     parsedAmounts,
@@ -630,12 +630,12 @@ export default function Swap() {
             {/* PARTY SWAP ACTIONS */}
 
             {/* AGGREGATOR QUOTES */}
-            {inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
+            {aggregatorParams?.quote?.protocols && inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
               <QuoteAggregatorTokens
                 onSwitchTradeWithAggregator={setUseAggregator}
                 useAggregator={useAggregator}
                 error={error}
-                protocol={protocols?.[0]}
+                protocols={aggregatorParams.quote.protocols}
                 fromToken={fromToken}
                 formattedInputAmmount={formattedInputAmmount}
                 estimatedGas={aggregatorSwapEstimatedGas.gasUnits}

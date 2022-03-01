@@ -55,8 +55,7 @@ const getSwapParams = async (
           ''
         )}`
       )
-      callback(data.tx)
-      console.log(data.tx, '> DATA')
+      callback(data)
     } catch (error) {
       errorCallback(error.response.data as OneInchHTTPError)
     }
@@ -68,11 +67,13 @@ export function useAggregatorSwapParams({ inputAmount, outputAmount, slippage, a
     | {
         method: string
         params: any[]
+        quote: any
       }
     | undefined
   >({
     method: 'eth_sendTransaction',
-    params: []
+    params: [],
+    quote: {}
   })
 
   const [error, setError] = useState<
@@ -88,9 +89,9 @@ export function useAggregatorSwapParams({ inputAmount, outputAmount, slippage, a
 
   const handleSetParams = useCallback(
     (_params: any) => {
-      if (!_.isEqual(params, { method: 'eth_sendTransaction', params: [_params] })) {
+      if (!_.isEqual(params, { method: 'eth_sendTransaction', params: [_params.tx], quote: _params })) {
         setError(undefined)
-        setParams({ method: 'eth_sendTransaction', params: [_params] })
+        setParams({ method: 'eth_sendTransaction', params: [_params.tx], quote: _params })
       }
     },
     [params]

@@ -17,3 +17,19 @@
     display: block;
   }
 }
+
+.protocol-container {
+  display: flex;
+
+  & .protocol-routes {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    & .dex-route {
+      flex: 1;
+    }
+  }
+}
