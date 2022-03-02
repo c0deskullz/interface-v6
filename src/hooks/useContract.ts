@@ -27,6 +27,7 @@ import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../consta
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import AGGREGATOR_ROUTER_ABI from '../constants/abis/aggregator-router.json'
+import OFF_CHAIN_ORACLE_ABI from '../constants/abis/oracle.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -50,6 +51,10 @@ export function useV1FactoryContract(): Contract | null {
 
 export function useAggregatorRouter(routerAddres: string): Contract | null {
   return useContract(routerAddres, AGGREGATOR_ROUTER_ABI, false)
+}
+
+export function useOracleContract(): Contract | null {
+  return useContract('0xBd0c7AaF0bF082712EbE919a9dD94b2d978f79A9', OFF_CHAIN_ORACLE_ABI, false)
 }
 
 export function useV2MigratorContract(): Contract | null {
