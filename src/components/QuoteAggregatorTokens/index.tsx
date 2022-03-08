@@ -5,27 +5,11 @@ import styled, { ThemeContext } from 'styled-components'
 import { useOracleContract } from '../../hooks/useContract'
 import { useOneInchToken } from '../../state/application/hooks'
 import { fromWei } from 'web3-utils'
+import Modal from '../Modal'
+import { CloseIcon } from '../../theme'
+import { ButtonWhite, ButtonSecondary } from '../Button'
 
-const Wrapper = styled.div`
-  span.hint {
-    font-size: small;
-  }
-
-  margin: 0.1rem;
-
-  div.protocolWrapper {
-    cursor: pointer;
-    margin: 0.2rem;
-    padding: 0.2rem;
-    font-size: small;
-    border: 1px solid black;
-    border-radius: 5px;
-
-    &.enabled {
-      border: 1px solid blue;
-    }
-  }
-`
+const Wrapper = styled.div``
 
 interface QuoteAggregatorTokensProps {
   error: any
@@ -54,17 +38,23 @@ const RouteDescription = ({
   const token = useOneInchToken(fromTokenAddress)
   const toToken = useOneInchToken(toTokenAddress)
   if (!token || !toToken) return <></>
+
   return (
-    <div className="dex-route">
-      <div className="protocol-name">at: {name}</div>
-      <div className="protocol-trade-percentage">part: {part}%</div>
-      <span className="input-token-logo">
-        <img src={token.logoURI} alt="" className="token-logo" />{' '}
-      </span>
-      <ChevronRight color={theme.text2} />
-      <span className="output-token-logo">
-        <img src={toToken.logoURI} alt="" className="token-logo" />{' '}
-      </span>
+    <div className="aggregator-route">
+      <div className="aggregator-route-name">
+        <span>{name === 'AVALANCHE_KYBER_DMM' ? 'Kyber DMM' : name}</span> {part}%
+      </div>
+      <div className="aggregator-route-icons">
+        <span>
+          <img src={token.logoURI} alt="" />
+          {token.symbol}
+        </span>
+        <ChevronRight color={theme.text2} />
+        <span>
+          <img src={toToken.logoURI} alt="" />
+          {token.symbol}
+        </span>
+      </div>
     </div>
   )
 }
@@ -77,14 +67,14 @@ const TradeRoute = (props: { protocols: any[] }) => {
         return <RouteDescription key={innerDexRouteIndex} {...innerDexRoute} />
       })
       return (
-        <div key={dexRoutesindex} className="protocol-routes">
+        <div key={dexRoutesindex} className="aggregator-routes">
           {innerDexRoutes}
         </div>
       )
     })
 
     return (
-      <div key={index} className="protocol-container">
+      <div key={index} className="aggregator-container">
         {routes}
       </div>
     )
@@ -167,22 +157,43 @@ export function QuoteAggregatorTokens({
     return () => onSwitchTradeWithAggregator(false)
   }, [onSwitchTradeWithAggregator])
 
+  const [showRouteModal, setShowRouteModal] = useState(false)
+
   return !error ? (
     <Wrapper>
-      <div
-        className={`protocolWrapper ${useAggregator ? 'enabled' : ''}`}
-        onClick={() => onSwitchTradeWithAggregator(!useAggregator)}
-      >
-        <TradeRoute protocols={protocols} />
+      <div className={`aggregator ${useAggregator ? 'enabled' : ''}`}>
+        <ButtonSecondary onClick={() => onSwitchTradeWithAggregator(!useAggregator)} padding="18px" marginBottom="16px">
+          Use PartySwap
+        </ButtonSecondary>
+
+        <ButtonWhite onClick={() => setShowRouteModal(true)} className="">
+          See details
+        </ButtonWhite>
         <ul>
-          <li className={`${positivePriceImpact ? 'green' : 'red'}`}> Price impact: {priceImpact}%</li>
+          <li className={`${positivePriceImpact ? 'green' : 'red'}`}> Price Impact: {priceImpact}%</li>
           {/* <li> input token: {fromToken?.symbol}</li> */}
-          <li> Input token amount: {formattedInputAmmount} </li>
+          {/* <li> Input token amount: {formattedInputAmmount} </li> */}
           {/* <li> output token: {toToken?.symbol}</li> */}
-          <li> Output token amount: {toTokenAmount}</li>
+          {/* <li> Output token amount: {toTokenAmount}</li> */}
           <li> Estimated gas: {estimatedGas}</li>
         </ul>
       </div>
+
+      <Modal isOpen={showRouteModal} onDismiss={() => setShowRouteModal(false)} maxHeight={90}>
+        <div className="aggregator-modal">
+          <div className="aggregator-modal-header">
+            <h4>Routing:</h4>
+            <CloseIcon onClick={() => setShowRouteModal(false)} />
+          </div>
+          <div className="aggregator-modal-content">
+            <img src={fromToken?.logoURI} alt={fromToken?.symbol} className="aggregator-modal-fromToken" />
+            <div className="aggregator-modal-separator"></div>
+            <TradeRoute protocols={protocols} />
+            <div className="aggregator-modal-separator"></div>
+            <img src={toToken?.logoURI} alt={toToken?.symbol} className="aggregator-modal-toToken" />
+          </div>
+        </div>
+      </Modal>
     </Wrapper>
   ) : (
     <></>

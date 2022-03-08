@@ -655,7 +655,8 @@ export default function Swap() {
                   router={aggregatorRouterAddress}
                   onApproved={console.log}
                 />
-                {aggregatorInputApproval === ApprovalState.APPROVED && parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
+                {aggregatorInputApproval === ApprovalState.APPROVED &&
+                parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
                   <ButtonError
                     onClick={handleSwapWithAggregator}
                     width="48%"
