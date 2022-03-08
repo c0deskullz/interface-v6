@@ -308,13 +308,13 @@ export default function Swap() {
       const gasunits = JSBI.BigInt(gas)
       const estimation = JSBI.multiply(gasunits, JSBI.BigInt(gasPrice))
       return {
-        avaxFee: fromWei(estimation.toString(), 'ether'),
+        avaxFee: +fromWei(estimation.toString(), 'ether'),
         gasUnits: gas
       }
     }
 
     return {
-      avaxFee: '0',
+      avaxFee: +'0',
       gasUnits: '0'
     }
   }, [aggregatorParams])
@@ -641,6 +641,7 @@ export default function Swap() {
                 estimatedGas={aggregatorSwapEstimatedGas.gasUnits}
                 toToken={toToken}
                 toTokenAmount={toTokenAmount}
+                avaxFee={aggregatorSwapEstimatedGas.avaxFee}
               />
             )}
             {/* AGGREGATOR QUOTES */}

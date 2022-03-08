@@ -21,6 +21,7 @@ interface QuoteAggregatorTokensProps {
   onSwitchTradeWithAggregator(state: boolean): void
   useAggregator: boolean
   protocols: any[]
+  avaxFee: any
 }
 
 const RouteDescription = ({
@@ -87,7 +88,7 @@ export function QuoteAggregatorTokens({
   error,
   formattedInputAmmount,
   toTokenAmount,
-  estimatedGas,
+  avaxFee,
   onSwitchTradeWithAggregator,
   useAggregator,
   protocols,
@@ -163,20 +164,20 @@ export function QuoteAggregatorTokens({
     <Wrapper>
       <div className={`aggregator ${useAggregator ? 'enabled' : ''}`}>
         <ButtonSecondary onClick={() => onSwitchTradeWithAggregator(!useAggregator)} padding="18px" marginBottom="16px">
-          Use PartySwap
+          {useAggregator ? 'Use PartySwap Instead' : 'Use Aggregator Instead'}
         </ButtonSecondary>
 
         <ButtonWhite onClick={() => setShowRouteModal(true)} className="">
           See details
         </ButtonWhite>
-        <ul>
-          <li className={`${positivePriceImpact ? 'green' : 'red'}`}> Price Impact: {priceImpact}%</li>
+        <div className="aggregator-swap-details">
+          <div className={`${positivePriceImpact ? 'green' : 'red'}`}> Price Impact: {priceImpact}%</div>
           {/* <li> input token: {fromToken?.symbol}</li> */}
           {/* <li> Input token amount: {formattedInputAmmount} </li> */}
           {/* <li> output token: {toToken?.symbol}</li> */}
           {/* <li> Output token amount: {toTokenAmount}</li> */}
-          <li> Estimated gas: {estimatedGas}</li>
-        </ul>
+          <div> Estimated fee: {+avaxFee.toFixed(4)} AVAX</div>
+        </div>
       </div>
 
       <Modal isOpen={showRouteModal} onDismiss={() => setShowRouteModal(false)} maxHeight={90}>

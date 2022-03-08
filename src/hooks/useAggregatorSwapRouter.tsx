@@ -57,7 +57,7 @@ const getSwapParams = async (
       )
       callback(data)
     } catch (error) {
-      errorCallback(error.response.data as OneInchHTTPError)
+      errorCallback(error?.response?.data as OneInchHTTPError)
     }
   }
 }
