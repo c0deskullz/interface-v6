@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { ChevronRight } from 'react-feather'
 import styled, { ThemeContext } from 'styled-components'
 import { useOracleContract } from '../../hooks/useContract'
@@ -8,6 +8,7 @@ import { fromWei } from 'web3-utils'
 import Modal from '../Modal'
 import { CloseIcon } from '../../theme'
 import { ButtonWhite, ButtonSecondary } from '../Button'
+import { LiquiditySource, useAggregatorLiquiditySources } from '../../hooks/useAggregatorLiquiditySources'
 
 const Wrapper = styled.div``
 
@@ -28,22 +29,28 @@ const RouteDescription = ({
   name,
   part,
   fromTokenAddress,
-  toTokenAddress
+  toTokenAddress,
+  liquiditySources
 }: {
   name: string
   part: number
   fromTokenAddress: string
   toTokenAddress: string
+  liquiditySources: LiquiditySource[]
 }) => {
   const theme = useContext(ThemeContext)
   const token = useOneInchToken(fromTokenAddress)
   const toToken = useOneInchToken(toTokenAddress)
+  const dexSource = useMemo(() => {
+    return liquiditySources.find(liquiditySource => liquiditySource.id === name)
+  }, [liquiditySources, name])
+
   if (!token || !toToken) return <></>
 
   return (
     <div className="aggregator-route">
       <div className="aggregator-route-name">
-        <span>{name === 'AVALANCHE_KYBER_DMM' ? 'Kyber DMM' : name}</span> {part}%
+        <span>{dexSource?.title}</span> {part}%
       </div>
       <div className="aggregator-route-icons">
         <span>
@@ -61,11 +68,13 @@ const RouteDescription = ({
 }
 
 //return div views with whatever it returns maybe :l
-const TradeRoute = (props: { protocols: any[] }) => {
+const TradeRoute = (props: { protocols: any[]; liquiditySources: LiquiditySource[] }) => {
   const protocolsRoutes = props.protocols.map((protocol, index) => {
     const routes = protocol.map((dexRoutes: any[], dexRoutesindex: number) => {
       const innerDexRoutes = dexRoutes.map((innerDexRoute: any, innerDexRouteIndex) => {
-        return <RouteDescription key={innerDexRouteIndex} {...innerDexRoute} />
+        return (
+          <RouteDescription key={innerDexRouteIndex} liquiditySources={props.liquiditySources} {...innerDexRoute} />
+        )
       })
       return (
         <div key={dexRoutesindex} className="aggregator-routes">
@@ -99,6 +108,7 @@ export function QuoteAggregatorTokens({
   const [tokenBRate, setTokenBRate] = useState('0')
   const [priceImpact, setPriceImpact] = useState('0')
   const [positivePriceImpact, setPositivePriceImpact] = useState(false)
+  const liquiditySources = useAggregatorLiquiditySources()
 
   const offChainOracle = useOracleContract()
 
@@ -189,7 +199,7 @@ export function QuoteAggregatorTokens({
           <div className="aggregator-modal-content">
             <img src={fromToken?.logoURI} alt={fromToken?.symbol} className="aggregator-modal-fromToken" />
             <div className="aggregator-modal-separator"></div>
-            <TradeRoute protocols={protocols} />
+            <TradeRoute protocols={protocols} liquiditySources={liquiditySources} />
             <div className="aggregator-modal-separator"></div>
             <img src={toToken?.logoURI} alt={toToken?.symbol} className="aggregator-modal-toToken" />
           </div>
