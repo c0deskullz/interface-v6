@@ -13,7 +13,7 @@ import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import { ApproveAggregatorToken } from '../../components/ApproveAggregatorToken'
 // import AddressInputPanel from '../../components/AddressInputPanel'
-import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -78,18 +78,6 @@ const PageWrapper = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 2rem 1rem;
   `};
-
-  .aggregator-actions {
-    display: flex;
-    align-items: end;
-
-    & > * {
-      flex: 1;
-      button {
-        width: unset;
-      }
-    }
-  }
 `
 
 const BackgroundImage = styled.div`
@@ -658,17 +646,24 @@ export default function Swap() {
                 />
                 {aggregatorInputApproval === ApprovalState.APPROVED &&
                 parsedAmounts?.[Field.INPUT]?.greaterThan(BigInt(0)) ? (
-                  <ButtonError
-                    onClick={handleSwapWithAggregator}
-                    width="48%"
-                    id="swap-button"
-                    disabled={!!swapTxDataError}
-                    error={!!swapTxDataError}
-                  >
-                    <Text fontSize={16} fontWeight={500}>
-                      {!!swapTxDataError ? swapTxDataError.description : 'Swap'}
-                    </Text>
-                  </ButtonError>
+                  <>
+                    <ButtonError
+                      onClick={handleSwapWithAggregator}
+                      id="swap-button"
+                      disabled={!!swapTxDataError}
+                      error={!!swapTxDataError}
+                    >
+                      <Text fontSize={20} fontWeight={500}>
+                        {!!swapTxDataError ? swapTxDataError.description : 'Swap'}
+                      </Text>
+                    </ButtonError>
+
+                    <ButtonSecondary onClick={() => setUseAggregator(!useAggregator)} marginTop="16px" padding="18px">
+                      <Text fontSize={16} fontWeight={500}>
+                        Use PartySwap Instead
+                      </Text>
+                    </ButtonSecondary>
+                  </>
                 ) : (
                   <></>
                 )}

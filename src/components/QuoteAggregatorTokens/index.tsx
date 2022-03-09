@@ -1,16 +1,32 @@
 import { BigNumber } from 'ethers'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { ChevronRight } from 'react-feather'
+import { ChevronRight, Maximize } from 'react-feather'
 import styled, { ThemeContext } from 'styled-components'
 import { useOracleContract } from '../../hooks/useContract'
 import { useOneInchToken } from '../../state/application/hooks'
 import { fromWei } from 'web3-utils'
 import Modal from '../Modal'
-import { CloseIcon } from '../../theme'
-import { ButtonWhite, ButtonSecondary } from '../Button'
+import { CloseIcon, TYPE } from '../../theme'
 import { LiquiditySource, useAggregatorLiquiditySources } from '../../hooks/useAggregatorLiquiditySources'
+import { AutoColumn } from '../Column'
+import QuestionHelper from '../QuestionHelper'
+import { RowBetween, RowFixed } from '../Row'
+import { ErrorText, SectionBreak } from '../swap/styleds'
 
 const Wrapper = styled.div``
+
+const AggregatorBox = styled.div`
+  border-radius: 20px;
+  padding: 0.75rem;
+  margin: 12px 0;
+  color: ${({ theme }) => theme.text2};
+  background-color: ${({ theme }) => theme.advancedBG};
+
+  .aggregator-links-details:hover {
+    text-decoration: underline;
+    text-decoration-color: ${({ theme }) => theme.primary1};
+  }
+`
 
 interface QuoteAggregatorTokensProps {
   error: any
@@ -60,7 +76,7 @@ const RouteDescription = ({
         <ChevronRight color={theme.text2} />
         <span>
           <img src={toToken.logoURI} alt="" />
-          {token.symbol}
+          {toToken.symbol}
         </span>
       </div>
     </div>
@@ -107,7 +123,7 @@ export function QuoteAggregatorTokens({
   const [tokenARate, setTokenARate] = useState('0')
   const [tokenBRate, setTokenBRate] = useState('0')
   const [priceImpact, setPriceImpact] = useState('0')
-  const [positivePriceImpact, setPositivePriceImpact] = useState(false)
+  // const [positivePriceImpact, setPositivePriceImpact] = useState(false)
   const liquiditySources = useAggregatorLiquiditySources()
 
   const offChainOracle = useOracleContract()
@@ -158,7 +174,7 @@ export function QuoteAggregatorTokens({
       const outputAvax = tokenBPrice * +toTokenAmount
       const priceImpact = (inputAvax - outputAvax) / inputAvax
       setPriceImpact(Math.abs(priceImpact).toLocaleString())
-      setPositivePriceImpact(priceImpact < 2)
+      // setPositivePriceImpact(priceImpact < 2)
     }
   }, [tokenARate, tokenBRate, fromToken, toToken, formattedInputAmmount, toTokenAmount])
 
@@ -170,41 +186,88 @@ export function QuoteAggregatorTokens({
 
   const [showRouteModal, setShowRouteModal] = useState(false)
 
+  const theme = useContext(ThemeContext)
+
   return !error ? (
     <Wrapper>
-      <div className={`aggregator ${useAggregator ? 'enabled' : ''}`}>
-        <ButtonSecondary onClick={() => onSwitchTradeWithAggregator(!useAggregator)} padding="18px" marginBottom="16px">
-          {useAggregator ? 'Use PartySwap Instead' : 'Use Aggregator Instead'}
-        </ButtonSecondary>
+      {useAggregator ? (
+        <>
+          <AggregatorBox className="aggregator">
+            <AutoColumn style={{ padding: '0 20px', lineHeight: '1' }}>
+              <RowBetween>
+                <RowFixed>
+                  <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+                    Price Impact
+                  </TYPE.black>
+                  <QuestionHelper text="The difference between the market price and estimated price due to trade size." />
+                </RowFixed>
 
-        <ButtonWhite onClick={() => setShowRouteModal(true)} className="">
-          See details
-        </ButtonWhite>
-        <div className="aggregator-swap-details">
-          <div className={`${positivePriceImpact ? 'green' : 'red'}`}> Price Impact: {priceImpact}%</div>
-          {/* <li> input token: {fromToken?.symbol}</li> */}
-          {/* <li> Input token amount: {formattedInputAmmount} </li> */}
-          {/* <li> output token: {toToken?.symbol}</li> */}
-          {/* <li> Output token amount: {toTokenAmount}</li> */}
-          <div> Estimated fee: {+avaxFee.toFixed(4)} AVAX</div>
-        </div>
-      </div>
+                <ErrorText fontWeight={500} fontSize={14}>
+                  {`${priceImpact}%`}
+                </ErrorText>
+              </RowBetween>
 
-      <Modal isOpen={showRouteModal} onDismiss={() => setShowRouteModal(false)} maxHeight={90}>
-        <div className="aggregator-modal">
-          <div className="aggregator-modal-header">
-            <h4>Routing:</h4>
-            <CloseIcon onClick={() => setShowRouteModal(false)} />
-          </div>
-          <div className="aggregator-modal-content">
-            <img src={fromToken?.logoURI} alt={fromToken?.symbol} className="aggregator-modal-fromToken" />
-            <div className="aggregator-modal-separator"></div>
-            <TradeRoute protocols={protocols} liquiditySources={liquiditySources} />
-            <div className="aggregator-modal-separator"></div>
-            <img src={toToken?.logoURI} alt={toToken?.symbol} className="aggregator-modal-toToken" />
-          </div>
-        </div>
-      </Modal>
+              <RowBetween>
+                <RowFixed>
+                  <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+                    Estimated fee
+                  </TYPE.black>
+                  <QuestionHelper text="Estimated gas fee cost to execute this transaction." />
+                </RowFixed>
+                <TYPE.black fontSize={14} color={theme.text1}>
+                  {+avaxFee.toFixed(4)} AVAX
+                </TYPE.black>
+              </RowBetween>
+
+              <RowBetween>
+                <RowFixed>
+                  <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+                    Route
+                  </TYPE.black>
+                  <QuestionHelper text="Route to offer you the best pricing." />
+                </RowFixed>
+
+                <TYPE.black
+                  fontSize={14}
+                  color={theme.text1}
+                  onClick={() => setShowRouteModal(true)}
+                  className="aggregator-links-details"
+                  style={{}}
+                >
+                  Details
+                  <Maximize color={theme.text2} size="16px" style={{ marginLeft: '4px' }} />
+                </TYPE.black>
+              </RowBetween>
+            </AutoColumn>
+          </AggregatorBox>
+
+          {/* <ButtonSecondary
+            onClick={() => onSwitchTradeWithAggzregator(!useAggregator)}
+            padding="18px"
+            marginBottom="16px"
+          >
+            Use PartySwap Instead
+          </ButtonSecondary> */}
+
+          <Modal isOpen={showRouteModal} onDismiss={() => setShowRouteModal(false)} maxHeight={90}>
+            <div className="aggregator-modal">
+              <div className="aggregator-modal-header">
+                <h4>Routing:</h4>
+                <CloseIcon onClick={() => setShowRouteModal(false)} />
+              </div>
+              <div className="aggregator-modal-content">
+                <img src={fromToken?.logoURI} alt={fromToken?.symbol} className="aggregator-modal-fromToken" />
+                <SectionBreak />
+                <TradeRoute protocols={protocols} liquiditySources={liquiditySources} />
+                <SectionBreak />
+                <img src={toToken?.logoURI} alt={toToken?.symbol} className="aggregator-modal-toToken" />
+              </div>
+            </div>
+          </Modal>
+        </>
+      ) : (
+        <></>
+      )}
     </Wrapper>
   ) : (
     <></>
