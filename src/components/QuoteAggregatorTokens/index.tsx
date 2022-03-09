@@ -61,12 +61,30 @@ const RouteDescription = ({
     return liquiditySources.find(liquiditySource => liquiditySource.id === name)
   }, [liquiditySources, name])
 
+  const formattedTitle = useMemo(() => {
+    if (dexSource?.title.includes('AVALANCHE_')) {
+      const splitted = dexSource.title
+        .replace('AVALANCHE_', '')
+        .replaceAll('_', ' ')
+        .split('')
+
+      splitted.forEach((letter, index) => {
+        if (index !== 0) {
+          splitted[index] = letter.toLocaleLowerCase()
+        }
+      })
+      return splitted.join('')
+    }
+
+    return dexSource?.title
+  }, [dexSource])
+
   if (!token || !toToken) return <></>
 
   return (
     <div className="aggregator-route">
       <div className="aggregator-route-name">
-        <span>{dexSource?.title}</span> {part}%
+        <span>{formattedTitle}</span> {part}%
       </div>
       <div className="aggregator-route-icons">
         <span>
@@ -95,6 +113,7 @@ const TradeRoute = (props: { protocols: any[]; liquiditySources: LiquiditySource
       return (
         <div key={dexRoutesindex} className="aggregator-routes">
           {innerDexRoutes}
+          <SectionBreak />
         </div>
       )
     })
@@ -259,7 +278,6 @@ export function QuoteAggregatorTokens({
                 <img src={fromToken?.logoURI} alt={fromToken?.symbol} className="aggregator-modal-fromToken" />
                 <SectionBreak />
                 <TradeRoute protocols={protocols} liquiditySources={liquiditySources} />
-                <SectionBreak />
                 <img src={toToken?.logoURI} alt={toToken?.symbol} className="aggregator-modal-toToken" />
               </div>
             </div>

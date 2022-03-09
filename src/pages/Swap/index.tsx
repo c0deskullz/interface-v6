@@ -511,6 +511,7 @@ export default function Swap() {
             {/* PARTY SWAP ACTIONS */}
             {!useAggregator && (
               <>
+                <AdvancedSwapDetailsDropdown trade={trade} />
                 <BottomGrouping>
                   {!account ? (
                     <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
@@ -566,7 +567,7 @@ export default function Swap() {
                         <Text fontSize={16} fontWeight={500}>
                           {priceImpactSeverity > 3 && !isExpertMode
                             ? `Price Impact High`
-                            : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                            : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''} With Party`}
                         </Text>
                       </ButtonError>
                     </RowBetween>
@@ -609,29 +610,37 @@ export default function Swap() {
                   ) : toggledVersion !== DEFAULT_VERSION && defaultTrade ? (
                     <DefaultVersionLink />
                   ) : null}
+                  {formattedInputAmmount && inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
+                    <ButtonSecondary onClick={() => setUseAggregator(true)} marginTop="16px" padding="18px">
+                      <Text fontSize={16} fontWeight={500}>
+                        Use Aggregator Instead
+                      </Text>
+                    </ButtonSecondary>
+                  )}
                 </BottomGrouping>
-
-                <AdvancedSwapDetailsDropdown trade={trade} />
               </>
             )}
 
             {/* PARTY SWAP ACTIONS */}
 
             {/* AGGREGATOR QUOTES */}
-            {aggregatorParams?.quote?.protocols && inputIsAvailableInAggregator && outputIsAvailableInAggregator && (
-              <QuoteAggregatorTokens
-                onSwitchTradeWithAggregator={setUseAggregator}
-                useAggregator={useAggregator}
-                error={error}
-                protocols={aggregatorParams.quote.protocols}
-                fromToken={fromToken}
-                formattedInputAmmount={formattedInputAmmount}
-                estimatedGas={aggregatorSwapEstimatedGas.gasUnits}
-                toToken={toToken}
-                toTokenAmount={toTokenAmount}
-                avaxFee={aggregatorSwapEstimatedGas.avaxFee}
-              />
-            )}
+            {!swapTxDataError &&
+              aggregatorParams?.quote?.protocols &&
+              inputIsAvailableInAggregator &&
+              outputIsAvailableInAggregator && (
+                <QuoteAggregatorTokens
+                  onSwitchTradeWithAggregator={setUseAggregator}
+                  useAggregator={useAggregator}
+                  error={error}
+                  protocols={aggregatorParams.quote.protocols}
+                  fromToken={fromToken}
+                  formattedInputAmmount={formattedInputAmmount}
+                  estimatedGas={aggregatorSwapEstimatedGas.gasUnits}
+                  toToken={toToken}
+                  toTokenAmount={toTokenAmount}
+                  avaxFee={aggregatorSwapEstimatedGas.avaxFee}
+                />
+              )}
             {/* AGGREGATOR QUOTES */}
             {/* AGGREGATOR APPROVE */}
             {useAggregator && (
@@ -654,7 +663,7 @@ export default function Swap() {
                       error={!!swapTxDataError}
                     >
                       <Text fontSize={20} fontWeight={500}>
-                        {!!swapTxDataError ? swapTxDataError.description : 'Swap'}
+                        {!!swapTxDataError ? swapTxDataError.description : 'Swap With Aggregator'}
                       </Text>
                     </ButtonError>
 

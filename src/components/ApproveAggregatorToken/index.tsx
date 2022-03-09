@@ -9,6 +9,11 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 import { tryParseAmount } from '../../state/swap/hooks'
 
 const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  button {
+    flex: 1;
+  }
   span.hint {
     font-size: small;
   }
@@ -51,14 +56,12 @@ export function ApproveAggregatorToken({ currencies, inputAmmout, router, onAppr
     if (approval === ApprovalState.APPROVED) {
       onApproved()
     }
-
   }, [approval, approvalSubmitted, onApproved])
 
   return approval !== ApprovalState.APPROVED &&
     currencyInputAmount?.greaterThan(BigInt(0)) &&
     currencyInputAmount?.currency !== CAVAX ? (
     <Wrapper>
-      <span className="hint">You need to approve input token in 1inch router to be able to swap</span>
       <ButtonConfirmed
         onClick={approveCallback}
         disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
