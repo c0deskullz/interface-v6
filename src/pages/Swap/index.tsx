@@ -595,7 +595,7 @@ export default function Swap() {
                           ? swapInputError
                           : priceImpactSeverity > 3 && !isExpertMode
                           ? `Price Impact Too High`
-                          : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                          : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''} With Party`}
                       </Text>
                     </ButtonError>
                   )}
