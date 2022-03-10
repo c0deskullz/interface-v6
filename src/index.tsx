@@ -1,6 +1,6 @@
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import 'inter-ui'
-import React, { StrictMode } from 'react'
+import React, { StrictMode, useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactDOM from 'react-dom'
 import ReactGA from 'react-ga'
@@ -10,6 +10,7 @@ import { NetworkContextName } from './constants'
 import './i18n'
 import App from './pages/App'
 import store from './state'
+import { useGetAllTokensInOneInch } from './state/application/hooks'
 import ApplicationUpdater from './state/application/updater'
 import ListsUpdater from './state/lists/updater'
 import MulticallUpdater from './state/multicall/updater'
@@ -53,6 +54,14 @@ function Updaters() {
   )
 }
 
+function OneInchTokens() {
+  const getOneInchTokens = useGetAllTokensInOneInch()
+  useEffect(() => {
+    getOneInchTokens()
+  }, [getOneInchTokens])
+  return <></>
+}
+
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
@@ -60,6 +69,7 @@ ReactDOM.render(
       <Web3ProviderNetwork getLibrary={getLibrary}>
         <Provider store={store}>
           <Updaters />
+          <OneInchTokens />
           <ThemeProvider>
             <ThemedGlobalStyle />
             <HashRouter>

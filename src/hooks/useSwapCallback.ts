@@ -49,7 +49,7 @@ function useSwapCallArguments(
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-  var deadline = useTransactionDeadline()
+  let deadline = useTransactionDeadline()
 
   const currentTime = BigNumber.from(new Date().getTime())
   if (deadline && deadline < currentTime.add(10)) {
@@ -60,12 +60,12 @@ function useSwapCallArguments(
     const tradeVersion = Version.v2
     if (!trade || !recipient || !library || !account || !tradeVersion || !chainId || !deadline) return []
 
+    const swapMethods = []
+
     const contract: Contract | null = getRouterContract(chainId, library, account)
     if (!contract) {
       return []
     }
-
-    const swapMethods = []
 
     swapMethods.push(
       Router.swapCallParameters(trade, {
