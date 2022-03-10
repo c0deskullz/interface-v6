@@ -129,6 +129,7 @@
     "@partyswap-libs/party-swap-periphery": "^1.1.4",
     "@partyswap-libs/sdk": "1.0.13",
     "axios": "^0.21.4",
+    "lodash": "^4.17.21",
     "sass": "^1.35.2",
     "yay-token": "^2.0.1"
   }
