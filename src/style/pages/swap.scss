@@ -6,11 +6,11 @@
 }
 .swap-image.left {
   left: 0;
-  bottom: 0;
+  bottom: 3;
 }
 .swap-image.right {
   right: 0;
-  top: 0;
+  top: -1;
 }
 @media (min-width: 650px) {
   .swap-image {

@@ -5,11 +5,13 @@
   width: 100%;
   padding-top: 3rem;
   padding-bottom: 5rem;
+  background-color: #f846a1;
 }
 .footer-container {
   display: grid;
   gap: 3rem;
   @include module-container();
+
 }
 .footer-section {
   text-align: center;
@@ -65,7 +67,10 @@
 /* Typography
 ------------------------------------------------------------- */
 .footer-section h4 {
-  color: $color-text-heading;
+  color: #fff;
+  position: relative;
+  left: 325px;
+
 }
 .footer-section p,
 .footer-section a {
@@ -110,12 +115,16 @@
   grid-template-columns: repeat(auto-fit, minmax(2.5rem, 2.5rem));
   justify-content: center;
   gap: 1rem;
+  position: relative;
+  left: 485px;
+
 }
 .footer-social .socialIcon {
   display: block;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 0.5rem;
   padding: 0.25rem;
+  color: rgb(241, 24, 107);
 
   &:hover {
     background-color: $color-accent-1;
@@ -146,4 +155,6 @@
   font-size: 0.875rem;
   text-align: center;
   margin-bottom: 0;
+  position: relative;
+  left: 30px;
 }

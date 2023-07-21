@@ -6,7 +6,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import {
-  useDarkModeManager,
+
   useExpertModeManager,
   useUserTransactionTTL,
   useUserSlippageTolerance
@@ -134,7 +134,6 @@ export default function SettingsTab() {
 
   const [expertMode, toggleExpertMode] = useExpertModeManager()
 
-  const [darkMode, toggleDarkMode] = useDarkModeManager()
 
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -230,12 +229,12 @@ export default function SettingsTab() {
               />
             </RowBetween>
             <RowBetween>
-              <RowFixed>
+              {/* <RowFixed>
                 <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
                   Toggle Dark Mode
                 </TYPE.black>
               </RowFixed>
-              <Toggle isActive={darkMode} toggle={toggleDarkMode} />
+              <Toggle isActive={darkMode} toggle={toggleDarkMode} /> */}
             </RowBetween>
           </AutoColumn>
         </MenuFlyout>

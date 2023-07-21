@@ -68,7 +68,7 @@ const BackgroundImage = styled.div`
   left: 0;
   z-index: -1;
   &.darkMode {
-    background-color: #1a1a37;
+    background-color: #000000;
     background-image: url(${patternDarkMode});
   }
 `
@@ -413,7 +413,7 @@ export default function RemoveLiquidity({
       <>
         <RowBetween>
           <Text color={theme.text2} fontWeight={500} fontSize={16}>
-            {'PARTY ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
+            {'SC ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
           </Text>
           <RowFixed>
             <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} />

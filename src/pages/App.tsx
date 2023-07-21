@@ -17,9 +17,9 @@ import {
 } from './AddLiquidity/redirects'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
-import Home from './Home'
+
 import Pool from './Pool'
-import Jacuzzi from './Jacuzzi'
+
 import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
@@ -77,13 +77,13 @@ export default function App() {
           <Polling />
           <Web3ReactManager>
             <Switch>
-              <Route exact strict path="/home" component={Home} />
+              <Route exact strict path="/home" component={Swap} />
               <Route exact strict path="/swap" component={Swap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} /> {/**LIQUIDITY */}
-              <Route exact strict path="/jacuzzi" component={Jacuzzi} />
+              {/* <Route exact strict path="/jacuzzi" component={Jacuzzi} /> */}
               <Route exact strict path="/party/:version" component={Earn} /> {/**FARMS */}
               <Route exact strict path="/vote" component={Vote} />
               <Route exact strict path="/airdrop" component={Airdrop} />

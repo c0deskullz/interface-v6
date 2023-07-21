@@ -42,7 +42,7 @@ const BackgroundImage = styled.div`
   left: 0;
   border-radius: 20px;
   &.darkMode {
-    background-color: #1a1a37;
+    background-color: #000000;
     background-image: url(${patternDarkMode});
   }
 `
@@ -98,7 +98,7 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
               <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
                 🎉
               </span>
-              PARTY Breakdown
+              SC Breakdown
             </TYPE.mediumHeader>
             <StyledClose onClick={() => setShowPngBalanceModal(false)} />
           </RowBetween>
@@ -149,11 +149,11 @@ export default function PartyBalanceContent({ setShowPngBalanceModal }: { setSho
         <CardSection gap="sm">
           <AutoColumn gap="md">
             <RowBetween>
-              <TYPE.body>PARTY price:</TYPE.body>
+              <TYPE.body>SC price:</TYPE.body>
               <TYPE.body fontWeight="700">{partyPrice?.toFixed(5) ?? '-'} AVAX</TYPE.body>
             </RowBetween>
             <RowBetween>
-              <TYPE.body>PARTY in circulation:</TYPE.body>
+              <TYPE.body>SC in circulation:</TYPE.body>
               <TYPE.body fontWeight="700">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.body>
             </RowBetween>
             <RowBetween>

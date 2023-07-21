@@ -5,17 +5,17 @@ import { hex } from 'wcag-contrast'
 import { Token } from '@partyswap-libs/sdk'
 
 async function getColorFromToken(token: Token): Promise<string | null> {
-  const path = `https://raw.githubusercontent.com/PartySwapDEX/token-assets/main/assets/0x25afD99fcB474D7C336A2971F26966da652a92bc/logo.png`
+  const path = `https://3000-c0deskullz-interfacev6-qw2sx0ie1bb.ws-us102.gitpod.io/static/media/logo22.fa37c338.png`
 
   return Vibrant.from(path)
     .getPalette()
     .then(palette => {
       if (palette?.Vibrant) {
         let detectedHex = palette.Vibrant.hex
-        let AAscore = hex(detectedHex, '#FFF')
+        let AAscore = hex(detectedHex, '#000')
         while (AAscore < 3) {
           detectedHex = shade(0.005, detectedHex)
-          AAscore = hex(detectedHex, '#FFF')
+          AAscore = hex(detectedHex, '#000')
         }
         return detectedHex
       }

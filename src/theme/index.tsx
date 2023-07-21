@@ -31,7 +31,7 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
   {}
 ) as any
 
-const white = '#FFFFFF'
+const white = '#fff'
 const black = '#000000'
 
 export function colors(darkMode: boolean): Colors {
@@ -41,22 +41,22 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
+    text1: darkMode ? '#fff' : '#000000',
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#888D9B',
     text4: darkMode ? '#565A69' : '#C3C5CB',
     text5: darkMode ? '#2C2F36' : '#EDEEF2',
-    text6: darkMode ? '#ffffff' : '#4003b6',
-    text7: darkMode ? '#ffffff' : '#5005E6',
-    text8: darkMode ? '#000000' : '#FFFFFF',
+    text6: darkMode ? '#fff' : '#4003b6',
+    text7: darkMode ? '#fff' : '#5005E6',
+    text8: darkMode ? '#000000' : '#fff',
 
     // backgrounds / greys
-    bg1: darkMode ? '#1a1a37' : '#FFFFFF',
-    bg2: darkMode ? '#262652' : '#F7F8FA',
+    bg1: darkMode ? '#000000' : '#fff',
+    bg2: darkMode ? '##fff' : '#F7F8FA',
     bg3: darkMode ? '#40444F' : '#EDEEF2',
     bg4: darkMode ? '#565A69' : '#CED0D9',
     bg5: darkMode ? '#6C7284' : '#888D9B',
-    bg6: darkMode ? '#262652' : '#e5e5ff',
+    bg6: darkMode ? '##fff' : '#e5e5ff',
     bg7: darkMode ? '#303069' : '#e5e5ff',
 
     //specialty colors
@@ -64,38 +64,38 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#690bd6' : '#5005E6',
-    primary2: darkMode ? '#5005E6' : '#690bd6',
-    primary3: darkMode ? '#5005E6' : '#690bd6',
-    primary4: darkMode ? '#376bad70' : '#690bd6',
-    primary5: darkMode ? '#690bd670' : '#5005E6',
-    primary6: darkMode ? '#690bd670' : '#FFFFFF',
-    primary7: darkMode ? '#ffffff' : '#FFFFFF',
+    primary1: darkMode ? '#fff' : '#5005E6',
+    primary2: darkMode ? '#5005E6' : '#fff',
+    primary3: darkMode ? '#5005E6' : '#fff',
+    primary4: darkMode ? '#376bad70' : '#fff',
+    primary5: darkMode ? '#eec0c8' : '#5005E6',
+    primary6: darkMode ? '#eec0c8' : '#fff',
+    primary7: darkMode ? '#fff' : '#fff',
     primary8: darkMode ? '#376bad70' : '#5005E6',
     primary9: darkMode ? '#5184c870' : '#6b23fb',
     primary10: darkMode ? '#376bad70' : '#3e03af',
 
     // color text
-    primaryText1: darkMode ? '#b16dff' : '#ffffff',
-    primaryText2: darkMode ? '#b16dff' : '#5005E6',
-    primaryText3: darkMode ? '#b16dff' : '#4003b6',
+    primaryText1: darkMode ? '#ff05ab' : '#fff',
+    primaryText2: darkMode ? '#ff05ab' : '#5005E6',
+    primaryText3: darkMode ? '#ff05ab' : '#4003b6',
 
     // secondary colors
-    secondary1: darkMode ? '#690bd670' : '#ff007a',
+    secondary1: darkMode ? '#eec0c8' : '#ff007a',
     secondary2: darkMode ? '#17000b26' : '#F6DDE8',
     secondary3: darkMode ? '#17000b26' : '#FDEAF1',
 
     // gradients
-    gradient1: darkMode ? 'linear-gradient(180deg, #262652, #262652)' : 'linear-gradient(180deg, #4003b6, #2d0382)',
-    gradient2: darkMode ? 'linear-gradient(180deg, #262652, #262652)' : 'linear-gradient(180deg, #1f005f, #330294)',
+    gradient1: darkMode ? 'linear-gradient(180deg, ##fff, ##fff)' : 'linear-gradient(180deg, #4003b6, #2d0382)',
+    gradient2: darkMode ? 'linear-gradient(180deg, ##fff, ##fff)' : 'linear-gradient(180deg, #1f005f, #330294)',
 
     // surface
-    surface1: darkMode ? '#262652' : '#4003b6',
-    surface2: darkMode ? '#262652' : '#41008a',
-    surface3: darkMode ? '#1A1A37' : '#ffffff',
-    surface4: darkMode ? '#1F1F41' : '#ffffff',
-    surface5: darkMode ? '#262652' : '#f6f6ff',
-    surface6: darkMode ? '#25224b' : '#ffffff',
+    surface1: darkMode ? '##fff' : '#4003b6',
+    surface2: darkMode ? '##fff' : '#41008a',
+    surface3: darkMode ? '#1A1A37' : '#fff',
+    surface4: darkMode ? '#e71f96' : '#fff',
+    surface5: darkMode ? '##fff' : '#f6f6ff',
+    surface6: darkMode ? '#25224b' : '#fff',
 
     // disabled gray surface
     disabledSurface: darkMode ? '#ababab' : '#ababab',
@@ -236,7 +236,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
-  
+
 }
 `
 

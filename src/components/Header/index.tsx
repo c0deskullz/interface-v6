@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { CountUp } from 'use-count-up'
-import PartySwapIcon from '../../assets/svg/logo.svg'
+import PartySwapIcon from '../../assets/svg/logo22.png'
 // import V2Icon from '../../assets/svg/v2Icon.svg'
 import { ANALYTICS_PAGE, TOKEN_MIGRATION_PAGE, NFTS_PAGE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
@@ -29,7 +29,7 @@ const HeaderFrame = styled.div`
   width: 100%;
   top: 0;
   position: relative;
-  background-color: ${({ theme }) => theme.surface1};
+  background-color: #c93f91;
   padding: 1rem;
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -62,7 +62,7 @@ const HeaderControls = styled.div`
     z-index: 99;
     height: 72px;
     border-radius: 12px 12px 0 0;
-    background-color: ${({ theme }) => theme.bg1};
+    background-color: #fff;
   `};
 `
 
@@ -176,7 +176,7 @@ const StyledMenu = styled.nav`
   display: none;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: ${({ theme }) => theme.surface1};
+  background-color: #fff;
   transform: ${({ open }: { open: boolean }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
   height: 100vh;
   width: 100%;
@@ -200,7 +200,7 @@ const StyledMenu = styled.nav`
       sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     font-size: 2rem;
     font-weight: 700;
-    color: ${({ theme }) => theme.white};
+    color: white;
     text-decoration: none;
     margin-bottom: 2rem;
     transition: color 100ms ease;
@@ -211,7 +211,7 @@ const StyledMenu = styled.nav`
     }
 
     &:hover {
-      color: ${({ theme }) => theme.primaryText1};
+      color: #fff;
     }
   }
 `
@@ -292,7 +292,7 @@ const Title = styled.a`
   justify-self: flex-start;
   margin-right: 12px;
   img.logo {
-    height: 2rem;
+    height: 4rem;
     margin-right: 3.25rem
   }
   img.logo-v2 {
@@ -341,7 +341,7 @@ const StyledNavLink = styled(NavLink).attrs({
     :hover,
     :focus {
       color: ${({ theme }) => theme.white};
-      background-color: ${({ theme }) => theme.primary1};
+      background-color: #690bd6;
     }
   }
 `
@@ -406,15 +406,15 @@ const Links = ({ className }: { className?: string }) => {
       >
         Liquidity
       </StyledNavLink>
-      <StyledNavLink id={`stake-nav-link`} to={'/party/3'}>
-        Piñatas
+      <StyledNavLink id={`stake-nav-link`} to={'d'}>
+
       </StyledNavLink>
-      <StyledNavLink id={`jacuzzi-nav-link`} to={'/jacuzzi'}>
-        Jacuzzis
+      <StyledNavLink id={`jacuzzi-nav-link`} to={'d'}>
+
       </StyledNavLink>
-      <StyledExternalLink href={ANALYTICS_PAGE}>Charts</StyledExternalLink>
-      <StyledExternalLink href={TOKEN_MIGRATION_PAGE}>Migrate Token</StyledExternalLink>
-      <StyledExternalLink href={NFTS_PAGE}>NFT</StyledExternalLink>
+      <StyledExternalLink href={ANALYTICS_PAGE}></StyledExternalLink>
+      <StyledExternalLink href={TOKEN_MIGRATION_PAGE}></StyledExternalLink>
+      <StyledExternalLink href={NFTS_PAGE}></StyledExternalLink>
     </div>
   )
 }
@@ -493,7 +493,7 @@ export default function Header() {
                     </TYPE.white>
                   </HideSmall>
                 )}
-                PARTY
+                $SC
               </PNGAmount>
             </PNGWrapper>
           )}

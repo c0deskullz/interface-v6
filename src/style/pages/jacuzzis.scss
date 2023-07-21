@@ -3,6 +3,7 @@
 .jacuzzi {
   position: relative;
   @include module();
+  display: none;
 }
 .jacuzzi-container {
   position: relative;

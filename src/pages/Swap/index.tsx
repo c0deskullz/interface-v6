@@ -4,11 +4,11 @@ import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
-import BannerImage from '../../assets/images/swap-banner.png'
-import imageLeftDark from '../../assets/svg/swap-image-left-dark.svg'
-import imageLeft from '../../assets/svg/swap-image-left.svg'
-import imageRightDark from '../../assets/svg/swap-image-right-dark.svg'
-import imageRight from '../../assets/svg/swap-image-right.svg'
+import BannerImage from '../../assets/svg/3738408.png'
+import imageLeftDark from '../../assets/svg/3770325.png'
+import imageLeft from '../../assets/svg/3684921.png'
+import imageRightDark from '../../assets/svg/3684921.png'
+import imageRight from '../../assets/svg/3770325.png'
 import patternDarkMode from '../../assets/svg/swap-pattern-dark.svg'
 import pattern from '../../assets/svg/swap-pattern.svg'
 import { ApproveAggregatorToken } from '../../components/ApproveAggregatorToken'
@@ -90,7 +90,7 @@ const BackgroundImage = styled.div`
   left: 0;
   z-index: -1;
   &.darkMode {
-    background-color: #1a1a37;
+    background-color: #000000;
     background-image: url(${patternDarkMode});
   }
 `

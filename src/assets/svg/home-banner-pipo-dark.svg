@@ -4,10 +4,10 @@
 	 viewBox="0 0 382.8 279.7" style="enable-background:new 0 0 382.8 279.7;" xml:space="preserve">
 <style type="text/css">
 	.st0{clip-path:url(#SVGID_00000049912727770792124160000010904422698983848066_);}
-	.st1{fill:#690BD6;}
+	.st1{fill:#fff;}
 	.st2{fill:#5200A9;}
 	.st3{fill:#3B0084;}
-	.st4{fill:#FFFFFF;}
+	.st4{fill:#fff;}
 	.st5{fill:#7CD36A;}
 	.st6{fill:#070117;}
 	.st7{fill:#7CAB6A;}
@@ -21,16 +21,16 @@
 	.st15{fill:none;stroke:#070117;stroke-width:2.136;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 	.st16{fill:#FF6300;}
 	.st17{fill:#D63B00;}
-	.st18{fill:none;stroke:#690BD6;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
-	.st19{fill:none;stroke:#690BD6;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.991;}
+	.st18{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
+	.st19{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.991;}
 	.st20{fill:none;stroke:#FFED00;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
 	.st21{fill:none;stroke:#FFED00;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.928;}
-	.st22{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
-	.st23{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.937;}
+	.st22{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
+	.st23{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.937;}
 	.st24{fill:#8C44E0;}
-	.st25{fill:none;stroke:#690BD6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-	.st26{fill:none;stroke:#690BD6;stroke-width:2.0008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0017;}
-	.st27{fill:none;stroke:#690BD6;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.948;}
+	.st25{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+	.st26{fill:none;stroke:#fff;stroke-width:2.0008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0017;}
+	.st27{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.948;}
 	.st28{fill:none;stroke:#FF6300;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
 	.st29{fill:none;stroke:#FF6300;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,3.959;}
 </style>
@@ -67,14 +67,14 @@
 				</g>
 			</g>
 			<path class="st5" d="M319.3,147.8l6.7-14.7l-0.7-10.2l4.4-0.6l2.9-5.8l10.8,13.8l-8.1,8.2l-6.3,15.1L319.3,147.8z"/>
-			
+
 				<rect x="327.8" y="-1.7" transform="matrix(0.9785 -0.2064 0.2064 0.9785 -15.4848 70.6659)" class="st6" width="6.3" height="222.5"/>
 			<path class="st7" d="M331,123.2l7.3-7.3l9.5,16.8l-11.1,3.2L331,123.2z"/>
 			<path class="st8" d="M326,133.1l-0.9-11.9l9.2-0.6l2.9,7.5c-2.4,1.7-6.5-4.3-6.5-4.3s2.5,7.2-1,11.8"/>
 			<g transform="translate(79.243 128.878)">
 				<path class="st9" d="M0.8,17l9.3-15.6c0.5-0.8,1.4-1,2.2-0.6l33.4,19.8c0.8,0.5,1,1.4,0.6,2.2L37,38.5c-0.5,0.8-1.4,1-2.2,0.6
 					L1.4,19.3C0.6,18.8,0.4,17.8,0.8,17z"/>
-				
+
 					<rect x="16" y="2.7" transform="matrix(0.5113 -0.8594 0.8594 0.5113 -5.6417 29.964)" class="st10" width="15.1" height="34.5"/>
 				<g transform="translate(4.862 4.666)">
 					<path class="st11" d="M12.2,2.7L7.7,0L5.1,4.5C7.6,5.9,10.7,5.1,12.2,2.7z"/>
@@ -178,7 +178,7 @@
 			<g transform="translate(80.359 148.139)">
 				<path class="st24" d="M0.5,19L5.8,1.6c0.3-0.8,1.1-1.3,2-1.1l37.1,11.4c0.8,0.3,1.3,1.1,1.1,2l-5.3,17.4c-0.3,0.8-1.1,1.3-2,1.1
 					L1.6,21C0.8,20.8,0.3,19.9,0.5,19C0.5,19,0.5,19,0.5,19z"/>
-				
+
 					<rect x="15.6" y="-0.8" transform="matrix(0.2926 -0.9562 0.9562 0.2926 0.6693 33.7344)" class="st25" width="15.1" height="34.5"/>
 				<g transform="translate(4.529 4.153)">
 					<path class="st1" d="M9.4,1.5L4.4,0L2.9,5C5.7,5.8,8.5,4.2,9.4,1.5z"/>
@@ -191,7 +191,7 @@
 			<g transform="translate(80.359 148.139)">
 				<path class="st24" d="M0.5,19L5.8,1.6c0.3-0.8,1.1-1.3,2-1.1l37.1,11.4c0.8,0.3,1.3,1.1,1.1,2l-5.3,17.4c-0.3,0.8-1.1,1.3-2,1.1
 					L1.6,21C0.8,20.8,0.3,19.9,0.5,19C0.5,19,0.5,19,0.5,19z"/>
-				
+
 					<rect x="15.6" y="-0.8" transform="matrix(0.2926 -0.9562 0.9562 0.2926 0.6693 33.7344)" class="st25" width="15.1" height="34.5"/>
 				<g transform="translate(4.529 4.153)">
 					<path class="st1" d="M9.4,1.5L4.4,0L2.9,5C5.7,5.8,8.5,4.2,9.4,1.5z"/>
@@ -216,7 +216,7 @@
 			<g transform="translate(80.452 181.202)">
 				<path class="st24" d="M0.6,16.1L15.9,0.7c0.3-0.4,0.8-0.4,1.2-0.1c0,0,0.1,0.1,0.1,0.1l7.2,7.1c0.4,0.3,0.4,0.8,0.1,1.2
 					c0,0-0.1,0.1-0.1,0.1L9.2,24.5c-0.3,0.4-0.8,0.4-1.2,0.1c0,0-0.1-0.1-0.1-0.1l-7.2-7.1C0.3,17.1,0.3,16.5,0.6,16.1z"/>
-				
+
 					<rect x="2.9" y="8.4" transform="matrix(0.7023 -0.7119 0.7119 0.7023 -5.2228 12.701)" class="st25" width="19.3" height="8.4"/>
 				<g transform="translate(2.744 2.749)">
 					<path class="st1" d="M2,11.7l-2,2.1l2.1,2C3.2,14.7,3.2,12.9,2,11.7C2,11.7,2,11.7,2,11.7z"/>
@@ -229,7 +229,7 @@
 			<g transform="translate(34.366 130.96)">
 				<path class="st24" d="M0.1,13L1.7,1c0.1-0.6,0.6-1,1.1-0.9c0,0,0,0,0.1,0l25.5,3.4c0.6,0.1,1,0.6,0.9,1.1c0,0,0,0,0,0.1l-1.6,12
 					c-0.1,0.6-0.6,1-1.1,0.9c0,0,0,0-0.1,0L1.1,14.3C0.5,14.2,0.1,13.6,0.1,13z"/>
-				
+
 					<rect x="9.7" y="-2.6" transform="matrix(0.1303 -0.9915 0.9915 0.1303 4.0222 22.3466)" class="st25" width="10" height="22.9"/>
 				<g transform="translate(2.75 2.425)">
 					<path class="st1" d="M4.7,0.4L1.3,0L0.9,3.4C2.8,3.6,4.5,2.3,4.7,0.4C4.7,0.5,4.7,0.4,4.7,0.4z"/>

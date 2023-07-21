@@ -7,7 +7,7 @@
 	.st1{fill:#070117;}
 	.st2{fill:none;stroke:#3D3D3D;stroke-width:0.718;stroke-linecap:round;stroke-linejoin:round;}
 	.st3{fill:#94503B;}
-	.st4{fill:#FFFFFF;}
+	.st4{fill:#fff;}
 	.st5{fill:none;stroke:#94503B;stroke-width:1.614;stroke-linecap:round;stroke-linejoin:round;}
 	.st6{fill:none;stroke:#070117;stroke-width:3.111;stroke-linecap:round;stroke-linejoin:round;}
 	.st7{fill:#FFED00;}
@@ -19,7 +19,7 @@
 	.st13{enable-background:new    ;}
 	.st14{fill:#D19570;stroke:#94503B;stroke-width:1.614;stroke-linecap:round;stroke-linejoin:round;}
 	.st15{fill:none;stroke:#BEFFFF;stroke-miterlimit:10;}
-	.st16{fill:none;stroke:#690BD6;stroke-width:0.9233;stroke-miterlimit:10;}
+	.st16{fill:none;stroke:#fff;stroke-width:0.9233;stroke-miterlimit:10;}
 </style>
 <g transform="translate(-32.873 -3.688)">
 	<path class="st0" d="M193.6,105.1l11.1-2.6l11.5-2.2v13.1c0,0-7.1,2.5-10.4-2.1l-10.2,4L193.6,105.1z"/>

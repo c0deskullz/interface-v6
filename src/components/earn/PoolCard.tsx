@@ -106,7 +106,7 @@ export default function PoolCard({
   }
 
   return (
-    <Wrapper showBackground={isStaking} bgColor="#FFF">
+    <Wrapper showBackground={isStaking} bgColor="#fff">
       <TopSection>
         <PinataLogo pinataSymbol={`${currency0.symbol}-${currency1.symbol}`} />
         <div className="topRightSection">

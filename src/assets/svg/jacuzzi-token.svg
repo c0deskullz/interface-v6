@@ -3,10 +3,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#690BD6;}
+	.st0{fill:#fff;}
 	.st1{fill:#5200A9;}
 	.st2{fill:#3C007E;}
-	.st3{fill:#FFFFFF;}
+	.st3{fill:#fff;}
 </style>
 <g>
 	<circle class="st0" cx="300.3" cy="300.4" r="295.5"/>
@@ -14,9 +14,9 @@
 	<path class="st2" d="M300.3,81.1c-4.4,0-8.8,0.1-13.1,0.4c115,6.8,206.2,102.2,206.2,218.9s-91.2,212.1-206.2,218.9
 		c4.3,0.3,8.7,0.4,13.1,0.4c121.1,0,219.3-98.2,219.3-219.3S421.4,81.1,300.3,81.1z"/>
 	<g>
-		
+
 			<ellipse transform="matrix(0.873 -0.4877 0.4877 0.873 -48.4741 206.0408)" class="st3" cx="371.4" cy="196.1" rx="18.7" ry="18.7"/>
-		
+
 			<ellipse transform="matrix(0.873 -0.4877 0.4877 0.873 -57.834 151.1564)" class="st3" cx="261.4" cy="186.6" rx="18.7" ry="18.7"/>
 		<path class="st3" d="M299.3,247.1c-2.6-0.2-4.5-0.8-6.2-2.3c-5.3-3.6-6.3-11.3-2.1-17c14.9-19.1,19.5-38.9,12.5-57.3
 			c-5.5-14.3-15.6-23.5-15.6-23.5c-5-4.6-5.7-11.7-1.1-16.7c4.6-5,11.7-5.7,16.7-1.1c0.4,0.6,14.4,12.6,22.1,32.2

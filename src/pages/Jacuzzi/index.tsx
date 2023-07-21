@@ -41,7 +41,7 @@ const BackgroundImage = styled.div`
   top: 0;
   left: 0;
   &.darkMode {
-    background-color: #1a1a37;
+    background-color: #000000;
     background-image: url(${patternDarkMode});
   }
 `
